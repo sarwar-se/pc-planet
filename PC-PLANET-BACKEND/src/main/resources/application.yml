@@ -1,3 +1,12 @@
 spring:
   application:
     name: PC-PLANET-BACKEND
+  datasource:
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: jdbc:postgresql://localhost:5432/pc_planet
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
