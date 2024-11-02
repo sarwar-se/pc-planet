@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PcPlanetBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PcPlanetBackendApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(PcPlanetBackendApplication.class, args);
+    }
 }
