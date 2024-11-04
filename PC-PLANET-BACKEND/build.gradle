@@ -1,7 +1,10 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.5'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.liquibase.gradle' version '2.2.0'
 }
 
 group = 'com.pcplanet'
@@ -23,6 +26,8 @@ repositories {
     mavenCentral()
 }
 
+apply from: 'dev.gradle'
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //	implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -34,7 +39,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     /* Database migration and source control library. */
-//    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.liquibase:liquibase-core'
+
+    liquibaseRuntime 'info.picocli:picocli:4.7.5'
+    liquibaseRuntime 'com.h2database:h2'
+    liquibaseRuntime 'org.postgresql:postgresql'
+    liquibaseRuntime 'org.liquibase:liquibase-core'
+    liquibaseRuntime group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate6:4.24.0'
+    liquibaseRuntime sourceSets.main.output
+    liquibaseRuntime 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     /* Annotation Library */
     annotationProcessor 'org.projectlombok:lombok'
@@ -43,6 +57,31 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def migration_file_name() {
+    Date now = new Date();
+    String nowStr = String.format("%s.xml", new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss").format(now));
+    return "src/main/resources/db/changelog/migrations/" + nowStr;
+}
+
+def migrationFileFullPath = migration_file_name();
+
+liquibase {
+    activities {
+        main {
+            classpath 'src/main'
+            changelogFile migrationFileFullPath
+            outputFile 'logs/liquibase_output.txt'
+            logFile 'logs/liquibase_log.txt'
+            url liquibase_config.liquibase_db_url
+            username liquibase_config.liquibase_db_user
+            password liquibase_config.liquibase_db_password
+            driver liquibase_config.liquibase_db_driver
+            referenceUrl 'hibernate:spring:com.dsi.dms.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect'
+            referenceDriver 'liquibase.ext.hibernate.database.connection.HibernateDriver'
+        }
+    }
 }
 
 tasks.named('test') {

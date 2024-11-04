@@ -7,9 +7,32 @@ spring:
     password: root
     url: jdbc:postgresql://localhost:5432/pc_planet
   jpa:
+    defer-datasource-initialization: false
     show-sql: true
+
     hibernate:
       ddl-auto: update
+    open-in-view: true
     properties:
       hibernate:
+        generate-statistics: true
         format_sql: true
+        default_schema: public
+        session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 10
+        auto_quote_keyword: true
+
+  # ---------------------------------------------------
+  # Init & Seeding via Spring
+  # default schema file should be in resource-folder named schema.sql
+  # default seed file should be in resource-folder named data.sql
+  # It gets loaded before hibernate context is ready.
+  # So spring.jpa.defer-datasource-initialization should be 'true'
+  # If liquibase is used, then there will be a circular dependency and spring.jpa.defer-datasource-initialization should be 'false'
+  #
+  sql:
+    init.mode: never
+  # ---------------------------------------------------
+
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.xml
+    enabled: true

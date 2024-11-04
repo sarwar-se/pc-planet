@@ -6,9 +6,7 @@ import com.pcplanet.dto.ProductSpecificationDetailsDTO;
 import com.pcplanet.entity.*;
 import com.pcplanet.exception.ErrorCode;
 import com.pcplanet.exception.ServiceException;
-import com.pcplanet.repository.ProductRepository;
-import com.pcplanet.repository.ProductSpecificationDetailsRepository;
-import com.pcplanet.repository.ProductSpecificationRepository;
+import com.pcplanet.repository.*;
 import com.pcplanet.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,14 +21,19 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
+    private final BrandRepository brandRepository;
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductSpecificationRepository specificationRepository;
     private final ProductSpecificationDetailsRepository specificationDetailsRepository;
 
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductSpecificationRepository specificationRepository,
+    public ProductServiceImpl(BrandRepository brandRepository, ProductRepository productRepository,
+                              CategoryRepository categoryRepository, ProductSpecificationRepository specificationRepository,
                               ProductSpecificationDetailsRepository specificationDetailsRepository) {
+        this.brandRepository = brandRepository;
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
         this.specificationRepository = specificationRepository;
         this.specificationDetailsRepository = specificationDetailsRepository;
     }
@@ -44,6 +47,8 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void saveProduct(ProductDTO productDTO) {
         log.debug("Saving new product with model: {}", productDTO.getModel());
+
+        checkBrandAndCategory(productDTO);
 
         Product product = new Product();
 
@@ -107,6 +112,8 @@ public class ProductServiceImpl implements ProductService {
             log.warn("Product id not provided");
             throw new ServiceException(ErrorCode.NO_PRODUCT_ID_PROVIDED);
         }
+
+        checkBrandAndCategory(productDTO);
 
         log.debug("Product updating with id: {}", productDTO.getId());
 
@@ -187,6 +194,30 @@ public class ProductServiceImpl implements ProductService {
         log.debug("Product updated with model: {}", productDTO.getModel());
 
         return ProductDTO.ofEntity(result);
+    }
+
+    private void checkBrandAndCategory(ProductDTO productDTO) {
+        if (productDTO.getBrand() == null) {
+            log.warn("Brand must be provided");
+            throw new ServiceException(ErrorCode.NO_BRAND_FOUND);
+        } else {
+            brandRepository.findById(productDTO.getBrand().getId())
+                    .orElseThrow(() -> {
+                        log.warn("Brand not found with id: {}", productDTO.getBrand().getId());
+                        return new ServiceException(ErrorCode.NO_BRAND_FOUND);
+                    });
+        }
+
+        if (productDTO.getCategory() == null) {
+            log.warn("Category must be provided");
+            throw new ServiceException(ErrorCode.NO_CATEGORY_FOUND);
+        } else {
+            brandRepository.findById(productDTO.getBrand().getId())
+                    .orElseThrow(() -> {
+                        log.warn("Brand not found with id: {}", productDTO.getBrand().getId());
+                        return new ServiceException(ErrorCode.NO_CATEGORY_FOUND);
+                    });
+        }
     }
 
     private void mapToProduct(ProductDTO productDTO, Product product) {
