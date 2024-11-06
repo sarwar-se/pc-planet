@@ -8,8 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "product_specification_details")
-public class ProductSpecificationDetails extends BaseEntity {
+@Table(name = "product_key_feature")
+public class ProductKeyFeature extends BaseEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_pro_feature_product"))
+    private Product product;
 
     @NotBlank
     @Column(name = "name")
@@ -18,8 +22,4 @@ public class ProductSpecificationDetails extends BaseEntity {
     @NotBlank
     @Column(name = "value")
     private String value;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "specification_id", foreignKey = @ForeignKey(name = "fk_ps_details_specification"))
-    private ProductSpecification specification;
 }

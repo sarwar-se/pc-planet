@@ -1,9 +1,8 @@
 package com.pcplanet.controller;
 
-import com.pcplanet.dto.ProductDTO;
-import com.pcplanet.entity.Product;
+import com.pcplanet.dto.ProductDetailsDTO;
+import com.pcplanet.dto.ProductInfoDTO;
 import com.pcplanet.service.ProductService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +17,18 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public List<Product> getProducts() {
+    public List<ProductInfoDTO> getProducts() {
         return productService.getProducts();
     }
 
-    @GetMapping("/all/{productId}")
-    public Product getProductDetails(@PathVariable int productId) {
-        return productService.getProductById(productId);
+    @GetMapping("/all/{productId}/details")
+    public ProductDetailsDTO getProductDetails(@PathVariable int productId) {
+        return productService.getProductDetailsById(productId);
     }
 
     @PostMapping("/save")
-    public void saveProduct(@RequestBody ProductDTO productDTO) {
-        productService.saveProduct(productDTO);
+    public void saveProduct(@RequestBody ProductDetailsDTO productDetailsDTO) {
+        productService.saveProduct(productDetailsDTO);
     }
 
     @DeleteMapping("/all/{productId}/delete")
@@ -38,7 +37,7 @@ public class ProductController {
     }
 
     @PutMapping("/update")
-    public ProductDTO updateProduct(@RequestBody ProductDTO product) {
+    public ProductDetailsDTO updateProduct(@RequestBody ProductDetailsDTO product) {
         return productService.updateProduct(product);
     }
 }

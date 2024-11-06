@@ -1,18 +1,18 @@
 package com.pcplanet.service;
 
-import com.pcplanet.dto.ProductDTO;
-import com.pcplanet.entity.Product;
+import com.pcplanet.dto.ProductDetailsDTO;
+import com.pcplanet.dto.ProductInfoDTO;
 
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getProducts();
+    List<ProductInfoDTO> getProducts();
 
-    void saveProduct(ProductDTO productDTO);
+    void saveProduct(ProductDetailsDTO productDetailsDTO);
 
-    Product getProductById(int productId);
+    ProductDetailsDTO getProductDetailsById(int productId);
 
     void deleteProductById(int productId);
 
-    ProductDTO updateProduct(ProductDTO product);
+    ProductDetailsDTO updateProduct(ProductDetailsDTO product);
 }
