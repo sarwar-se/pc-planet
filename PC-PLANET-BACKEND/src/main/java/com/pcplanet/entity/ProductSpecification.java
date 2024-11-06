@@ -1,7 +1,6 @@
 package com.pcplanet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -21,10 +20,9 @@ public class ProductSpecification extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_pro_specification_product"))
-    @JsonBackReference
     private Product product;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "specification", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    @JsonManagedReference
     private List<ProductSpecificationDetails> specificationDetails;
 }

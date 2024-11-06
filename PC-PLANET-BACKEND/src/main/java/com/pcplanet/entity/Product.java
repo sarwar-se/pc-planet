@@ -1,11 +1,10 @@
 package com.pcplanet.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pcplanet.enums.ProductStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,21 +35,27 @@ public class Product extends BaseEntity {
     private Double price;
 
     @NotNull
+    @Column(name = "warranty")
+    private Integer warranty;
+
+    @NotNull
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "brand_id", foreignKey = @ForeignKey(name = "fk_product_brand"))
     private Brand brand;
 
-    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    @JsonManagedReference
+    private List<ProductKeyFeature> keyFeatures;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<ProductSpecification> specifications;
 }
