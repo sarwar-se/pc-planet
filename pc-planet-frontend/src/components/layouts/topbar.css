@@ -1,0 +1,161 @@
+.custom-header {
+  /* background: blueviolet; */
+  background-color: rgb(106 34 215);
+}
+
+.btn-category {
+  background: none;
+  color: orange;
+  border-color: #ffe484;
+}
+
+.btn-category:hover {
+  background: #ffe484;
+  color: black;
+  border-color: #ffe484;
+}
+
+.fill-lightning {
+  animation: fadeInOut 2s infinite;
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.custom-offcanvas .offcanvas {
+  width: 100%;
+}
+
+@media (max-width: 400px) {
+  .custom-offcanvas .offcanvas {
+    width: 80%;
+  }
+}
+
+.custom-offcanvas-nav .nav-link {
+  border-bottom: 0.5px solid #e5e0e0;
+  padding-bottom: 8px;
+}
+
+.custom-offcanvas-nav .nav-link:last-child {
+  border-bottom: none;
+}
+
+/* Search Form */
+.custom-search-form-control {
+  border: none;
+  border-radius: 10px 0px 0px 10px;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.search-form {
+  min-width: 450px;
+}
+
+.search-form:hover {
+  box-shadow: none !important;
+}
+
+.custom-search-btn {
+  border: none;
+  border-radius: 0px 10px 10px 0px;
+}
+/* Search Form ENDS */
+
+.login-register {
+  font-size: 13px;
+  color: rgb(176, 172, 172);
+}
+
+.login-register:hover {
+  color: orange;
+  cursor: pointer;
+}
+
+.small-text {
+  font-size: 13px;
+  color: rgb(176, 172, 172);
+}
+
+.cart-count {
+  position: relative;
+  top: -10px;
+  right: 6px;
+  width: 5px;
+  height: 10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 1px 5px 1px 5px;
+  font-size: 11px;
+}
+
+.pc-builder-button {
+  color: orange;
+  cursor: pointer;
+  border-radius: 5px;
+  animation: bgColorChange 2s infinite alternate;
+  font-weight: bold;
+}
+
+.pc-builder-button:hover {
+  animation: none;
+  color: orange;
+  background-color: rgb(74, 90, 199);
+}
+
+@keyframes bgColorChange {
+  0% {
+    background-color: #533eca; /* Start color */
+  }
+  100% {
+    background-color: #17846b; /* End color */
+  }
+}
+
+/* Navbar */
+.custom-nav-link {
+  font-size: small;
+  color: black;
+  font-weight: bold;
+}
+
+.custom-nav-link:hover {
+  color: orange;
+}
+
+.first-layer-menu {
+  border: none;
+  z-index: 1;
+  box-shadow: 0px 3px 8px 5px rgba(0, 0, 0, 0.1);
+}
+
+.first-layer-menu-item {
+  display: block;
+  padding: 8px 15px;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.second-layer-menu {
+  position: absolute;
+  left: 100%;
+  z-index: 1;
+  box-shadow: 0px 3px 8px 5px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.first-layer-menu-item:hover,
+.second-layer-menu .dropdown-item:hover {
+  background-color: orange;
+}
+/* Navbar ENDS*/
