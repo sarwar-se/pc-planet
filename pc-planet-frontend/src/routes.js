@@ -8,7 +8,7 @@ export const router = createBrowserRouter([
       {
         path: "/",
         lazy: async () => {
-          const { HomePage } = await import("./features/Home/HomePage");
+          const { HomePage } = await import("./features/index.ts");
           return { Component: HomePage };
         },
       },

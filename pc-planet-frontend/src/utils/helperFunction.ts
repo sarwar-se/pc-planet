@@ -18,3 +18,7 @@ export const convertToBanglaDigits = (number: number): string => {
 
   return result;
 };
+
+export const numberFormat = (number: number) => {
+  return Intl.NumberFormat().format(number);
+};

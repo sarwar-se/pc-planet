@@ -1,0 +1,42 @@
+.body {
+  margin: 0;
+}
+
+/* Product card */
+.product-card {
+  height: 100%;
+  border: 1px solid #e9eaf1;
+}
+
+.product-card:hover {
+  /* transform: scale(1.01) !important; */
+  /* transition: 0.3s; */
+  box-shadow: 0px 0px 10px 0px rgba(156, 152, 148, 0.5);
+}
+
+.product-card-header {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.product-footer {
+  border-color: #e9eaf1;
+  background-color: transparent;
+}
+
+.addCartButton {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px;
+  background-color: #eae3ef;
+  color: blueviolet;
+}
+
+.addCartButton:hover {
+  background-color: blueviolet;
+  color: white;
+  cursor: pointer;
+}
+/* Product card ENDS */
