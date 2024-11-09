@@ -12,7 +12,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -78,7 +78,7 @@ liquibase {
             username liquibase_config.liquibase_db_user
             password liquibase_config.liquibase_db_password
             driver liquibase_config.liquibase_db_driver
-            referenceUrl 'hibernate:spring:com.dsi.dms.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect'
+            referenceUrl 'hibernate:spring:com.pcplanet.entity?dialect=org.hibernate.dialect.PostgreSQLDialect'
             referenceDriver 'liquibase.ext.hibernate.database.connection.HibernateDriver'
         }
     }
