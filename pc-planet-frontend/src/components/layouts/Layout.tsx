@@ -1,6 +1,6 @@
 import React from "react";
-import NavigationBar from "./NavigationBar";
 import { Outlet } from "react-router-dom";
+import NavigationBar from "./NavigationBar";
 
 const Layout: React.FC = () => {
   return (
