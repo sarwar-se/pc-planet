@@ -58,4 +58,8 @@ public class Product extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<ProductSpecification> specifications;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<ProductImage> images;
 }

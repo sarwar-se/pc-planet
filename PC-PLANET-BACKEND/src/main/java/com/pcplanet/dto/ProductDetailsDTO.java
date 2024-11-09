@@ -14,6 +14,7 @@ public class ProductDetailsDTO extends ProductInfoDTO {
     private BrandDTO brand;
     private CategoryDTO category;
     private List<ProductSpecificationDTO> specifications;
+    private List<ProductImageDTO> images;
 
     public static ProductDetailsDTO ofEntity(Product product) {
         ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO();
@@ -40,6 +41,17 @@ public class ProductDetailsDTO extends ProductInfoDTO {
 
                     return keyFeatureDTO;
                 }).toList();
+
+        List<ProductImageDTO> imageDTOs = product.getImages()
+                .stream()
+                .map(productImage -> {
+                    ProductImageDTO imageDTO = new ProductImageDTO();
+
+                    imageDTO.setId(productImage.getId());
+                    imageDTO.setFileName(productImage.getFileName());
+                    return imageDTO;
+                }).toList();
+        productDetailsDTO.setImages(imageDTOs);
 
         List<ProductSpecificationDTO> specificationDTOs = new ArrayList<>();
 

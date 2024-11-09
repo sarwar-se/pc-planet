@@ -17,6 +17,7 @@ public class ProductInfoDTO {
     private Double price;
     private ProductStatus status;
     private List<ProductKeyFeatureDTO> keyFeatures;
+    private String image;
 
     public static ProductInfoDTO ofEntity(Product product) {
         var productInfoDTO = new ProductInfoDTO();
@@ -40,6 +41,8 @@ public class ProductInfoDTO {
                     return keyFeatureDTO;
                 }).toList();
         productInfoDTO.setKeyFeatures(keyFeatureDTOs);
+
+        productInfoDTO.setImage(product.getImages().get(0).getFileName());
 
         return productInfoDTO;
     }

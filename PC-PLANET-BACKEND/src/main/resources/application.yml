@@ -1,3 +1,6 @@
+security:
+  cors-domain: http://localhost:3000
+
 spring:
   application:
     name: PC-PLANET-BACKEND
@@ -11,7 +14,7 @@ spring:
     show-sql: true
 
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     open-in-view: true
     properties:
       hibernate:
