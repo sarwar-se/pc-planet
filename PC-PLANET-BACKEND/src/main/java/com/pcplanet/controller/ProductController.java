@@ -2,6 +2,8 @@ package com.pcplanet.controller;
 
 import com.pcplanet.dto.ProductDetailsDTO;
 import com.pcplanet.dto.ProductInfoDTO;
+import com.pcplanet.dto.param.ProductFilterParams;
+import com.pcplanet.entity.Product;
 import com.pcplanet.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +19,12 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public List<ProductInfoDTO> getProducts() {
+    public List<ProductInfoDTO> getProducts(@ModelAttribute ProductFilterParams params) {
+        return productService.getProducts(params);
+    }
+
+    @GetMapping("/all/test") // Todo:
+    public List<Product> getProducts() {
         return productService.getProducts();
     }
 

@@ -1,11 +1,32 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { FaCartPlus } from "react-icons/fa6";
-import { numberFormat } from "../../../utils/helperFunction";
+import {
+  numberFormat,
+  PRODUCT_STATUS,
+  productStatusMap,
+} from "../../../utils/helperFunction";
+import { AppButton } from "../../../components";
 
 const ProductCard: React.FC<{ product: any }> = ({ product }) => {
   const { keyFeatures } = product;
   const no_image = "no_image.png";
+
+  const getProductStatus = (value: string) => {
+    const status = productStatusMap().find((item) => item.value === value);
+    return status ? status.label : undefined;
+  };
+
+  const isButtonDisabled = (status: string) => {
+    if (
+      status === PRODUCT_STATUS.UP_COMING ||
+      status === PRODUCT_STATUS.OUT_OF_STOCK
+    ) {
+      return true;
+    }
+
+    return false;
+  };
 
   return (
     <Card className="product-card">
@@ -36,12 +57,20 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
         </Card.Text>
       </Card.Body>
       <Card.Footer className="product-footer">
-        <div className="text-center text-danger fw-bold">
-          {numberFormat(125000) + "৳"}
+        <div className="text-center text-danger fw-bold mb-2">
+          {product.status === "IN_STOCK"
+            ? numberFormat(product.price) + "৳"
+            : getProductStatus(product.status)}
         </div>
-        <div className="addCartButton" onClick={() => {}}>
-          <FaCartPlus size={20} /> Add To Cart
-        </div>
+        {!isButtonDisabled(product.status) ? (
+          <AppButton className="add-cart-button" onClick={() => {}}>
+            <FaCartPlus size={20} /> Add To Cart
+          </AppButton>
+        ) : (
+          <AppButton className="add-cart-button-disabled" onClick={() => {}}>
+            {getProductStatus(product.status)}
+          </AppButton>
+        )}
       </Card.Footer>
     </Card>
   );

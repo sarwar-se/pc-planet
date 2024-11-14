@@ -11,8 +11,6 @@ import java.util.List;
 @Setter
 public class ProductDetailsDTO extends ProductInfoDTO {
     private Integer warranty;
-    private BrandDTO brand;
-    private CategoryDTO category;
     private List<ProductSpecificationDTO> specifications;
     private List<ProductImageDTO> images;
 

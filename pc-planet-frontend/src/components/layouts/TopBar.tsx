@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
+import { AppContext } from "./Layout";
 
 const TopBar: React.FC<{
   showSidebar: any;
@@ -9,6 +10,12 @@ const TopBar: React.FC<{
   const [activeSecondLayer, setActiveSecondLayer] = useState<string | null>(
     null
   );
+
+  const { setCategory } = useContext(AppContext)!;
+
+  const onClickHandler = (value: string) => {
+    setCategory(value);
+  };
 
   // Timeout references for delayed closing
   let firstLayerTimeout: NodeJS.Timeout;
@@ -50,13 +57,22 @@ const TopBar: React.FC<{
             <Nav.Link
               className="custom-nav-link navigation-bar"
               href="#desktop"
+              onClick={() => onClickHandler("Desktop")}
             >
               Desktop
             </Nav.Link>
-            <Nav.Link className="custom-nav-link" href="#laptop">
+            <Nav.Link
+              className="custom-nav-link"
+              href="#laptop"
+              onClick={() => onClickHandler("Laptop")}
+            >
               Laptop
             </Nav.Link>
-            <Nav.Link className="custom-nav-link" href="#monitor">
+            <Nav.Link
+              className="custom-nav-link"
+              href="#monitor"
+              onClick={() => onClickHandler("Monitor")}
+            >
               Monitor
             </Nav.Link>
 
@@ -80,7 +96,11 @@ const TopBar: React.FC<{
                   show={activeSecondLayer === "Processor"}
                   drop="end"
                 >
-                  <Dropdown.Toggle as="span" className="first-layer-menu-item">
+                  <Dropdown.Toggle
+                    as="span"
+                    className="first-layer-menu-item"
+                    onClick={() => onClickHandler("Processor")}
+                  >
                     Processor
                   </Dropdown.Toggle>
                   <Dropdown.Menu className="second-layer-menu">
@@ -107,7 +127,11 @@ const TopBar: React.FC<{
                   show={activeSecondLayer === "Motherboard"}
                   drop="end"
                 >
-                  <Dropdown.Toggle as="span" className="first-layer-menu-item">
+                  <Dropdown.Toggle
+                    as="span"
+                    className="first-layer-menu-item"
+                    onClick={() => onClickHandler("Motherboard")}
+                  >
                     Motherboard
                   </Dropdown.Toggle>
                   <Dropdown.Menu className="second-layer-menu">
@@ -141,16 +165,25 @@ const TopBar: React.FC<{
                 <Dropdown.Item
                   className="first-layer-menu-item"
                   href="#graphics-card"
+                  onClick={() => onClickHandler("Graphics Card")}
                 >
                   Graphics Card
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
-            <Nav.Link className="custom-nav-link" href="#ups">
+            <Nav.Link
+              className="custom-nav-link"
+              href="#ups"
+              onClick={() => onClickHandler("Ups")}
+            >
               UPS
             </Nav.Link>
-            <Nav.Link className="custom-nav-link" href="#camera">
+            <Nav.Link
+              className="custom-nav-link"
+              href="#camera"
+              onClick={() => onClickHandler("Camera")}
+            >
               Camera
             </Nav.Link>
             <Nav.Link className="custom-nav-link" href="#accessories">

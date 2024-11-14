@@ -16,6 +16,8 @@ public class ProductInfoDTO {
     private String model;
     private Double price;
     private ProductStatus status;
+    private BrandDTO brand;
+    private CategoryDTO category;
     private List<ProductKeyFeatureDTO> keyFeatures;
     private String image;
 
@@ -28,6 +30,9 @@ public class ProductInfoDTO {
         productInfoDTO.setModel(product.getModel());
         productInfoDTO.setPrice(product.getPrice());
         productInfoDTO.setStatus(product.getStatus());
+
+        productInfoDTO.setBrand(new BrandDTO(product.getBrand().getId(), product.getBrand().getName()));
+        productInfoDTO.setCategory(new CategoryDTO(product.getCategory().getId(), product.getCategory().getName()));
 
         List<ProductKeyFeatureDTO> keyFeatureDTOs = product.getKeyFeatures()
                 .stream()

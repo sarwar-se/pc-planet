@@ -14,4 +14,8 @@ public class Brand extends BaseEntity {
     @NotBlank
     @Column(name = "name")
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_brand_category"))
+    private Category category;
 }

@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="mhsar (generated)" id="1731157875893-1">
+    <changeSet author="mhsar (generated)" id="1731522812074-1">
         <createTable tableName="brand">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="brandPK"/>
@@ -8,9 +8,21 @@
             <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
             <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
             <column name="name" type="VARCHAR(255)"/>
+            <column name="category_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-2">
+    <changeSet author="mhsar (generated)" id="1731522812074-2">
+        <createTable tableName="cat_filter_key">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="cat_filter_keyPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="category_id" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="mhsar (generated)" id="1731522812074-3">
         <createTable tableName="category">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="categoryPK"/>
@@ -20,7 +32,19 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-3">
+    <changeSet author="mhsar (generated)" id="1731522812074-4">
+        <createTable tableName="filter_property">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="filter_propertyPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="cat_filter_key_id" type="INTEGER"/>
+            <column name="product_id" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="mhsar (generated)" id="1731522812074-5">
         <createTable tableName="product">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="productPK"/>
@@ -43,7 +67,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-4">
+    <changeSet author="mhsar (generated)" id="1731522812074-6">
         <createTable tableName="product_image">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="product_imagePK"/>
@@ -54,7 +78,7 @@
             <column name="product_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-5">
+    <changeSet author="mhsar (generated)" id="1731522812074-7">
         <createTable tableName="product_key_feature">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="product_key_featurePK"/>
@@ -66,7 +90,7 @@
             <column name="product_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-6">
+    <changeSet author="mhsar (generated)" id="1731522812074-8">
         <createTable tableName="product_specification">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="product_specificationPK"/>
@@ -77,7 +101,7 @@
             <column name="product_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-7">
+    <changeSet author="mhsar (generated)" id="1731522812074-9">
         <createTable tableName="product_specification_details">
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="product_specification_detailsPK"/>
@@ -89,22 +113,34 @@
             <column name="specification_id" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-8">
+    <changeSet author="mhsar (generated)" id="1731522812074-10">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="brand" constraintName="fk_brand_category" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="category" validate="true"/>
+    </changeSet>
+    <changeSet author="mhsar (generated)" id="1731522812074-11">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="cat_filter_key" constraintName="fk_cat_filter_key_category" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="category" validate="true"/>
+    </changeSet>
+    <changeSet author="mhsar (generated)" id="1731522812074-12">
+        <addForeignKeyConstraint baseColumnNames="cat_filter_key_id" baseTableName="filter_property" constraintName="fk_filter_property_cat_filter_key" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cat_filter_key" validate="true"/>
+    </changeSet>
+    <changeSet author="mhsar (generated)" id="1731522812074-13">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="filter_property" constraintName="fk_filter_property_product" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product" validate="true"/>
+    </changeSet>
+    <changeSet author="mhsar (generated)" id="1731522812074-14">
         <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_key_feature" constraintName="fk_pro_feature_product" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product" validate="true"/>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-9">
+    <changeSet author="mhsar (generated)" id="1731522812074-15">
         <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_image" constraintName="fk_pro_image_product" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product" validate="true"/>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-10">
+    <changeSet author="mhsar (generated)" id="1731522812074-16">
         <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_specification" constraintName="fk_pro_specification_product" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product" validate="true"/>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-11">
+    <changeSet author="mhsar (generated)" id="1731522812074-17">
         <addForeignKeyConstraint baseColumnNames="brand_id" baseTableName="product" constraintName="fk_product_brand" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="brand" validate="true"/>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-12">
+    <changeSet author="mhsar (generated)" id="1731522812074-18">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="product" constraintName="fk_product_category" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="category" validate="true"/>
     </changeSet>
-    <changeSet author="mhsar (generated)" id="1731157875893-13">
+    <changeSet author="mhsar (generated)" id="1731522812074-19">
         <addForeignKeyConstraint baseColumnNames="specification_id" baseTableName="product_specification_details" constraintName="fk_ps_details_specification" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product_specification" validate="true"/>
     </changeSet>
 </databaseChangeLog>
