@@ -1,0 +1,17 @@
+INSERT INTO brand (id, name, category_id) values (1, 'ASUS', 1);
+INSERT INTO brand (id, name, category_id) values (2, 'SONY', 2);
+INSERT INTO brand (id, name, category_id) values (3, 'MSI', 1);
+INSERT INTO brand (id, name, category_id) values (4, 'INTEL', 4);
+INSERT INTO brand (id, name, category_id) values (5, 'CANON', 2);
+INSERT INTO brand (id, name, category_id) values (6, 'APOLLO', 6);
+INSERT INTO brand (id, name, category_id) values (7, 'POWER GUARD', 6);
+INSERT INTO brand (id, name, category_id) values (8, 'AMD', 4);
+INSERT INTO brand (id, name, category_id) values (9, 'GIGABYTE', 1);
+INSERT INTO brand (id, name, category_id) values (10, 'ZOTAC', 1);
+INSERT INTO brand (id, name, category_id) values (11, 'LG', 5);
+INSERT INTO brand (id, name, category_id) values (12, 'HP', 5);
+INSERT INTO brand (id, name, category_id) values (13, 'ASUS', 3);
+INSERT INTO brand (id, name, category_id) values (14, 'MSI', 3);
+INSERT INTO brand (id, name, category_id) values (15, 'GIGABYTE', 3);
+INSERT INTO brand (id, name, category_id) values (16, 'GIGABYTE', 5);
+INSERT INTO brand (id, name, category_id) values (17, 'MSI', 5);

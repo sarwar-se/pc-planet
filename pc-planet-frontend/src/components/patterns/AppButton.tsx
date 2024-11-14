@@ -1,5 +1,4 @@
 import React from "react";
-import Pattern from "./Pattern.module.css";
 
 const AppButton: React.FC<{
   onClick: Function;
@@ -8,7 +7,7 @@ const AppButton: React.FC<{
 }> = ({ onClick, className = "bg-secondary", children, ...rest }) => {
   return (
     <button
-      className={`${Pattern.app_btn} ${className}`}
+      className={`app-btn ${className}`}
       onClick={() => onClick()}
       {...rest}
     >

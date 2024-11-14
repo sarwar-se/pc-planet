@@ -1,6 +1,7 @@
 package com.pcplanet.service.impl;
 
 import com.pcplanet.dto.*;
+import com.pcplanet.dto.param.ProductFilterParams;
 import com.pcplanet.entity.*;
 import com.pcplanet.exception.ErrorCode;
 import com.pcplanet.exception.ServiceException;
@@ -41,8 +42,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductInfoDTO> getProducts() {
-        return productRepository.findAll().stream().map(ProductInfoDTO::ofEntity).toList();
+    public List<ProductInfoDTO> getProducts(ProductFilterParams params) {
+
+        return productRepository.findProducts(params.getCategoryName(), params.getStatuses(), params.getBrandNames(), params.getProperties())
+                .stream()
+                .map(ProductInfoDTO::ofEntity)
+                .toList();
+    }
+
+    @Override
+    public List<Product> getProducts() {
+        return productRepository.findAll();
     }
 
     @Override

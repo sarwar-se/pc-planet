@@ -25,18 +25,38 @@
   background-color: transparent;
 }
 
-.addCartButton {
-  text-align: center;
+.add-cart-button {
   font-size: 0.8rem;
   font-weight: bold;
   padding: 3px;
   background-color: #efedf1;
   color: blueviolet;
+  width: 100%;
+  border: none !important;
 }
 
-.addCartButton:hover {
+.add-cart-button:hover {
   background-color: blueviolet;
   color: white;
   cursor: pointer;
 }
+
+.add-cart-button-disabled {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px;
+  background-color: #efedf1;
+  color: rgb(181, 122, 237);
+  width: 100%;
+  border: none !important;
+  cursor: not-allowed !important;
+}
 /* Product card ENDS */
+
+.left-filter-card {
+  min-width: 20%;
+}
+
+.product-container {
+  min-width: 80%;
+}
