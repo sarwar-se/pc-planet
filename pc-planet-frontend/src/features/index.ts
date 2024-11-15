@@ -1,4 +1,6 @@
 import HomePage from "./Home/HomePage";
-import ProductView from "./Product/ProductView";
+import SearchProduct from "./Product/SearchProduct";
+import ProductDetails from "./Product/ProductDetails";
+import CategoryWiseProduct from "./Product/CategoryWiseProduct";
 
-export { HomePage, ProductView };
+export { HomePage, CategoryWiseProduct, SearchProduct, ProductDetails };

@@ -161,3 +161,45 @@
   background-color: orange;
 }
 /* Navbar ENDS*/
+
+/* Search form */
+.search-result {
+  position: absolute;
+  overflow-y: auto;
+  margin-top: 5px;
+  z-index: 1;
+  background-color: #fff;
+  box-shadow: 0px 3px 8px 5px rgba(0, 0, 0, 0.1);
+  width: 450px;
+}
+
+.product-list {
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+}
+
+.product-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.product-item:hover {
+  background-color: #f5f3f6;
+  cursor: pointer;
+}
+
+.see-all {
+  padding: 7px;
+  margin-top: 3px;
+  text-align: center;
+  font-weight: bold;
+  color: blueviolet;
+}
+
+.see-all:hover {
+  background-color: blueviolet;
+  color: white;
+  cursor: pointer;
+}
+/* Search form ENDS */

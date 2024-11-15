@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductInfoDTO> getProducts(ProductFilterParams params);
+
     List<Product> getProducts();
 
     void saveProduct(ProductDetailsDTO productDetailsDTO);
@@ -18,4 +19,6 @@ public interface ProductService {
     void deleteProductById(int productId);
 
     ProductDetailsDTO updateProduct(ProductDetailsDTO product);
+
+    List<ProductInfoDTO> searchProductsByName(String name);
 }

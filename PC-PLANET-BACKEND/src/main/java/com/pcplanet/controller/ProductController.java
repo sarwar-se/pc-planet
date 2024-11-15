@@ -47,4 +47,9 @@ public class ProductController {
     public ProductDetailsDTO updateProduct(@RequestBody ProductDetailsDTO product) {
         return productService.updateProduct(product);
     }
+
+    @GetMapping("/search")
+    public List<ProductInfoDTO> searchProducts(@RequestParam String query) {
+        return productService.searchProductsByName(query);
+    }
 }

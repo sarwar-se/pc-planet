@@ -62,3 +62,9 @@ export enum STATUS {
   SUCCESS = "success",
   ERROR = "error",
 }
+
+export const getAvailabilitiesType = (value: string): string[] => {
+  return productStatusMap()
+    .filter((type) => type.value === value)
+    .map((type) => type.label);
+};

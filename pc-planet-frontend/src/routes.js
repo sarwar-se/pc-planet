@@ -9,8 +9,29 @@ export const router = createBrowserRouter([
       {
         path: "/",
         lazy: async () => {
-          const { ProductView } = await import("./features/index.ts");
-          return { Component: ProductView };
+          const { HomePage } = await import("./features/index.ts");
+          return { Component: HomePage };
+        },
+      },
+      {
+        path: "all/:category",
+        lazy: async () => {
+          const { CategoryWiseProduct } = await import("./features/index.ts");
+          return { Component: CategoryWiseProduct };
+        },
+      },
+      {
+        path: "product/search/:query",
+        lazy: async () => {
+          const { SearchProduct } = await import("./features/index.ts");
+          return { Component: SearchProduct };
+        },
+      },
+      {
+        path: ":productName",
+        lazy: async () => {
+          const { ProductDetails } = await import("./features/index.ts");
+          return { Component: ProductDetails };
         },
       },
     ],
