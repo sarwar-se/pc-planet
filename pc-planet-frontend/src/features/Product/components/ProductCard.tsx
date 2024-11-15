@@ -7,14 +7,21 @@ import {
   productStatusMap,
 } from "../../../utils/helperFunction";
 import { AppButton } from "../../../components";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "../../../routes/appRoutes";
 
 const ProductCard: React.FC<{ product: any }> = ({ product }) => {
   const { keyFeatures } = product;
   const no_image = "no_image.png";
+  const navigate = useNavigate();
 
   const getProductStatus = (value: string) => {
     const status = productStatusMap().find((item) => item.value === value);
     return status ? status.label : undefined;
+  };
+
+  const handleProductClick = (productId: number, productName: string) => {
+    navigate(appRoutes.productDetails(productName), { state: { productId } });
   };
 
   const isButtonDisabled = (status: string) => {
@@ -35,7 +42,9 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
           className="p-2"
           variant="top"
           src={`/images/${product.image ? product.image : no_image}`}
-          onClick={() => {}}
+          onClick={() => {
+            handleProductClick(product.id, product.name);
+          }}
         />
       </Card.Header>
       <Card.Body>

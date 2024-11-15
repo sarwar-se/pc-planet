@@ -16,10 +16,7 @@ const NavigationBar = () => {
       <Header handleShowSidebar={handleShowSidebar} />
 
       {/* Secondary Navbar for Categories (Desktop View) */}
-      <TopBar
-        showSidebar={showSidebar}
-        handleCloseSidebar={handleCloseSidebar}
-      />
+      <TopBar />
 
       {/* Offcanvas Sidebar for Small, Medium, Large Screens & Mobile View */}
       <SideBar

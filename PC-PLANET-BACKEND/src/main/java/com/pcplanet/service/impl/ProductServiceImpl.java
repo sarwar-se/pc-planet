@@ -252,6 +252,11 @@ public class ProductServiceImpl implements ProductService {
         return ProductDetailsDTO.ofEntity(result);
     }
 
+    @Override
+    public List<ProductInfoDTO> searchProductsByName(String name) {
+        return productRepository.findByNameContainsIgnoreCase(name).stream().map(ProductInfoDTO::ofEntity).toList();
+    }
+
     private void checkBrandAndCategory(ProductDetailsDTO productDetailsDTO) {
         if (productDetailsDTO.getBrand() == null) {
             log.warn("Brand must be provided");

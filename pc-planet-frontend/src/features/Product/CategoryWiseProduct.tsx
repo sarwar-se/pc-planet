@@ -1,20 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./product.css";
 import { getAllProduct, getCategoryDetailsByName } from "./productApi";
 import ProductCardView from "./ProductCardView";
 import { productStatusMap, STATUS } from "../../utils/helperFunction";
 import FilterCard from "../../components/patterns/FilterCard";
 import { FILTER_TYPE, GROUP_TYPE } from "../../utils/appConstant";
-import { AppContext } from "../../components/layouts/Layout";
+import { useParams } from "react-router-dom";
 
 const Product = () => {
-  const context = useContext(AppContext)!;
-  const { category } = context;
+  const { category: categoryName } = useParams<string>();
 
   const [fetchStatus, setFetchStatus] = useState<STATUS>(STATUS.IDLE);
   const [products, setProducts] = useState<any>([]);
   const [categoryDetails, setCategoryDetails] = useState<any>([]);
-  const [categoryName, setCategoryName] = useState<string>("");
 
   const [selectedAvailability, setSelectedAvailability] = useState<string[]>(
     []
@@ -31,7 +29,7 @@ const Product = () => {
 
   const getAvailabilitiesValue = (label: string): string => {
     const status = productStatusMap().find((item) => item.label === label);
-    return status ? status.value : "";
+    return status ? status.value : "UNKNOWN";
   };
 
   const getFilterValues = (obj: any): string[] => {
@@ -66,10 +64,6 @@ const Product = () => {
       }
     }
   };
-
-  useEffect(() => {
-    setCategoryName(category);
-  }, [category]);
 
   useEffect(() => {
     setFetchStatus(STATUS.LOADING);

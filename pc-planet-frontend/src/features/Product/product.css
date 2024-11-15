@@ -60,3 +60,45 @@
 .product-container {
   min-width: 80%;
 }
+
+/* Product details */
+.product-info {
+  font-size: 0.9rem;
+}
+
+.product-spec {
+  color: blueviolet;
+  font-weight: bold;
+  background-color: #f3f1f3;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.product-spec-detail {
+  padding: 0.5rem;
+  border-top: 1px solid #f4edf6;
+}
+
+.thumbnail {
+  width: 60px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.thumbnail:hover {
+  opacity: 1;
+}
+
+.thumbnail.selected {
+  opacity: 1;
+}
+
+.img-section {
+  min-width: 40%;
+}
+
+.feature-section {
+  min-width: 60%;
+}
+/* Product details ENDS */

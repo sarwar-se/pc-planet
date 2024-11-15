@@ -1,20 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
-import { AppContext } from "./Layout";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "../../routes/appRoutes";
 
-const TopBar: React.FC<{
-  showSidebar: any;
-  handleCloseSidebar: Function;
-}> = ({ showSidebar, handleCloseSidebar }) => {
+const TopBar: React.FC = () => {
   const [activeFirstLayer, setActiveFirstLayer] = useState<string | null>(null);
   const [activeSecondLayer, setActiveSecondLayer] = useState<string | null>(
     null
   );
+  const navigate = useNavigate();
 
-  const { setCategory } = useContext(AppContext)!;
-
-  const onClickHandler = (value: string) => {
-    setCategory(value);
+  const showProducts = (category: string) => {
+    navigate(appRoutes.productView(category));
   };
 
   // Timeout references for delayed closing
@@ -56,22 +53,19 @@ const TopBar: React.FC<{
           <Nav className="mx-0 navigation-bar">
             <Nav.Link
               className="custom-nav-link navigation-bar"
-              href="#desktop"
-              onClick={() => onClickHandler("Desktop")}
+              onClick={() => showProducts("Desktop")}
             >
               Desktop
             </Nav.Link>
             <Nav.Link
               className="custom-nav-link"
-              href="#laptop"
-              onClick={() => onClickHandler("Laptop")}
+              onClick={() => showProducts("Laptop")}
             >
               Laptop
             </Nav.Link>
             <Nav.Link
               className="custom-nav-link"
-              href="#monitor"
-              onClick={() => onClickHandler("Monitor")}
+              onClick={() => showProducts("Monitor")}
             >
               Monitor
             </Nav.Link>
@@ -99,21 +93,15 @@ const TopBar: React.FC<{
                   <Dropdown.Toggle
                     as="span"
                     className="first-layer-menu-item"
-                    onClick={() => onClickHandler("Processor")}
+                    onClick={() => showProducts("Processor")}
                   >
                     Processor
                   </Dropdown.Toggle>
                   <Dropdown.Menu className="second-layer-menu">
-                    <Dropdown.Item
-                      className="second-layer-menu-item"
-                      href="#amd"
-                    >
+                    <Dropdown.Item className="second-layer-menu-item">
                       AMD
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="second-layer-menu-item"
-                      href="#intel"
-                    >
+                    <Dropdown.Item className="second-layer-menu-item">
                       Intel
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -130,33 +118,21 @@ const TopBar: React.FC<{
                   <Dropdown.Toggle
                     as="span"
                     className="first-layer-menu-item"
-                    onClick={() => onClickHandler("Motherboard")}
+                    onClick={() => showProducts("Motherboard")}
                   >
                     Motherboard
                   </Dropdown.Toggle>
                   <Dropdown.Menu className="second-layer-menu">
-                    <Dropdown.Item
-                      className="second-layer-menu-item"
-                      href="#msi"
-                    >
+                    <Dropdown.Item className="second-layer-menu-item">
                       MSI
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="second-layer-menu-item"
-                      href="#msi"
-                    >
+                    <Dropdown.Item className="second-layer-menu-item">
                       ASRock
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="second-layer-menu-item"
-                      href="#msi"
-                    >
+                    <Dropdown.Item className="second-layer-menu-item">
                       Gigabute
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="second-layer-menu-item"
-                      href="#msi"
-                    >
+                    <Dropdown.Item className="second-layer-menu-item">
                       Asus
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -164,8 +140,7 @@ const TopBar: React.FC<{
 
                 <Dropdown.Item
                   className="first-layer-menu-item"
-                  href="#graphics-card"
-                  onClick={() => onClickHandler("Graphics Card")}
+                  onClick={() => showProducts("Graphics Card")}
                 >
                   Graphics Card
                 </Dropdown.Item>
@@ -174,19 +149,20 @@ const TopBar: React.FC<{
 
             <Nav.Link
               className="custom-nav-link"
-              href="#ups"
-              onClick={() => onClickHandler("Ups")}
+              onClick={() => showProducts("Ups")}
             >
               UPS
             </Nav.Link>
             <Nav.Link
               className="custom-nav-link"
-              href="#camera"
-              onClick={() => onClickHandler("Camera")}
+              onClick={() => showProducts("Camera")}
             >
               Camera
             </Nav.Link>
-            <Nav.Link className="custom-nav-link" href="#accessories">
+            <Nav.Link
+              className="custom-nav-link"
+              onClick={() => showProducts("Accessories")}
+            >
               Accessories
             </Nav.Link>
           </Nav>

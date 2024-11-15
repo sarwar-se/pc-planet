@@ -24,6 +24,7 @@ public class ProductDetailsDTO extends ProductInfoDTO {
         productDetailsDTO.setPrice(product.getPrice());
         productDetailsDTO.setStatus(product.getStatus());
         productDetailsDTO.setWarranty(product.getWarranty());
+        productDetailsDTO.setImage(product.getImages().get(0).getFileName());
 
         productDetailsDTO.setBrand(new BrandDTO(product.getBrand().getId(), product.getBrand().getName()));
         productDetailsDTO.setCategory(new CategoryDTO(product.getCategory().getId(), product.getCategory().getName()));

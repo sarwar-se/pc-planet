@@ -3,17 +3,17 @@ import { Outlet } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 
 type AppContextType = {
-  category: string;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  products: any;
+  setProducts: any;
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const Layout: React.FC = () => {
-  const [category, setCategory] = useState("");
+  const [products, setProducts] = useState([]);
 
   return (
-    <AppContext.Provider value={{ category, setCategory }}>
+    <AppContext.Provider value={{ products, setProducts }}>
       <React.Fragment>
         <NavigationBar />
         <Outlet />
