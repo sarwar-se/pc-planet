@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./product.css";
-import { getAllProduct, getCategoryDetailsByName } from "./productApi";
+import { getCategoryDetailsByName, getProducts } from "./productApi";
 import ProductCardView from "./ProductCardView";
 import { productStatusMap, STATUS } from "../../utils/helperFunction";
 import FilterCard from "../../components/patterns/FilterCard";
@@ -68,12 +68,7 @@ const Product = () => {
   useEffect(() => {
     setFetchStatus(STATUS.LOADING);
 
-    getAllProduct(
-      productStatus,
-      selectedBrands,
-      selectedProperties,
-      categoryName
-    )
+    getProducts(productStatus, selectedBrands, selectedProperties, categoryName)
       .then((response) => {
         const { data } = response;
         setProducts(data);
@@ -89,6 +84,10 @@ const Product = () => {
       .then((response) => {
         const { data } = response;
         setCategoryDetails(data);
+
+        setSelectedAvailability([]);
+        setSelectedBrands([]);
+        setSelectedProperties([]);
       })
       .catch(() => {});
   }, [categoryName]);

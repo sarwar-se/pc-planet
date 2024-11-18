@@ -12,6 +12,7 @@ import java.util.List;
 public class ProductDetailsDTO extends ProductInfoDTO {
     private Integer warranty;
     private List<ProductSpecificationDTO> specifications;
+    private List<ProductDescriptionDTO> descriptions;
     private List<ProductImageDTO> images;
 
     public static ProductDetailsDTO ofEntity(Product product) {
@@ -77,6 +78,19 @@ public class ProductDetailsDTO extends ProductInfoDTO {
 
         productDetailsDTO.setKeyFeatures(keyFeatureDTOs);
         productDetailsDTO.setSpecifications(specificationDTOs);
+
+        List<ProductDescriptionDTO> descriptionDTOs = product.getDescriptions()
+                .stream()
+                .map(productDescription -> {
+                    var productDescDTO = new ProductDescriptionDTO();
+
+                    productDescDTO.setId(productDescription.getId());
+                    productDescDTO.setName(productDescription.getName());
+                    productDescDTO.setValue(productDescription.getValue());
+
+                    return productDescDTO;
+                }).toList();
+        productDetailsDTO.setDescriptions(descriptionDTOs);
 
         return productDetailsDTO;
     }

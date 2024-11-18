@@ -4,7 +4,7 @@ const AppButton: React.FC<{
   onClick: Function;
   className: String;
   children: any;
-}> = ({ onClick, className = "bg-secondary", children, ...rest }) => {
+}> = ({ onClick, className, children, ...rest }) => {
   return (
     <button
       className={`app-btn ${className}`}

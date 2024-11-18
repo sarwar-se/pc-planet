@@ -72,3 +72,16 @@ code {
   opacity: 50%;
   cursor: not-allowed;
 }
+
+.default-btn {
+  font-weight: bold !important;
+  background-color: white !important;
+  color: blueviolet !important;
+  border: 1px solid blueviolet !important;
+}
+
+.default-btn:hover {
+  background-color: blueviolet !important;
+  color: white !important;
+  opacity: 100% !important;
+}

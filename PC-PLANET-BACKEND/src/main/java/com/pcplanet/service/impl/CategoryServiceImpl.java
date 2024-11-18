@@ -1,12 +1,9 @@
 package com.pcplanet.service.impl;
 
 import com.pcplanet.dto.CategoryDTO;
-import com.pcplanet.entity.Category;
 import com.pcplanet.repository.CategoryRepository;
 import com.pcplanet.service.CategoryService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -18,6 +15,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO getCategoryDetailsByName(String categoryName) {
-        return CategoryDTO.ofEntity(categoryRepository.findByName(categoryName));
+        var result = categoryRepository.findByName(categoryName);
+        return result == null ? null : CategoryDTO.ofEntity(result);
     }
 }
