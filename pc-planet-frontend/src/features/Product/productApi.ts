@@ -1,14 +1,14 @@
 import HttpInstance from "../../configs/asiosClient";
 import { apiRoutes } from "../../routes/apiRoutes";
 
-export const getAllProduct = (
+export const getProducts = (
   statuses: string[],
   brandNames: string[],
   properties: string[],
   categoryName: string | undefined
 ) => {
   return HttpInstance.get(
-    apiRoutes.allProducts(statuses, brandNames, properties, categoryName)
+    apiRoutes.getProducts(statuses, brandNames, properties, categoryName)
   );
 };
 

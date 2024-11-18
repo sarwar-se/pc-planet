@@ -39,6 +39,7 @@
   background-color: blueviolet;
   color: white;
   cursor: pointer;
+  opacity: 100%;
 }
 
 .add-cart-button-disabled {
@@ -50,6 +51,10 @@
   width: 100%;
   border: none !important;
   cursor: not-allowed !important;
+}
+
+.add-cart-button-disabled:hover {
+  opacity: 100%;
 }
 /* Product card ENDS */
 
@@ -77,6 +82,7 @@
 .product-spec-detail {
   padding: 0.5rem;
   border-top: 1px solid #f4edf6;
+  overflow-wrap: break-word;
 }
 
 .thumbnail {
@@ -100,5 +106,15 @@
 
 .feature-section {
   min-width: 60%;
+}
+
+.custom-tabs {
+  border: none !important;
+}
+.custom-tab .nav-link {
+  border: none !important;
+  background-color: blueviolet !important;
+  margin: 0px !important;
+  border-radius: none !important;
 }
 /* Product details ENDS */

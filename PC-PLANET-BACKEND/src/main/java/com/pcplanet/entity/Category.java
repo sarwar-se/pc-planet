@@ -18,9 +18,12 @@ public class Category extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    // todo: ManyToMany
-    @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(
+            name = "category_brand",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "brand_id")
+    )
     private List<Brand> brands;
 
     @JsonIgnore

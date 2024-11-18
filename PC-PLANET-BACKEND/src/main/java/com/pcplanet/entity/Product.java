@@ -61,10 +61,17 @@ public class Product extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<ProductImage> images;
+    private List<ProductDescription> descriptions;
 
-    // todo: ManyToMany
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<ProductImage> images;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(
+            name = "product_property",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "property_id")
+    )
     private List<FilterProperty> properties;
 }

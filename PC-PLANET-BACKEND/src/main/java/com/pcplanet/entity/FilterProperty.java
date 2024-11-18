@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -19,7 +21,6 @@ public class FilterProperty extends BaseEntity {
     @JoinColumn(name = "cat_filter_key_id", foreignKey = @ForeignKey(name = "fk_filter_property_cat_filter_key"))
     private CategoryFilterKey categoryFilterKey;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_filter_property_product"))
-    private Product product;
+    @ManyToMany(mappedBy = "properties")
+    private List<Product> products;
 }

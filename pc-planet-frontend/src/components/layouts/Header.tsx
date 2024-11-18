@@ -68,7 +68,10 @@ const Header: React.FC<{ handleShowSidebar: Function }> = ({
                     <BsFillGiftFill size={20} color="orange" />
                     <div className="d-flex flex-column">
                       <div className="text-white">Offers</div>
-                      <div className="text-danger" style={{ fontSize: "12px" }}>
+                      <div
+                        className="text-warning"
+                        style={{ fontSize: "12px" }}
+                      >
                         28 Dec Ends
                       </div>
                     </div>
