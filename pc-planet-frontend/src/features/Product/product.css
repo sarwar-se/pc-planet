@@ -118,3 +118,15 @@
   border-radius: none !important;
 }
 /* Product details ENDS */
+
+@media (min-width: 992px) {
+  .review-form {
+    width: 50%;
+  }
+}
+
+@media (max-width: 991px) {
+  .review-form {
+    width: 100%;
+  }
+}

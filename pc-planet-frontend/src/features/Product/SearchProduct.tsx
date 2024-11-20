@@ -8,7 +8,7 @@ const SearchProduct = () => {
   const { products } = context;
 
   return (
-    <div className="container">
+    <div className="container mt-2">
       <div className="product-container">
         <ProductCardView
           products={products}

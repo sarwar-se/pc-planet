@@ -14,7 +14,7 @@ const BottomBar: React.FC<{}> = () => {
       <Navbar
         fixed="bottom"
         bg="light"
-        className="d-xl-none py-0 border-top fw-bold "
+        className="d-xl-none py-0 border-top fw-bold bottom-bar"
       >
         <Nav className="d-flex justify-content-around w-100">
           <Nav.Link href="#offers" className="text-center">

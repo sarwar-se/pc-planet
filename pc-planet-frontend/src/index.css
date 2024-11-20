@@ -14,6 +14,11 @@ code {
     monospace;
 }
 
+.app-main-color {
+  background: blueviolet;
+  /* background-color: rgb(106 34 215); */
+}
+
 /*======================
     404 page
 =======================*/
@@ -73,15 +78,31 @@ code {
   cursor: not-allowed;
 }
 
-.default-btn {
-  font-weight: bold !important;
+.custom-outline-btn {
   background-color: white !important;
   color: blueviolet !important;
   border: 1px solid blueviolet !important;
 }
 
-.default-btn:hover {
+.custom-outline-btn:hover {
   background-color: blueviolet !important;
   color: white !important;
   opacity: 100% !important;
+}
+
+.custom-fill-btn {
+  background-color: blueviolet !important;
+  color: white !important;
+  border: 1px solid blueviolet !important;
+}
+
+.custom-fill-btn:hover {
+  background-color: white !important;
+  color: blueviolet !important;
+  opacity: 100% !important;
+}
+
+.form-check-input {
+  border: 1px solid #9d9d9e;
+  box-shadow: none !important;
 }
