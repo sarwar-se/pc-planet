@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
+import Footer from "./Footer";
 
 type AppContextType = {
   products: any;
@@ -17,6 +18,7 @@ const Layout: React.FC = () => {
       <React.Fragment>
         <NavigationBar />
         <Outlet />
+        <Footer />
       </React.Fragment>
     </AppContext.Provider>
   );

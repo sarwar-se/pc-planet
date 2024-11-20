@@ -1,0 +1,17 @@
+.carousel-image {
+  width: 100%;
+  max-height: 420px;
+}
+
+.carousel-indicators {
+  margin-bottom: 0;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 35px;
+  height: 10px;
+}
+
+.carousel-indicators .active {
+  background-color: orange;
+}

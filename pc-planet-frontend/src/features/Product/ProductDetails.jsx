@@ -11,6 +11,7 @@ import NotFound from "../../components/patterns/NotFound";
 import { no_image } from "../../assets";
 import { FaCartPlus } from "react-icons/fa";
 import QuantitySelector from "../../components/patterns/QuantitySelector";
+import ProductReview from "./components/ProductReview";
 
 const ProductDetails = () => {
   const { state } = useLocation();
@@ -211,26 +212,9 @@ const ProductDetails = () => {
           </section>
 
           {/* Review */}
-          <section
-            className="bg-white shadow-sm p-4 rounded"
-            ref={reviewSection}
-          >
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="d-flex flex-column">
-                <span className="fs-5 fw-bold">Reviews</span>
-                <span>Customers Review</span>
-              </div>
-              <div>
-                <AppButton onClick={() => {}} className={"default-btn"}>
-                  Write a Review
-                </AppButton>
-              </div>
-            </div>
-            <hr />
-            <div>
-              <NotFound primaryText="This product has no reviews yet. Be the first one to write a review." />
-            </div>
-          </section>
+          <div ref={reviewSection}>
+            <ProductReview />
+          </div>
         </>
       )}
     </div>

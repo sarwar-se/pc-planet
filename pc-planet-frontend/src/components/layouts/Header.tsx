@@ -20,7 +20,7 @@ const Header: React.FC<{ handleShowSidebar: Function }> = ({
 
   return (
     <>
-      <Navbar expand="xl" className="custom-header">
+      <Navbar expand="xl" className="app-main-color">
         <Container>
           {/* Left Side Category Button for Small, Medium, Large Screens & Mobile View */}
           <AppButton
