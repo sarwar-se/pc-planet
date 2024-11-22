@@ -1,3 +1,5 @@
+import { UPLOAD_PATH } from "./appConstant";
+
 export const convertToBanglaDigits = (number: number): string => {
   const banglaDigitsMap: { [key: string]: string } = {
     "0": "০",
@@ -49,22 +51,12 @@ export const productStatusMap = (): ProductStatus[] => {
   ];
 };
 
-export enum PRODUCT_STATUS {
-  IN_STOCK = "IN_STOCK",
-  OUT_OF_STOCK = "OUT_OF_STOCK",
-  UP_COMING = "UP_COMING",
-  PRE_ORDER = "PRE_ORDER",
-}
-
-export enum STATUS {
-  LOADING = "loading",
-  IDLE = "idle",
-  SUCCESS = "success",
-  ERROR = "error",
-}
-
 export const getAvailabilitiesType = (value: string): string[] => {
   return productStatusMap()
     .filter((type) => type.value === value)
     .map((type) => type.label);
+};
+
+export const getImageUrl = (fileName: string) => {
+  return UPLOAD_PATH + fileName;
 };

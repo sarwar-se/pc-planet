@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./product.css";
 import { getCategoryDetailsByName, getProducts } from "./productApi";
 import ProductCardView from "./ProductCardView";
-import { productStatusMap, STATUS } from "../../utils/helperFunction";
+import { STATUS } from "../../utils/appConstant";
 import FilterCard from "../../components/patterns/FilterCard";
 import { FILTER_TYPE, GROUP_TYPE } from "../../utils/appConstant";
 import { useParams } from "react-router-dom";
+import { productStatusMap } from "../../utils/helperFunction";
 
 const Product = () => {
   const { category: categoryName } = useParams<string>();

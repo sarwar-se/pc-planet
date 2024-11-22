@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import ProductCardView from "./ProductCardView";
-import { STATUS } from "../../utils/helperFunction";
+import { STATUS } from "../../utils/appConstant";
 import { AppContext } from "../../components/layouts/Layout";
 
 const SearchProduct = () => {

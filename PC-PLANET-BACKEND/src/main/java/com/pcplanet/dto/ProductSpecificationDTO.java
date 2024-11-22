@@ -10,5 +10,5 @@ import java.util.List;
 public class ProductSpecificationDTO {
     private Integer id;
     private String category;
-    private List<ProductSpecificationDetailsDTO> specificationDetails;
+    private List<ProductSpecificationPropertyDTO> specificationProperties;
 }

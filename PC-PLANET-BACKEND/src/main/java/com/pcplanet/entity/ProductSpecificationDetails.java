@@ -12,14 +12,10 @@ import lombok.Setter;
 public class ProductSpecificationDetails extends BaseEntity {
 
     @NotBlank
-    @Column(name = "name")
-    private String name;
-
-    @NotBlank
-    @Column(name = "value")
-    private String value;
+    @Column(name = "description")
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "specification_id", foreignKey = @ForeignKey(name = "fk_ps_details_specification"))
-    private ProductSpecification specification;
+    @JoinColumn(name = "spec_property_id", foreignKey = @ForeignKey(name = "fk_ps_details_spec_property"))
+    private ProductSpecificationProperty specificationProperty;
 }

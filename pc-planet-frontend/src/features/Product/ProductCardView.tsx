@@ -1,6 +1,6 @@
 import React from "react";
 import ProductCard from "./components/ProductCard";
-import { STATUS } from "../../utils/helperFunction";
+import { STATUS } from "../../utils/appConstant";
 import { Loader } from "../../components/patterns/Loader";
 import NotFound from "../../components/patterns/NotFound";
 

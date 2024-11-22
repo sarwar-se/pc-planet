@@ -2,13 +2,14 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { FaCartPlus } from "react-icons/fa6";
 import {
+  getImageUrl,
   numberFormat,
-  PRODUCT_STATUS,
   productStatusMap,
 } from "../../../utils/helperFunction";
 import { AppButton } from "../../../components";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "../../../routes/appRoutes";
+import { PRODUCT_STATUS } from "../../../utils/appConstant";
 
 const ProductCard: React.FC<{ product: any }> = ({ product }) => {
   const { keyFeatures } = product;
@@ -41,7 +42,7 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
         <Card.Img
           className="p-2"
           variant="top"
-          src={`/images/${product.image ? product.image : no_image}`}
+          src={getImageUrl(`${product.image ? product.image : no_image}`)}
           onClick={() => {
             handleProductClick(product.id, product.name);
           }}
