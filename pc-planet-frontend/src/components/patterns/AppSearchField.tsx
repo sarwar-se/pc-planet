@@ -3,7 +3,7 @@ import { Button, Form, FormControl, Image } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { getSearchedProduct } from "../../features/Product/productApi";
 import { no_image } from "../../assets";
-import { numberFormat } from "../../utils/helperFunction";
+import { getImageUrl, numberFormat } from "../../utils/helperFunction";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "../../routes/appRoutes";
 import { AppContext } from "../layouts/Layout";
@@ -85,8 +85,8 @@ const AppSearchField: React.FC<{
                   >
                     <Image
                       style={{ width: "60px", height: "60px" }}
-                      src={`/images/${
-                        product.image ? product.image : no_image
+                      src={`${
+                        product.image ? getImageUrl(product.image) : no_image
                       }`}
                     />
                     <div className="d-flex flex-column gap-1">

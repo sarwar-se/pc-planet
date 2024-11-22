@@ -24,5 +24,5 @@ public class ProductSpecification extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "specification", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<ProductSpecificationDetails> specificationDetails;
+    private List<ProductSpecificationProperty> specificationProperties;
 }

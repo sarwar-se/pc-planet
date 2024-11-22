@@ -58,20 +58,29 @@ public class ProductDetailsDTO extends ProductInfoDTO {
         product.getSpecifications().forEach(specification -> {
             ProductSpecificationDTO specificationDTO = new ProductSpecificationDTO();
 
-            List<ProductSpecificationDetailsDTO> detailsDTOs = new ArrayList<>();
+            List<ProductSpecificationPropertyDTO> propertyDTOList = new ArrayList<>();
+            specification.getSpecificationProperties().forEach(specificationProperty -> {
+                var propertyDTO = new ProductSpecificationPropertyDTO();
+                propertyDTO.setId(specificationProperty.getId());
+                propertyDTO.setName(specificationProperty.getName());
 
-            specification.getSpecificationDetails().forEach(specificationDetail -> {
-                ProductSpecificationDetailsDTO detailsDTO = new ProductSpecificationDetailsDTO();
+                List<ProductSpecificationDetailsDTO> detailsDTOs = new ArrayList<>();
+                specificationProperty.getSpecificationDetails().forEach(specificationDetail -> {
+                    var detailsDTO = new ProductSpecificationDetailsDTO();
+                    detailsDTO.setId(specificationDetail.getId());
+                    detailsDTO.setDescription(specificationDetail.getDescription());
 
-                detailsDTO.setId(specificationDetail.getId());
-                detailsDTO.setName(specificationDetail.getName());
-                detailsDTO.setValue(specificationDetail.getValue());
+                    detailsDTOs.add(detailsDTO);
+                });
+                propertyDTO.setSpecificationDetails(detailsDTOs);
 
-                detailsDTOs.add(detailsDTO);
+                propertyDTOList.add(propertyDTO);
             });
+
+
             specificationDTO.setId(specification.getId());
             specificationDTO.setCategory(specification.getCategory());
-            specificationDTO.setSpecificationDetails(detailsDTOs);
+            specificationDTO.setSpecificationProperties(propertyDTOList);
 
             specificationDTOs.add(specificationDTO);
         });

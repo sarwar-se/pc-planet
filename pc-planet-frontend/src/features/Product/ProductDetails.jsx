@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import { getProductDetailsById } from "./productApi";
 import {
   getAvailabilitiesType,
+  getImageUrl,
   numberFormat,
-  STATUS,
 } from "../../utils/helperFunction";
 import { AppButton, Loader } from "../../components";
 import NotFound from "../../components/patterns/NotFound";
@@ -12,6 +12,7 @@ import { no_image } from "../../assets";
 import { FaCartPlus } from "react-icons/fa";
 import QuantitySelector from "../../components/patterns/QuantitySelector";
 import ProductReview from "./components/ProductReview";
+import { STATUS } from "../../utils/appConstant";
 
 const ProductDetails = () => {
   const { state } = useLocation();
@@ -57,7 +58,9 @@ const ProductDetails = () => {
             <div className="d-flex flex-column align-items-center gap-4 img-section">
               <div>
                 <img
-                  src={selectedImage ? `/images/${selectedImage}` : no_image}
+                  src={
+                    selectedImage ? `${getImageUrl(selectedImage)}` : no_image
+                  }
                   style={{ width: "300px" }}
                   alt="Selected"
                 />
@@ -67,7 +70,7 @@ const ProductDetails = () => {
                 {productDetails.images.map((image) => (
                   <img
                     key={image.id}
-                    src={`/images/${image.fileName}`}
+                    src={`${getImageUrl(image.fileName)}`}
                     alt={`Thumbnail ${image.id}`}
                     className="thumbnail border p-1"
                     onClick={() => handleImageClick(image.fileName)}
@@ -120,7 +123,7 @@ const ProductDetails = () => {
 
               <div className="d-flex gap-2 mt-3">
                 <QuantitySelector />
-                <AppButton onClick={() => {}} className={""}>
+                <AppButton onClick={() => {}} className={"custom-fill-btn"}>
                   <FaCartPlus size={20} /> Add To Cart
                 </AppButton>
               </div>
@@ -165,17 +168,25 @@ const ProductDetails = () => {
                 <div className="d-flex flex-column mt-3">
                   {productDetails.specifications.map((spec, i) => (
                     <>
-                      {spec.specificationDetails.length > 0 && (
+                      {spec.specificationProperties.length > 0 && (
                         <>
                           <span className="product-spec">{spec.category}</span>
-                          {spec.specificationDetails.map((detail, i) => (
+                          {spec.specificationProperties.map((property, i) => (
                             <div className="d-flex gap-1 product-spec-detail">
                               <span className="w-25">
-                                {detail.name ? detail.name : ""}
+                                {property.name ? property.name : ""}
                               </span>
-                              <span className="opacity-75">
-                                {detail.value ? detail.value : ""}
-                              </span>
+                              <div className="d-flex flex-column">
+                                {property.specificationDetails.map(
+                                  (detail, i) => (
+                                    <span className="opacity-75">
+                                      {detail.description
+                                        ? detail.description
+                                        : ""}
+                                    </span>
+                                  )
+                                )}
+                              </div>
                             </div>
                           ))}
                         </>

@@ -42,7 +42,7 @@ const FeaturedCategory = () => {
               </div>
               <div className="d-flex flex-column bg-white p-4 align-items-center rounded-4 w-100">
                 <PiDesktopTower size={50} />
-                <span>Servicing</span>
+                <span>Desktop</span>
               </div>
             </div>
           </div>
