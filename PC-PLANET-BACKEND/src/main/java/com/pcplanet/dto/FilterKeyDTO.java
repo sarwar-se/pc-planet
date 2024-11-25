@@ -1,6 +1,5 @@
-package com.pcplanet.dto.param;
+package com.pcplanet.dto;
 
-import com.pcplanet.dto.FilterPropertyDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CategoryFilterKeyDTO {
+public class FilterKeyDTO {
     private Integer id;
     private String name;
     private List<FilterPropertyDTO> filterProperties;

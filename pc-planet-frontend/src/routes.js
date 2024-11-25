@@ -14,7 +14,21 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: "all/:category",
+        path: "category/:category",
+        lazy: async () => {
+          const { CategoryWiseProduct } = await import("./features/index.ts");
+          return { Component: CategoryWiseProduct };
+        },
+      },
+      {
+        path: "category/:category/:subCategory",
+        lazy: async () => {
+          const { CategoryWiseProduct } = await import("./features/index.ts");
+          return { Component: CategoryWiseProduct };
+        },
+      },
+      {
+        path: "category/:category/:subCategory/:brand",
         lazy: async () => {
           const { CategoryWiseProduct } = await import("./features/index.ts");
           return { Component: CategoryWiseProduct };

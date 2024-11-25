@@ -13,4 +13,6 @@ public class ProductFilterParams {
     List<String> brandNames;
     List<String> properties;
     String categoryName;
+    String subCategoryName;
+    String brandName;
 }
