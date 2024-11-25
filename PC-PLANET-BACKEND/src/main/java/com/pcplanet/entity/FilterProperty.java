@@ -1,5 +1,6 @@
 package com.pcplanet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -18,9 +19,10 @@ public class FilterProperty extends BaseEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cat_filter_key_id", foreignKey = @ForeignKey(name = "fk_filter_property_cat_filter_key"))
-    private CategoryFilterKey categoryFilterKey;
+    @JoinColumn(name = "filter_key_id", foreignKey = @ForeignKey(name = "fk_filter_property_filter_key"))
+    private FilterKey filterKey;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "properties")
     private List<Product> products;
 }

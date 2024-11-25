@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "../../routes/appRoutes";
+import { getProductCategories } from "../../features/Product/productApi";
 
 const TopBar: React.FC = () => {
   const [activeFirstLayer, setActiveFirstLayer] = useState<string | null>(null);
@@ -9,9 +10,36 @@ const TopBar: React.FC = () => {
     null
   );
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
 
-  const showProducts = (category: string) => {
-    navigate(appRoutes.productView(category));
+  const hideCategoryLayer = () => {
+    setActiveFirstLayer(null);
+    setActiveSecondLayer(null);
+  };
+
+  const showProducts = (
+    category: string,
+    subCategory: string,
+    brand: string
+  ) => {
+    if (brand) {
+      hideCategoryLayer();
+      navigate(
+        appRoutes.productViewCategorySubCategoryBrandWise(
+          category,
+          subCategory,
+          brand
+        )
+      );
+    } else if (subCategory) {
+      hideCategoryLayer();
+      navigate(
+        appRoutes.productViewCategorySubCategoryWise(category, subCategory)
+      );
+    } else {
+      hideCategoryLayer();
+      navigate(appRoutes.productViewCategoryWise(category));
+    }
   };
 
   // Timeout references for delayed closing
@@ -42,6 +70,15 @@ const TopBar: React.FC = () => {
     }, 200);
   };
 
+  useEffect(() => {
+    getProductCategories()
+      .then((response) => {
+        const { data } = response;
+        setCategories(data);
+      })
+      .catch();
+  }, []);
+
   return (
     <>
       <Navbar
@@ -51,120 +88,67 @@ const TopBar: React.FC = () => {
       >
         <Container className="navigation-bar">
           <Nav className="mx-0 navigation-bar">
-            <Nav.Link
-              className="custom-nav-link navigation-bar"
-              onClick={() => showProducts("Desktop")}
-            >
-              Desktop
-            </Nav.Link>
-            <Nav.Link
-              className="custom-nav-link"
-              onClick={() => showProducts("Laptop")}
-            >
-              Laptop
-            </Nav.Link>
-            <Nav.Link
-              className="custom-nav-link"
-              onClick={() => showProducts("Monitor")}
-            >
-              Monitor
-            </Nav.Link>
-
-            {/* First Layer Dropdown */}
-            <Dropdown
-              onMouseEnter={() => handleFirstLayerMouseEnter("Component")}
-              onMouseLeave={handleFirstLayerMouseLeave}
-              show={activeFirstLayer === "Component"}
-            >
-              <Dropdown.Toggle
-                as={Nav.Link}
-                className="main-menu-item custom-nav-link"
+            {categories.map((category: any, i: number) => (
+              <Dropdown
+                key={i}
+                onMouseEnter={() => handleFirstLayerMouseEnter(category.name)}
+                onMouseLeave={handleFirstLayerMouseLeave}
+                show={activeFirstLayer === category.name}
               >
-                Component
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu className="first-layer-menu">
-                <Dropdown
-                  onMouseEnter={() => handleSecondLayerMouseEnter("Processor")}
-                  onMouseLeave={handleSecondLayerMouseLeave}
-                  show={activeSecondLayer === "Processor"}
-                  drop="end"
+                <Dropdown.Toggle
+                  as={Nav.Link}
+                  className="main-menu-item custom-nav-link"
+                  onClick={() => showProducts(category.name, "", "")}
                 >
-                  <Dropdown.Toggle
-                    as="span"
-                    className="first-layer-menu-item"
-                    onClick={() => showProducts("Processor")}
-                  >
-                    Processor
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="second-layer-menu">
-                    <Dropdown.Item className="second-layer-menu-item">
-                      AMD
-                    </Dropdown.Item>
-                    <Dropdown.Item className="second-layer-menu-item">
-                      Intel
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-
-                <Dropdown
-                  onMouseEnter={() =>
-                    handleSecondLayerMouseEnter("Motherboard")
-                  }
-                  onMouseLeave={handleSecondLayerMouseLeave}
-                  show={activeSecondLayer === "Motherboard"}
-                  drop="end"
-                >
-                  <Dropdown.Toggle
-                    as="span"
-                    className="first-layer-menu-item"
-                    onClick={() => showProducts("Motherboard")}
-                  >
-                    Motherboard
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="second-layer-menu">
-                    <Dropdown.Item className="second-layer-menu-item">
-                      MSI
-                    </Dropdown.Item>
-                    <Dropdown.Item className="second-layer-menu-item">
-                      ASRock
-                    </Dropdown.Item>
-                    <Dropdown.Item className="second-layer-menu-item">
-                      Gigabute
-                    </Dropdown.Item>
-                    <Dropdown.Item className="second-layer-menu-item">
-                      Asus
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-
-                <Dropdown.Item
-                  className="first-layer-menu-item"
-                  onClick={() => showProducts("Graphics Card")}
-                >
-                  Graphics Card
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-
-            <Nav.Link
-              className="custom-nav-link"
-              onClick={() => showProducts("Ups")}
-            >
-              UPS
-            </Nav.Link>
-            <Nav.Link
-              className="custom-nav-link"
-              onClick={() => showProducts("Camera")}
-            >
-              Camera
-            </Nav.Link>
-            <Nav.Link
-              className="custom-nav-link"
-              onClick={() => showProducts("Accessories")}
-            >
-              Accessories
-            </Nav.Link>
+                  {category.name}
+                </Dropdown.Toggle>
+                {category.subCategories &&
+                  category.subCategories.length > 0 && (
+                    <Dropdown.Menu className="first-layer-menu">
+                      {category.subCategories.map((subCat: any, i: number) => (
+                        <Dropdown
+                          key={i}
+                          onMouseEnter={() =>
+                            handleSecondLayerMouseEnter(subCat.name)
+                          }
+                          onMouseLeave={handleSecondLayerMouseLeave}
+                          show={activeSecondLayer === subCat.name}
+                          drop="end"
+                        >
+                          <Dropdown.Toggle
+                            as="span"
+                            className="first-layer-menu-item"
+                            onClick={() =>
+                              showProducts(category.name, subCat.name, "")
+                            }
+                          >
+                            {subCat.name}
+                          </Dropdown.Toggle>
+                          {subCat.brands && subCat.brands.length > 0 && (
+                            <Dropdown.Menu className="second-layer-menu">
+                              {subCat.brands.map((brand: any, i: number) => (
+                                <Dropdown.Item
+                                  key={i}
+                                  className="second-layer-menu-item"
+                                  onClick={() =>
+                                    showProducts(
+                                      category.name,
+                                      subCat.name,
+                                      brand.name
+                                    )
+                                  }
+                                >
+                                  {brand.name}
+                                </Dropdown.Item>
+                              ))}
+                            </Dropdown.Menu>
+                          )}
+                        </Dropdown>
+                      ))}
+                    </Dropdown.Menu>
+                  )}
+              </Dropdown>
+            ))}
           </Nav>
         </Container>
       </Navbar>

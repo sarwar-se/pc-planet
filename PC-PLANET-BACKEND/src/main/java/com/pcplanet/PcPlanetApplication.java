@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages = "com.pcplanet")
 @EnableJpaRepositories("com.pcplanet.repository")
 @EntityScan("com.pcplanet.entity")
-public class PcPlanetBackendApplication {
-
+public class PcPlanetApplication {
     public static void main(String[] args) {
-        SpringApplication.run(PcPlanetBackendApplication.class, args);
+        SpringApplication.run(PcPlanetApplication.class, args);
     }
 }

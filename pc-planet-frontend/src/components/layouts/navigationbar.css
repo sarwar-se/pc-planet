@@ -123,6 +123,10 @@
   font-weight: bold;
 }
 
+.dropdown-toggle::after {
+  display: none;
+}
+
 .custom-nav-link:hover {
   color: orange;
 }

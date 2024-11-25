@@ -51,6 +51,10 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "sub_category_id", foreignKey = @ForeignKey(name = "fk_product_sub_category"))
+    private SubCategory subCategory;
+
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<ProductKeyFeature> keyFeatures;

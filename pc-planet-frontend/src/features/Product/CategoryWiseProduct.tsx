@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./product.css";
-import { getCategoryDetailsByName, getProducts } from "./productApi";
+import {
+  getCategoryDetailsByName,
+  getProducts,
+  getSubCategoryDetailsByName,
+} from "./productApi";
 import ProductCardView from "./ProductCardView";
 import { STATUS } from "../../utils/appConstant";
 import FilterCard from "../../components/patterns/FilterCard";
@@ -10,6 +14,8 @@ import { productStatusMap } from "../../utils/helperFunction";
 
 const Product = () => {
   const { category: categoryName } = useParams<string>();
+  const { subCategory: subCategoryName } = useParams<string>();
+  const { brand: brandName } = useParams<string>();
 
   const [fetchStatus, setFetchStatus] = useState<STATUS>(STATUS.IDLE);
   const [products, setProducts] = useState<any>([]);
@@ -69,7 +75,14 @@ const Product = () => {
   useEffect(() => {
     setFetchStatus(STATUS.LOADING);
 
-    getProducts(productStatus, selectedBrands, selectedProperties, categoryName)
+    getProducts(
+      productStatus,
+      selectedBrands,
+      selectedProperties,
+      categoryName ? categoryName : "",
+      subCategoryName ? subCategoryName : "",
+      brandName ? brandName : ""
+    )
       .then((response) => {
         const { data } = response;
         setProducts(data);
@@ -78,20 +91,40 @@ const Product = () => {
       .catch(() => {
         setFetchStatus(STATUS.ERROR);
       });
-  }, [productStatus, selectedBrands, selectedProperties, categoryName]);
+  }, [
+    productStatus,
+    selectedBrands,
+    selectedProperties,
+    categoryName,
+    subCategoryName,
+    brandName,
+  ]);
 
   useEffect(() => {
-    getCategoryDetailsByName(categoryName)
-      .then((response) => {
-        const { data } = response;
-        setCategoryDetails(data);
+    if (subCategoryName) {
+      getSubCategoryDetailsByName(subCategoryName)
+        .then((response) => {
+          const { data } = response;
+          setCategoryDetails(data);
 
-        setSelectedAvailability([]);
-        setSelectedBrands([]);
-        setSelectedProperties([]);
-      })
-      .catch(() => {});
-  }, [categoryName]);
+          setSelectedAvailability([]);
+          setSelectedBrands([]);
+          setSelectedProperties([]);
+        })
+        .catch(() => {});
+    } else if (categoryName) {
+      getCategoryDetailsByName(categoryName)
+        .then((response) => {
+          const { data } = response;
+          setCategoryDetails(data);
+
+          setSelectedAvailability([]);
+          setSelectedBrands([]);
+          setSelectedProperties([]);
+        })
+        .catch(() => {});
+    }
+  }, [categoryName, subCategoryName]);
 
   return (
     <div className="container d-flex gap-2 mt-2">
@@ -106,31 +139,31 @@ const Product = () => {
               filterType={FILTER_TYPE.AVAILABILITY}
               filterHandler={handleProductFilter}
             />
-            {categoryDetails && categoryDetails.brands && (
-              <FilterCard
-                title={"Brand"}
-                groupType={GROUP_TYPE.CHECKBOX}
-                values={getFilterValues(categoryDetails.brands)}
-                selectedValues={selectedBrands}
-                filterType={FILTER_TYPE.BRAND}
-                filterHandler={handleProductFilter}
-              />
-            )}
+            {categoryDetails &&
+              categoryDetails.brands &&
+              categoryDetails.brands.length > 0 && (
+                <FilterCard
+                  title={"Brand"}
+                  groupType={GROUP_TYPE.CHECKBOX}
+                  values={getFilterValues(categoryDetails.brands)}
+                  selectedValues={selectedBrands}
+                  filterType={FILTER_TYPE.BRAND}
+                  filterHandler={handleProductFilter}
+                />
+              )}
 
             {categoryDetails &&
-              categoryDetails.categoryFilterKeys &&
-              categoryDetails.categoryFilterKeys.map(
-                (filterKey: any, i: number) => (
-                  <FilterCard
-                    title={filterKey.name}
-                    groupType={GROUP_TYPE.CHECKBOX}
-                    values={getFilterValues(filterKey.filterProperties)}
-                    selectedValues={selectedProperties}
-                    filterType={FILTER_TYPE.PROPERTY}
-                    filterHandler={handleProductFilter}
-                  />
-                )
-              )}
+              categoryDetails.filterKeys &&
+              categoryDetails.filterKeys.map((filterKey: any) => (
+                <FilterCard
+                  title={filterKey.name}
+                  groupType={GROUP_TYPE.CHECKBOX}
+                  values={getFilterValues(filterKey.filterProperties)}
+                  selectedValues={selectedProperties}
+                  filterType={FILTER_TYPE.PROPERTY}
+                  filterHandler={handleProductFilter}
+                />
+              ))}
           </div>
         </div>
       )}

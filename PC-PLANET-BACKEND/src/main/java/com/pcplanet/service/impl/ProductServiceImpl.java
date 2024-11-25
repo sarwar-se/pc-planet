@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductInfoDTO> getProducts(ProductFilterParams params) {
 
-        return productRepository.findProducts(params.getCategoryName(), params.getStatuses(), params.getBrandNames(), params.getProperties())
+        return productRepository.findProducts(params.getCategoryName(), params.getSubCategoryName(), params.getBrandName(), params.getStatuses(), params.getBrandNames(), params.getProperties())
                 .stream()
                 .map(ProductInfoDTO::ofEntity)
                 .toList();

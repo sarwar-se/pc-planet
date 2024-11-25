@@ -5,15 +5,30 @@ export const getProducts = (
   statuses: string[],
   brandNames: string[],
   properties: string[],
-  categoryName: string | undefined
+  categoryName: string,
+  subCategoryName: string,
+  brandName: string
 ) => {
   return HttpInstance.get(
-    apiRoutes.getProducts(statuses, brandNames, properties, categoryName)
+    apiRoutes.getProducts(
+      statuses,
+      brandNames,
+      properties,
+      categoryName,
+      subCategoryName,
+      brandName
+    )
   );
 };
 
-export const getCategoryDetailsByName = (categoryName: string | undefined) => {
+export const getCategoryDetailsByName = (categoryName: string) => {
   return HttpInstance.get(apiRoutes.getCategoryDetailsByName(categoryName));
+};
+
+export const getSubCategoryDetailsByName = (subCategoryName: string) => {
+  return HttpInstance.get(
+    apiRoutes.getSubCategoryDetailsByName(subCategoryName)
+  );
 };
 
 export const getSearchedProduct = (query: string | undefined) => {
@@ -22,4 +37,8 @@ export const getSearchedProduct = (query: string | undefined) => {
 
 export const getProductDetailsById = (id: number) => {
   return HttpInstance.get(apiRoutes.getProductDetailsById(id));
+};
+
+export const getProductCategories = () => {
+  return HttpInstance.get(apiRoutes.getProductCategories);
 };

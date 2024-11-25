@@ -6,5 +6,5 @@ import com.pcplanet.enums.ProductStatus;
 import java.util.List;
 
 public interface ProductRepositoryCustom {
-    List<Product> findProducts(String categoryName, List<ProductStatus> statuses, List<String> brands, List<String> properties);
+    List<Product> findProducts(String categoryName, String subCategoryName, String brandName, List<ProductStatus> statuses, List<String> brands, List<String> properties);
 }
