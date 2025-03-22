@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
-import "./product.css";
-import {
-  getCategoryDetailsByName,
-  getProducts,
-  getSubCategoryDetailsByName,
-} from "./productApi";
-import ProductCardView from "./ProductCardView";
-import { STATUS } from "../../utils/appConstant";
-import FilterCard from "../../components/patterns/FilterCard";
-import { FILTER_TYPE, GROUP_TYPE } from "../../utils/appConstant";
-import { useParams } from "react-router-dom";
-import { productStatusMap } from "../../utils/helperFunction";
+import React, { useEffect, useState } from 'react';
+import './product.css';
+import { getCategoryDetailsByName, getProducts, getSubCategoryDetailsByName } from './productApi';
+import ProductCardView from './ProductCardView';
+import { STATUS } from '../../utils/appConstant';
+import FilterCard from '../../components/patterns/FilterCard';
+import { FILTER_TYPE, GROUP_TYPE } from '../../utils/appConstant';
+import { useParams } from 'react-router-dom';
+import { productStatusMap } from '../../utils/helperFunction';
 
 const Product = () => {
   const { category: categoryName } = useParams<string>();
@@ -21,22 +17,20 @@ const Product = () => {
   const [products, setProducts] = useState<any>([]);
   const [categoryDetails, setCategoryDetails] = useState<any>([]);
 
-  const [selectedAvailability, setSelectedAvailability] = useState<string[]>(
-    []
-  );
+  const [selectedAvailability, setSelectedAvailability] = useState<string[]>([]);
   const [productStatus, setProductStatus] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
 
   const getAvailabilitiesType = (): string[] => {
     return productStatusMap()
-      .filter((type) => type.value !== "OUT_OF_STOCK")
+      .filter((type) => type.value !== 'OUT_OF_STOCK')
       .map((type) => type.label);
   };
 
   const getAvailabilitiesValue = (label: string): string => {
     const status = productStatusMap().find((item) => item.label === label);
-    return status ? status.value : "UNKNOWN";
+    return status ? status.value : 'UNKNOWN';
   };
 
   const getFilterValues = (obj: any): string[] => {
@@ -47,9 +41,7 @@ const Product = () => {
     if (filterType === FILTER_TYPE.AVAILABILITY) {
       const status = getAvailabilitiesValue(value);
       if (selectedAvailability.includes(value)) {
-        setSelectedAvailability(
-          selectedAvailability.filter((item) => item !== value)
-        );
+        setSelectedAvailability(selectedAvailability.filter((item) => item !== value));
         setProductStatus(productStatus.filter((item) => item !== status));
       } else {
         setSelectedAvailability((prev) => [...prev, value]);
@@ -63,9 +55,7 @@ const Product = () => {
       }
     } else {
       if (selectedProperties.includes(value)) {
-        setSelectedProperties(
-          selectedProperties.filter((item) => item !== value)
-        );
+        setSelectedProperties(selectedProperties.filter((item) => item !== value));
       } else {
         setSelectedProperties((prev) => [...prev, value]);
       }
@@ -79,9 +69,9 @@ const Product = () => {
       productStatus,
       selectedBrands,
       selectedProperties,
-      categoryName ? categoryName : "",
-      subCategoryName ? subCategoryName : "",
-      brandName ? brandName : ""
+      categoryName ? categoryName : '',
+      subCategoryName ? subCategoryName : '',
+      brandName ? brandName : '',
     )
       .then((response) => {
         const { data } = response;
@@ -91,14 +81,7 @@ const Product = () => {
       .catch(() => {
         setFetchStatus(STATUS.ERROR);
       });
-  }, [
-    productStatus,
-    selectedBrands,
-    selectedProperties,
-    categoryName,
-    subCategoryName,
-    brandName,
-  ]);
+  }, [productStatus, selectedBrands, selectedProperties, categoryName, subCategoryName, brandName]);
 
   useEffect(() => {
     if (subCategoryName) {
@@ -111,7 +94,7 @@ const Product = () => {
           setSelectedBrands([]);
           setSelectedProperties([]);
         })
-        .catch(() => {});
+        .catch(() => null);
     } else if (categoryName) {
       getCategoryDetailsByName(categoryName)
         .then((response) => {
@@ -122,35 +105,33 @@ const Product = () => {
           setSelectedBrands([]);
           setSelectedProperties([]);
         })
-        .catch(() => {});
+        .catch(() => null);
     }
   }, [categoryName, subCategoryName]);
 
   return (
-    <div className="container d-flex gap-2 mt-2">
+    <div className='container d-flex gap-2 mt-2'>
       {categoryName && (
-        <div className="left-filter-card d-none d-xl-block">
-          <div className="d-flex flex-column gap-1">
+        <div className='left-filter-card d-none d-xl-block'>
+          <div className='d-flex flex-column gap-1'>
             <FilterCard
-              title={"Availability"}
+              title={'Availability'}
               groupType={GROUP_TYPE.CHECKBOX}
               values={getAvailabilitiesType()}
               selectedValues={selectedAvailability}
               filterType={FILTER_TYPE.AVAILABILITY}
               filterHandler={handleProductFilter}
             />
-            {categoryDetails &&
-              categoryDetails.brands &&
-              categoryDetails.brands.length > 0 && (
-                <FilterCard
-                  title={"Brand"}
-                  groupType={GROUP_TYPE.CHECKBOX}
-                  values={getFilterValues(categoryDetails.brands)}
-                  selectedValues={selectedBrands}
-                  filterType={FILTER_TYPE.BRAND}
-                  filterHandler={handleProductFilter}
-                />
-              )}
+            {categoryDetails && categoryDetails.brands && categoryDetails.brands.length > 0 && (
+              <FilterCard
+                title={'Brand'}
+                groupType={GROUP_TYPE.CHECKBOX}
+                values={getFilterValues(categoryDetails.brands)}
+                selectedValues={selectedBrands}
+                filterType={FILTER_TYPE.BRAND}
+                filterHandler={handleProductFilter}
+              />
+            )}
 
             {categoryDetails &&
               categoryDetails.filterKeys &&
@@ -168,12 +149,8 @@ const Product = () => {
         </div>
       )}
 
-      <div className="product-container">
-        <ProductCardView
-          products={products}
-          status={fetchStatus}
-          categoryName={categoryName}
-        />
+      <div className='product-container'>
+        <ProductCardView products={products} status={fetchStatus} categoryName={categoryName} />
       </div>
     </div>
   );

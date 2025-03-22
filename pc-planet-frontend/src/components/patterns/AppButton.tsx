@@ -1,16 +1,12 @@
-import React from "react";
+import React from 'react';
 
 const AppButton: React.FC<{
-  onClick: Function;
-  className: String;
+  onClick: any;
+  className: string;
   children: any;
 }> = ({ onClick, className, children, ...rest }) => {
   return (
-    <button
-      className={`app-btn ${className}`}
-      onClick={() => onClick()}
-      {...rest}
-    >
+    <button className={`app-btn ${className}`} onClick={() => onClick()} {...rest}>
       {children}
     </button>
   );

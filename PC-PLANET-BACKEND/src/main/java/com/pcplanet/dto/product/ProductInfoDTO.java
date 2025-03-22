@@ -1,5 +1,7 @@
-package com.pcplanet.dto;
+package com.pcplanet.dto.product;
 
+import com.pcplanet.dto.BrandDTO;
+import com.pcplanet.dto.CategoryDTO;
 import com.pcplanet.entity.Product;
 import com.pcplanet.enums.ProductStatus;
 import lombok.Getter;
@@ -47,7 +49,7 @@ public class ProductInfoDTO {
                 }).toList();
         productInfoDTO.setKeyFeatures(keyFeatureDTOs);
 
-        productInfoDTO.setImage(product.getImages().get(0).getFileName());
+        productInfoDTO.setImage(product.getImages().size() > 0 ? product.getImages().get(0).getFileName() : null);
 
         return productInfoDTO;
     }

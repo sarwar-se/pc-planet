@@ -1,7 +1,7 @@
 package com.pcplanet.service.impl;
 
-import com.pcplanet.dto.*;
 import com.pcplanet.dto.param.ProductFilterParams;
+import com.pcplanet.dto.product.*;
 import com.pcplanet.entity.*;
 import com.pcplanet.exception.ErrorCode;
 import com.pcplanet.exception.ServiceException;
@@ -89,26 +89,32 @@ public class ProductServiceImpl implements ProductService {
                     specification.setCategory(specificationDTO.getCategory());
                     specification.setProduct(product);
 
-                    List<ProductSpecificationProperty> specificationProperties = specificationDTO.getSpecificationProperties()
-                            .stream()
-                            .map(specificationPropertyDTO -> {
-                                var specificationProperty = new ProductSpecificationProperty();
-                                specificationProperty.setName(specificationPropertyDTO.getName());
-                                specificationProperty.setSpecification(specification);
+                    List<ProductSpecificationProperty> specificationProperties = null;
 
-                                List<ProductSpecificationDetails> specificationDetails = specificationPropertyDTO.getSpecificationDetails()
-                                        .stream()
-                                        .map(specificationDetailsDTO -> {
-                                            var details = new ProductSpecificationDetails();
-                                            details.setDescription(specificationDetailsDTO.getDescription());
-                                            details.setSpecificationProperty(specificationProperty);
+                    if (specificationDTO.getSpecificationProperties() != null) {
+                        specificationProperties = specificationDTO.getSpecificationProperties()
+                                .stream()
+                                .map(specificationPropertyDTO -> {
+                                    var specificationProperty = new ProductSpecificationProperty();
+                                    specificationProperty.setName(specificationPropertyDTO.getName());
+                                    specificationProperty.setSpecification(specification);
+                                    List<ProductSpecificationDetails> specificationDetails = null;
+                                    if (specificationPropertyDTO.getSpecificationDetails() != null) {
+                                        specificationDetails = specificationPropertyDTO.getSpecificationDetails()
+                                                .stream()
+                                                .map(specificationDetailsDTO -> {
+                                                    var details = new ProductSpecificationDetails();
+                                                    details.setDescription(specificationDetailsDTO.getDescription());
+                                                    details.setSpecificationProperty(specificationProperty);
 
-                                            return details;
-                                        }).toList();
-                                specificationProperty.setSpecificationDetails(specificationDetails);
+                                                    return details;
+                                                }).toList();
+                                        specificationProperty.setSpecificationDetails(specificationDetails);
+                                    }
 
-                                return specificationProperty;
-                            }).toList();
+                                    return specificationProperty;
+                                }).toList();
+                    }
 
                     specification.setSpecificationProperties(specificationProperties);
                     return specification;

@@ -1,4 +1,4 @@
-package com.pcplanet.dto;
+package com.pcplanet.dto.product;
 
 import lombok.Getter;
 import lombok.Setter;

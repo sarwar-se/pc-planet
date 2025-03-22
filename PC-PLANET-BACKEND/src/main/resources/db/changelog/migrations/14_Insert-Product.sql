@@ -27,3 +27,5 @@ values (9, 'APOLLO 1120F 1200VA Offline UPS',  '21415', '1120F', 6400, 1, 'UP_CO
 
 INSERT INTO "product" (id, name, code, model, price, warranty, status, brand_id, category_id, sub_category_id)
 values (10, 'Power Guard 650VA CS Offline UPS (Plastic Body)',  '21369', '650VA CS', 3400, 1, 'IN_STOCK', 7, 5, 11);
+
+SELECT setval('product_id_seq', 10, true);

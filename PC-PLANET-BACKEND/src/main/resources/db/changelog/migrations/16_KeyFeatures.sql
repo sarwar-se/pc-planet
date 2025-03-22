@@ -47,3 +47,5 @@ INSERT INTO product_key_feature(id, name, value, product_id) values (37, null, '
 INSERT INTO product_key_feature(id, name, value, product_id) values (38, null, 'Frequency (Hz - KHz): 50/60Hz +/-5%', 10);
 INSERT INTO product_key_feature(id, name, value, product_id) values (39, null, 'Input Voltage (V): 145-280V', 10);
 INSERT INTO product_key_feature(id, name, value, product_id) values (40, null, 'Load Capacity: 390W', 10);
+
+SELECT setval('product_key_feature_id_seq', 40, true);

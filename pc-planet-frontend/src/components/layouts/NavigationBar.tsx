@@ -1,9 +1,9 @@
-import React from "react";
-import "./navigationbar.css";
-import Header from "./Header";
-import TopBar from "./TopBar";
-import SideBar from "./SideBar";
-import BottomBar from "./BottomBar";
+import React from 'react';
+import './navigationbar.css';
+import Header from './Header';
+import TopBar from './TopBar';
+import SideBar from './SideBar';
+import BottomBar from './BottomBar';
 
 const NavigationBar = () => {
   const [showSidebar, setShowSidebar] = React.useState(false);
@@ -19,10 +19,7 @@ const NavigationBar = () => {
       <TopBar />
 
       {/* Offcanvas Sidebar for Small, Medium, Large Screens & Mobile View */}
-      <SideBar
-        showSidebar={showSidebar}
-        handleCloseSidebar={handleCloseSidebar}
-      />
+      <SideBar showSidebar={showSidebar} handleCloseSidebar={handleCloseSidebar} />
 
       {/* Bottom Navigation Bar for Small, Medium, Large Screens & Mobile View */}
       <BottomBar />

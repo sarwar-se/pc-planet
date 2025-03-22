@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { FormControl, InputGroup } from "react-bootstrap";
-import AppButton from "./AppButton";
+import React, { useState } from 'react';
+import { FormControl, InputGroup } from 'react-bootstrap';
+import AppButton from './AppButton';
 
 const QuantitySelector = () => {
   const [quantity, setQuantity] = useState(1);
@@ -24,23 +24,17 @@ const QuantitySelector = () => {
 
   return (
     <div>
-      <InputGroup style={{ width: "9rem" }}>
-        <AppButton
-          onClick={handleDecrement}
-          className={"fw-bold bg-light border text-dark"}
-        >
+      <InputGroup style={{ width: '9rem' }}>
+        <AppButton onClick={handleDecrement} className={'fw-bold bg-light border text-dark'}>
           -
         </AppButton>
         <FormControl
-          type="number"
+          type='number'
           value={quantity}
           onChange={handleInputChange}
-          className="p-0 text-center"
+          className='p-0 text-center'
         />
-        <AppButton
-          onClick={handleIncrement}
-          className={"fw-bold bg-light border text-dark"}
-        >
+        <AppButton onClick={handleIncrement} className={'fw-bold bg-light border text-dark'}>
           +
         </AppButton>
       </InputGroup>

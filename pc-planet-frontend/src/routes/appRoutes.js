@@ -1,5 +1,5 @@
 export const appRoutes = {
-  root: "/",
+  root: '/',
   productViewCategoryWise: (category) => `/category/${category}`,
   productViewCategorySubCategoryWise: (category, subCategory) =>
     `/category/${category}/${subCategory}`,
