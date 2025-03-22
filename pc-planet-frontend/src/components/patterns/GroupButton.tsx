@@ -1,13 +1,13 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { GROUP_TYPE } from '../../utils/appConstant';
+import { FILTER_TYPE, GROUP_TYPE } from '../../constants/appConstants';
 
 const GroupButton: React.FC<{
   groupType: 'checkbox' | 'radio';
   values: string[];
   selectedValues: string[] | string;
-  filterType: string;
-  filterHandler: any;
+  filterType: FILTER_TYPE | string;
+  filterHandler: (filterType: FILTER_TYPE | string, value: string) => void;
   className: string;
 }> = ({ groupType, values, selectedValues, filterType, filterHandler, className }) => {
   return (

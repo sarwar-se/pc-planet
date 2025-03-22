@@ -1,11 +1,11 @@
 import React from 'react';
-import { getAvailabilitiesType, numberFormat } from '../../../utils/helperFunction';
+import { getAvailabilityType, numberFormat } from '../../../utils/helperFunction';
 import QuantitySelector from '../../../components/patterns/QuantitySelector';
 import { AppButton } from '../../../components';
 import { FaCartPlus } from 'react-icons/fa';
+import { ProductDetailsModel, ProductKeyFeature } from '../../models/Product';
 
-const FeatureView: React.FC<{ productDetails: any }> = ({ productDetails }) => {
-  console.log(productDetails);
+const FeatureView: React.FC<{ productDetails: ProductDetailsModel }> = ({ productDetails }) => {
   return (
     <>
       <span className='fs-5 fw-bold' style={{ color: 'blueviolet' }}>
@@ -19,7 +19,7 @@ const FeatureView: React.FC<{ productDetails: any }> = ({ productDetails }) => {
         </span>
         <span className='bg-light border rounded-pill px-2'>
           <span className='opacity-75'>Status:</span>{' '}
-          <span className='fw-bold'>{getAvailabilitiesType(productDetails.status)}</span>
+          <span className='fw-bold'>{getAvailabilityType(productDetails.status)}</span>
         </span>
         <span className='bg-light border rounded-pill px-2'>
           <span className='opacity-75'>Product Code:</span>{' '}
@@ -27,14 +27,14 @@ const FeatureView: React.FC<{ productDetails: any }> = ({ productDetails }) => {
         </span>
         <span className='bg-light border rounded-pill px-2'>
           <span className='opacity-75'>Brand:</span>{' '}
-          <span className='fw-bold'>{productDetails.brand.name}</span>
+          <span className='fw-bold'>{productDetails?.brand?.name}</span>
         </span>
       </div>
 
       <div className='d-flex flex-column mt-3'>
         <h6 className='fs-5 fw-bold'>Key features</h6>
         <ul>
-          {productDetails.keyFeatures.map((keyFeature: any) => (
+          {productDetails.keyFeatures.map((keyFeature: ProductKeyFeature) => (
             <li key={keyFeature.id}>
               {keyFeature.name ? keyFeature.name + ': ' + keyFeature.value : keyFeature.value}
             </li>

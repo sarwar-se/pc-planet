@@ -14,21 +14,21 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: 'category/:category',
+        path: ':category',
         lazy: async () => {
           const { CategoryWiseProduct } = await import('./features/index.ts');
           return { Component: CategoryWiseProduct };
         },
       },
       {
-        path: 'category/:category/:subCategory',
+        path: ':category/:subCategory',
         lazy: async () => {
           const { CategoryWiseProduct } = await import('./features/index.ts');
           return { Component: CategoryWiseProduct };
         },
       },
       {
-        path: 'category/:category/:subCategory/:brand',
+        path: ':category/:subCategory/:brand',
         lazy: async () => {
           const { CategoryWiseProduct } = await import('./features/index.ts');
           return { Component: CategoryWiseProduct };
@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: ':productName',
+        path: ':productName/details',
         lazy: async () => {
           const { ProductDetails } = await import('./features/index.ts');
           return { Component: ProductDetails };

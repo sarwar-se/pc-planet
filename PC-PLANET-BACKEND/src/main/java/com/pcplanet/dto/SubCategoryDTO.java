@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class SubCategoryDTO {
-    private int id;
+    private Integer id;
     private String name;
     private List<BrandDTO> brands;
     private List<FilterKeyDTO> filterKeys;

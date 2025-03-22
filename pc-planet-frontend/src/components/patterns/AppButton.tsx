@@ -1,9 +1,9 @@
 import React from 'react';
 
 const AppButton: React.FC<{
-  onClick: any;
+  onClick: () => void;
   className: string;
-  children: any;
+  children: React.ReactNode;
 }> = ({ onClick, className, children, ...rest }) => {
   return (
     <button className={`app-btn ${className}`} onClick={() => onClick()} {...rest}>

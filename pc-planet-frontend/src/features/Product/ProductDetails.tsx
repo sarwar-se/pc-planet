@@ -6,26 +6,42 @@ import { AppButton, Loader } from '../../components';
 import NotFound from '../../components/patterns/NotFound';
 import { no_image } from '../../assets';
 import ProductReview from './components/ProductReview';
-import { STATUS } from '../../utils/appConstant';
+import { STATUS } from '../../constants/appConstants';
 import FeatureView from './components/FeatureView';
+import { ProductDetailsModel } from '../models/Product';
 
 const ProductDetails = () => {
   const { state } = useLocation();
   const productId = state?.productId;
   const [fetchStatus, setFetchStatus] = useState(STATUS.IDLE);
 
-  const specificationSection = useRef(null);
-  const descriptionSection = useRef(null);
-  const reviewSection = useRef(null);
+  const specificationSection = useRef<HTMLDivElement>(null);
+  const descriptionSection = useRef<HTMLDivElement>(null);
+  const reviewSection = useRef<HTMLDivElement>(null);
 
-  const [productDetails, setProductDetails] = useState({});
+  const [productDetails, setProductDetails] = useState<ProductDetailsModel>({
+    id: 0,
+    name: '',
+    code: '',
+    model: '',
+    price: 0,
+    status: 'OUT_OF_STOCK',
+    brand: null,
+    category: null,
+    keyFeatures: [],
+    image: '',
+    warranty: 0,
+    specifications: [],
+    descriptions: [],
+    images: [],
+  });
   const [selectedImage, setSelectedImage] = useState(no_image);
 
-  const scrollToSection = (sectionRef) => {
-    sectionRef.current.scrollIntoView({ behavoir: 'smooth' });
+  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>) => {
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleImageClick = (image) => {
+  const handleImageClick = (image: string) => {
     setSelectedImage(image);
   };
 
@@ -72,7 +88,7 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            {/* feature view */}
+            {/* key feature */}
             <div className='feature-section'>
               <FeatureView productDetails={productDetails} />
             </div>
@@ -105,7 +121,7 @@ const ProductDetails = () => {
             </AppButton>
           </div>
 
-          {/* Specification view */}
+          {/* Specification */}
           <section className='bg-white shadow-sm p-4 rounded' ref={specificationSection}>
             {productDetails.specifications.length > 0 ? (
               <>
@@ -113,16 +129,16 @@ const ProductDetails = () => {
                 <div className='d-flex flex-column mt-3'>
                   {productDetails.specifications.map((spec) => (
                     <Fragment key={spec.id}>
-                      {spec.specificationProperties.length > 0 && (
+                      {spec.properties.length > 0 && (
                         <>
-                          <span className='product-spec'>{spec.category}</span>
-                          {spec.specificationProperties.map((property) => (
+                          <span className='product-spec'>{spec.type}</span>
+                          {spec.properties.map((property) => (
                             <div className='d-flex gap-1 product-spec-detail'>
                               <span key={property.id} className='w-25'>
                                 {property.name ? property.name : ''}
                               </span>
                               <div className='d-flex flex-column'>
-                                {property.specificationDetails.map((detail) => (
+                                {property.details.map((detail) => (
                                   <span key={detail.id} className='opacity-75'>
                                     {detail.description ? detail.description : ''}
                                   </span>
@@ -141,7 +157,7 @@ const ProductDetails = () => {
             )}
           </section>
 
-          {/* Details view */}
+          {/* Descriptions */}
           <section className='bg-white shadow-sm p-4 rounded' ref={descriptionSection}>
             {productDetails.descriptions.length > 0 ? (
               <>

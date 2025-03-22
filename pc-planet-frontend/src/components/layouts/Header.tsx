@@ -8,7 +8,7 @@ import AppSearchField from '../patterns/AppSearchField';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from '../../routes/appRoutes';
 
-const Header: React.FC<{ handleShowSidebar: any }> = ({ handleShowSidebar }) => {
+const Header: React.FC<{ handleShowSidebar: () => void }> = ({ handleShowSidebar }) => {
   const [showInputField, setShowInputField] = useState(false);
   const navigate = useNavigate();
 
@@ -90,9 +90,7 @@ const Header: React.FC<{ handleShowSidebar: any }> = ({ handleShowSidebar }) => 
                       <FaShoppingCart size={20} color='orange' />
                       <span className='cart-count'>9</span>
                     </span>
-                    {/* <span className="">৳ {convertToBanglaDigits(999999.99)}</span> */}
                   </Nav.Link>
-
                   <AppButton onClick={handleShowSidebar} className={'pc-builder-button'}>
                     PC Builder
                   </AppButton>
