@@ -2,11 +2,35 @@ import React, { useEffect, useState } from 'react';
 import './product.css';
 import { getCategoryDetailsByName, getProducts, getSubCategoryDetailsByName } from './productApi';
 import ProductCardView from './ProductCardView';
-import { STATUS } from '../../utils/appConstant';
+import { STATUS } from '../../constants/appConstants';
 import FilterCard from '../../components/patterns/FilterCard';
-import { FILTER_TYPE, GROUP_TYPE } from '../../utils/appConstant';
+import { FILTER_TYPE, GROUP_TYPE } from '../../constants/appConstants';
 import { useParams } from 'react-router-dom';
 import { productStatusMap } from '../../utils/helperFunction';
+import { ProductInfo } from '../models/Product';
+
+type FilterProperty = {
+  id: number;
+  name: string;
+};
+
+type FilterKey = {
+  id: number;
+  name: string;
+  filterProperties: FilterProperty[];
+};
+
+type ProductBrand = {
+  id: number;
+  name: string;
+};
+
+interface CategoryDetails {
+  id: number;
+  name: string;
+  brands: ProductBrand[];
+  filterKeys: FilterKey[];
+}
 
 const Product = () => {
   const { category: categoryName } = useParams<string>();
@@ -14,11 +38,16 @@ const Product = () => {
   const { brand: brandName } = useParams<string>();
 
   const [fetchStatus, setFetchStatus] = useState<STATUS>(STATUS.IDLE);
-  const [products, setProducts] = useState<any>([]);
-  const [categoryDetails, setCategoryDetails] = useState<any>([]);
+  const [products, setProducts] = useState<ProductInfo[]>([]);
+  const [categoryDetails, setCategoryDetails] = useState<CategoryDetails>({
+    id: 0,
+    name: '',
+    brands: [],
+    filterKeys: [],
+  });
 
   const [selectedAvailability, setSelectedAvailability] = useState<string[]>([]);
-  const [productStatus, setProductStatus] = useState<string[]>([]);
+  const [selectedProductStatus, setSelectedProductStatus] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
 
@@ -33,19 +62,19 @@ const Product = () => {
     return status ? status.value : 'UNKNOWN';
   };
 
-  const getFilterValues = (obj: any): string[] => {
-    return Array.from(new Set(obj.map((o: any) => o.name)));
+  const getFilterValues = (obj: ProductBrand[] | FilterProperty[]): string[] => {
+    return Array.from(new Set(obj.map((o: ProductBrand | FilterProperty) => o.name)));
   };
 
-  const handleProductFilter = (filterType: FILTER_TYPE, value: string) => {
+  const handleProductFilter = (filterType: FILTER_TYPE | string, value: string) => {
     if (filterType === FILTER_TYPE.AVAILABILITY) {
       const status = getAvailabilitiesValue(value);
       if (selectedAvailability.includes(value)) {
         setSelectedAvailability(selectedAvailability.filter((item) => item !== value));
-        setProductStatus(productStatus.filter((item) => item !== status));
+        setSelectedProductStatus(selectedProductStatus.filter((item) => item !== status));
       } else {
         setSelectedAvailability((prev) => [...prev, value]);
-        setProductStatus((prev) => [...prev, status]);
+        setSelectedProductStatus((prev) => [...prev, status]);
       }
     } else if (filterType === FILTER_TYPE.BRAND) {
       if (selectedBrands.includes(value)) {
@@ -66,7 +95,7 @@ const Product = () => {
     setFetchStatus(STATUS.LOADING);
 
     getProducts(
-      productStatus,
+      selectedProductStatus,
       selectedBrands,
       selectedProperties,
       categoryName ? categoryName : '',
@@ -81,7 +110,14 @@ const Product = () => {
       .catch(() => {
         setFetchStatus(STATUS.ERROR);
       });
-  }, [productStatus, selectedBrands, selectedProperties, categoryName, subCategoryName, brandName]);
+  }, [
+    selectedProductStatus,
+    selectedBrands,
+    selectedProperties,
+    categoryName,
+    subCategoryName,
+    brandName,
+  ]);
 
   useEffect(() => {
     if (subCategoryName) {
@@ -135,7 +171,7 @@ const Product = () => {
 
             {categoryDetails &&
               categoryDetails.filterKeys &&
-              categoryDetails.filterKeys.map((filterKey: any) => (
+              categoryDetails.filterKeys.map((filterKey: FilterKey) => (
                 <FilterCard
                   title={filterKey.name}
                   groupType={GROUP_TYPE.CHECKBOX}

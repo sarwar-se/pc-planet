@@ -1,5 +1,5 @@
 import HttpInstance from '../../configs/asiosClient';
-import { apiRoutes } from '../../routes/apiRoutes';
+import { apiRoutes } from '../../routes/apiRoutes/apiRoutes';
 
 export const getProducts = (
   statuses: string[],
@@ -29,7 +29,7 @@ export const getSubCategoryDetailsByName = (subCategoryName: string) => {
   return HttpInstance.get(apiRoutes.getSubCategoryDetailsByName(subCategoryName));
 };
 
-export const getSearchedProduct = (query: string | undefined) => {
+export const getSearchedProduct = (query: string) => {
   return HttpInstance.get(apiRoutes.getSearchedProducts(query));
 };
 

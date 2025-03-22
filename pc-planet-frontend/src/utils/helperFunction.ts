@@ -1,4 +1,4 @@
-import { UPLOAD_PATH } from './appConstant';
+import { UPLOAD_PATH } from '../constants/appConstants';
 
 export const convertToBanglaDigits = (number: number): string => {
   const banglaDigitsMap: { [key: string]: string } = {
@@ -49,7 +49,7 @@ export const productStatusMap = (): ProductStatus[] => {
   ];
 };
 
-export const getAvailabilitiesType = (value: string): string[] => {
+export const getAvailabilityType = (value: string): string[] => {
   return productStatusMap()
     .filter((type) => type.value === value)
     .map((type) => type.label);

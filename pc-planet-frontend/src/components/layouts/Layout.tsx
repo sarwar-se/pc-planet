@@ -2,16 +2,17 @@ import React, { createContext, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import NavigationBar from './NavigationBar';
 import Footer from './Footer';
+import { ProductInfo } from '../../features/models/Product';
 
 type AppContextType = {
-  products: any;
-  setProducts: any;
+  products: ProductInfo[];
+  setProducts: React.Dispatch<React.SetStateAction<ProductInfo[]>>;
 };
 
-export const AppContext = createContext<AppContextType | undefined>(undefined);
+export const AppContext = createContext<AppContextType | null>(null);
 
 const Layout: React.FC = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<ProductInfo[]>([]);
 
   return (
     <AppContext.Provider value={{ products, setProducts }}>

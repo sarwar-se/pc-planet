@@ -4,15 +4,38 @@ import { useNavigate } from 'react-router-dom';
 import { appRoutes } from '../../routes/appRoutes';
 import { getProductCategories } from '../../features/Product/productApi';
 
+type ProductBrand = {
+  id: number;
+  name: string;
+};
+
+type ProductSubCategory = {
+  id: number;
+  name: string;
+  brands: ProductBrand[];
+};
+
+interface ProductCategory {
+  id: number;
+  name: string;
+  subCategories: ProductSubCategory[];
+}
+
 const TopBar: React.FC = () => {
-  const [activeFirstLayer, setActiveFirstLayer] = useState<string | null>(null);
-  const [activeSecondLayer, setActiveSecondLayer] = useState<string | null>(null);
+  const [activeFirstLayer, setActiveFirstLayer] = useState<string>('');
+  const [activeSecondLayer, setActiveSecondLayer] = useState<string>('');
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<ProductCategory[]>([
+    {
+      id: 0,
+      name: '',
+      subCategories: [],
+    },
+  ]);
 
   const hideCategoryLayer = () => {
-    setActiveFirstLayer(null);
-    setActiveSecondLayer(null);
+    setActiveFirstLayer('');
+    setActiveSecondLayer('');
   };
 
   const showProducts = (category: string, subCategory: string, brand: string) => {
@@ -40,7 +63,7 @@ const TopBar: React.FC = () => {
 
   const handleFirstLayerMouseLeave = () => {
     firstLayerTimeout = setTimeout(() => {
-      setActiveFirstLayer(null);
+      setActiveFirstLayer('');
     }, 200);
   };
 
@@ -52,7 +75,7 @@ const TopBar: React.FC = () => {
 
   const handleSecondLayerMouseLeave = () => {
     secondLayerTimeout = setTimeout(() => {
-      setActiveSecondLayer(null);
+      setActiveSecondLayer('');
     }, 200);
   };
 
@@ -74,7 +97,7 @@ const TopBar: React.FC = () => {
       >
         <Container className='navigation-bar'>
           <Nav className='mx-0 navigation-bar'>
-            {categories.map((category: any, i: number) => (
+            {categories.map((category: ProductCategory, i: number) => (
               <Dropdown
                 key={i}
                 onMouseEnter={() => handleFirstLayerMouseEnter(category.name)}
@@ -90,7 +113,7 @@ const TopBar: React.FC = () => {
                 </Dropdown.Toggle>
                 {category.subCategories && category.subCategories.length > 0 && (
                   <Dropdown.Menu className='first-layer-menu'>
-                    {category.subCategories.map((subCat: any, i: number) => (
+                    {category.subCategories.map((subCat: ProductSubCategory, i: number) => (
                       <Dropdown
                         key={i}
                         onMouseEnter={() => handleSecondLayerMouseEnter(subCat.name)}
@@ -107,7 +130,7 @@ const TopBar: React.FC = () => {
                         </Dropdown.Toggle>
                         {subCat.brands && subCat.brands.length > 0 && (
                           <Dropdown.Menu className='second-layer-menu'>
-                            {subCat.brands.map((brand: any, i: number) => (
+                            {subCat.brands.map((brand: ProductBrand, i: number) => (
                               <Dropdown.Item
                                 key={i}
                                 className='second-layer-menu-item'

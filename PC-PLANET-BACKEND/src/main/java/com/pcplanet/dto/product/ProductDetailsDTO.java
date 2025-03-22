@@ -74,15 +74,15 @@ public class ProductDetailsDTO extends ProductInfoDTO {
 
                     detailsDTOs.add(detailsDTO);
                 });
-                propertyDTO.setSpecificationDetails(detailsDTOs);
+                propertyDTO.setDetails(detailsDTOs);
 
                 propertyDTOList.add(propertyDTO);
             });
 
 
             specificationDTO.setId(specification.getId());
-            specificationDTO.setCategory(specification.getCategory());
-            specificationDTO.setSpecificationProperties(propertyDTOList);
+            specificationDTO.setType(specification.getCategory());
+            specificationDTO.setProperties(propertyDTOList);
 
             specificationDTOs.add(specificationDTO);
         });

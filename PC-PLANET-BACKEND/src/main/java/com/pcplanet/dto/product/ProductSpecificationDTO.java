@@ -9,6 +9,6 @@ import java.util.List;
 @Setter
 public class ProductSpecificationDTO {
     private Integer id;
-    private String category;
-    private List<ProductSpecificationPropertyDTO> specificationProperties;
+    private String type;
+    private List<ProductSpecificationPropertyDTO> properties;
 }

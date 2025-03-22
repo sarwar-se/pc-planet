@@ -7,17 +7,35 @@ import { getImageUrl, numberFormat } from '../../utils/helperFunction';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from '../../routes/appRoutes';
 import { AppContext } from '../layouts/Layout';
+import { ProductInfo } from '../../features/models/Product';
 
 const AppSearchField: React.FC<{
   formClassName: string;
   resultClassName: string;
 }> = ({ formClassName, resultClassName }) => {
   const [query, setQuery] = useState('');
-  const [foundProducts, setFoundProducts] = useState<any>([]);
+  const [foundProducts, setFoundProducts] = useState<ProductInfo[]>([
+    {
+      id: 0,
+      name: '',
+      code: '',
+      model: '',
+      price: 0,
+      status: 'OUT_OF_STOCK',
+      brand: null,
+      category: null,
+      keyFeatures: [],
+      image: '',
+    },
+  ]);
   const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
 
-  const { setProducts } = useContext(AppContext)!;
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('AppContext must be used within a AppContext.Provider');
+  }
+  const { setProducts } = context;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -75,7 +93,7 @@ const AppSearchField: React.FC<{
           <ul className='product-list mt-1'>
             {foundProducts.length ? (
               <>
-                {foundProducts.slice(0, 5).map((product: any, i: number) => (
+                {foundProducts.slice(0, 5).map((product: ProductInfo, i: number) => (
                   <li
                     key={i}
                     className='product-item d-flex align-items-center gap-3'

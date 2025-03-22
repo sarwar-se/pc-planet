@@ -55,6 +55,12 @@
   min-width: 450px;
 }
 
+@media (max-width: 576px) {
+  .search-form {
+    min-width: 300px;
+  }
+}
+
 .search-form:hover {
   box-shadow: none !important;
 }

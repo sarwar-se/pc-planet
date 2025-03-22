@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 
-const SideBar: React.FC<{ showSidebar: any; handleCloseSidebar: any }> = ({
+const SideBar: React.FC<{ showSidebar: boolean; handleCloseSidebar: () => void }> = ({
   showSidebar,
   handleCloseSidebar,
 }) => {

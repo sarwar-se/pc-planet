@@ -1,7 +1,10 @@
 import React from 'react';
 import { not_found_icon } from '../../assets';
 
-const NotFound = ({ primaryText = 'Not Found!', secondaryText }) => {
+const NotFound: React.FC<{ primaryText: string; secondaryText?: string }> = ({
+  primaryText = 'Not Found!',
+  secondaryText,
+}) => {
   return (
     <div className='d-flex flex-column align-items-center p-5'>
       <div className='text-'>

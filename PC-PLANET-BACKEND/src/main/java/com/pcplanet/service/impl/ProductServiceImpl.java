@@ -86,21 +86,21 @@ public class ProductServiceImpl implements ProductService {
                 .map(specificationDTO -> {
                     ProductSpecification specification = new ProductSpecification();
 
-                    specification.setCategory(specificationDTO.getCategory());
+                    specification.setCategory(specificationDTO.getType());
                     specification.setProduct(product);
 
                     List<ProductSpecificationProperty> specificationProperties = null;
 
-                    if (specificationDTO.getSpecificationProperties() != null) {
-                        specificationProperties = specificationDTO.getSpecificationProperties()
+                    if (specificationDTO.getProperties() != null) {
+                        specificationProperties = specificationDTO.getProperties()
                                 .stream()
                                 .map(specificationPropertyDTO -> {
                                     var specificationProperty = new ProductSpecificationProperty();
                                     specificationProperty.setName(specificationPropertyDTO.getName());
                                     specificationProperty.setSpecification(specification);
                                     List<ProductSpecificationDetails> specificationDetails = null;
-                                    if (specificationPropertyDTO.getSpecificationDetails() != null) {
-                                        specificationDetails = specificationPropertyDTO.getSpecificationDetails()
+                                    if (specificationPropertyDTO.getDetails() != null) {
+                                        specificationDetails = specificationPropertyDTO.getDetails()
                                                 .stream()
                                                 .map(specificationDetailsDTO -> {
                                                     var details = new ProductSpecificationDetails();
@@ -225,10 +225,10 @@ public class ProductServiceImpl implements ProductService {
                 specification.setProduct(product);
                 product.getSpecifications().add(specification);
             }
-            specification.setCategory(specificationDTO.getCategory());
+            specification.setCategory(specificationDTO.getType());
 
             /* Get specification property IDs from the request */
-            List<Integer> requestedSpecificationPropertyIds = specificationDTO.getSpecificationProperties()
+            List<Integer> requestedSpecificationPropertyIds = specificationDTO.getProperties()
                     .stream()
                     .map(ProductSpecificationPropertyDTO::getId)
                     .filter(Objects::nonNull)
@@ -243,7 +243,7 @@ public class ProductServiceImpl implements ProductService {
                     properties != null && properties.getId() != null && requestedSpecificationPropertyIds.contains(properties.getId())
             );
 
-            for (ProductSpecificationPropertyDTO specificationPropertyDTO : specificationDTO.getSpecificationProperties()) {
+            for (ProductSpecificationPropertyDTO specificationPropertyDTO : specificationDTO.getProperties()) {
                 ProductSpecificationProperty specificationProperty;
                 if (specificationPropertyDTO.getId() != null) {
                     specificationProperty = specificationPropertyRepository.findById(specificationPropertyDTO.getId())
@@ -261,22 +261,22 @@ public class ProductServiceImpl implements ProductService {
 
 
                 /* Get specification detail IDs from the request */
-                List<Integer> requestedSpecificationDetailsIds = specificationPropertyDTO.getSpecificationDetails()
+                List<Integer> requestedSpecificationDetailsIds = specificationPropertyDTO.getDetails()
                         .stream()
                         .map(ProductSpecificationDetailsDTO::getId)
                         .filter(Objects::nonNull)
                         .toList();
 
-                if (specificationPropertyDTO.getSpecificationDetails() == null) {
-                    specificationPropertyDTO.setSpecificationDetails(new ArrayList<>());
+                if (specificationPropertyDTO.getDetails() == null) {
+                    specificationPropertyDTO.setDetails(new ArrayList<>());
                 }
 
                 /* Remove specification details from the database that are not present in request */
-                specificationPropertyDTO.getSpecificationDetails().removeIf(detail ->
+                specificationPropertyDTO.getDetails().removeIf(detail ->
                         detail != null && detail.getId() != null && !requestedSpecificationDetailsIds.contains(detail.getId())
                 );
 
-                for (ProductSpecificationDetailsDTO specificationDetailsDTO : specificationPropertyDTO.getSpecificationDetails()) {
+                for (ProductSpecificationDetailsDTO specificationDetailsDTO : specificationPropertyDTO.getDetails()) {
 
                     ProductSpecificationDetails specificationDetails;
                     if (specificationDetailsDTO.getId() != null) {

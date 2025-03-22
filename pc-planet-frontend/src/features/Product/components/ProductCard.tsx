@@ -5,7 +5,7 @@ import { getImageUrl, numberFormat, productStatusMap } from '../../../utils/help
 import { AppButton } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from '../../../routes/appRoutes';
-import { PRODUCT_STATUS } from '../../../utils/appConstant';
+import { PRODUCT_STATUS } from '../../../constants/appConstants';
 
 const ProductCard: React.FC<{ product: any }> = ({ product }) => {
   const { keyFeatures } = product;

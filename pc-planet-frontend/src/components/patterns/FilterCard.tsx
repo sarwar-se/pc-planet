@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import { AppButton, GroupButton } from '../index';
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
+import { FILTER_TYPE, GROUP_TYPE } from '../../constants/appConstants';
 
-const FilterCard: React.FC<{
+interface FilterCardProps {
   title: string;
-  groupType: 'checkbox' | 'radio';
+  groupType: GROUP_TYPE;
   values: string[];
   selectedValues: string[] | string;
   filterType: string;
-  filterHandler: any;
-}> = ({ title = 'UNKNOWN', groupType, values, selectedValues, filterType, filterHandler }) => {
+  filterHandler: (filterType: FILTER_TYPE | string, value: string) => void;
+}
+
+const FilterCard: React.FC<FilterCardProps> = ({
+  title = 'UNKNOWN',
+  groupType,
+  values,
+  selectedValues,
+  filterType,
+  filterHandler,
+}) => {
   const [expanded, setExpanded] = useState(true);
 
   const toggleExpand = () => {
