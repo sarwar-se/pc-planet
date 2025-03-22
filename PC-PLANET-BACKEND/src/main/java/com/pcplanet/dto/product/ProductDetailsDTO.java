@@ -1,5 +1,7 @@
-package com.pcplanet.dto;
+package com.pcplanet.dto.product;
 
+import com.pcplanet.dto.BrandDTO;
+import com.pcplanet.dto.CategoryDTO;
 import com.pcplanet.entity.Product;
 import lombok.Getter;
 import lombok.Setter;

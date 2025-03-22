@@ -1,7 +1,7 @@
 package com.pcplanet.controller;
 
-import com.pcplanet.dto.ProductDetailsDTO;
-import com.pcplanet.dto.ProductInfoDTO;
+import com.pcplanet.dto.product.ProductDetailsDTO;
+import com.pcplanet.dto.product.ProductInfoDTO;
 import com.pcplanet.dto.param.ProductFilterParams;
 import com.pcplanet.entity.Product;
 import com.pcplanet.service.ProductService;
