@@ -102,7 +102,10 @@ const Header: React.FC<{ handleShowSidebar: () => void }> = ({ handleShowSidebar
       </Navbar>
 
       {showInputField && (
-        <AppSearchField formClassName={'d-xl-none shadow'} resultClassName={'w-100'} />
+        <AppSearchField
+          formClassName={'d-xl-none shadow'}
+          resultClassName={'w-100 position-relative'}
+        />
       )}
     </>
   );

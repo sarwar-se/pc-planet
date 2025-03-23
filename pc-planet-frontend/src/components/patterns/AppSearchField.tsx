@@ -50,14 +50,19 @@ const AppSearchField: React.FC<{
     setTimeout(() => setShowResults(query !== ''), 500);
   };
 
+  const clearSearchField = () => {
+    setShowResults(false);
+    setQuery('');
+  };
+
   const showProducts = (query: string) => {
     setProducts(foundProducts);
-    setShowResults(false);
+    clearSearchField();
     navigate(appRoutes.searchProduct(query));
   };
 
   const handleProductClick = (productId: number, productName: string) => {
-    setShowResults(false);
+    clearSearchField();
     navigate(appRoutes.productDetails(productName), { state: { productId } });
   };
 
@@ -69,7 +74,7 @@ const AppSearchField: React.FC<{
 
   return (
     <>
-      <Form className={`d-flex mx-auto search-form ${formClassName}`}>
+      <Form className={`d-flex search-form ${formClassName}`}>
         <FormControl
           className='custom-search-form-control'
           type='search'

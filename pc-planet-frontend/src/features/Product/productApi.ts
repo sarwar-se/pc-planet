@@ -1,5 +1,5 @@
 import HttpInstance from '../../configs/asiosClient';
-import { apiRoutes } from '../../routes/apiRoutes/apiRoutes';
+import { apiRoutes } from '../../routes/apiRoutes/productRoutes';
 
 export const getProducts = (
   statuses: string[],
