@@ -13,7 +13,8 @@ code {
 }
 
 .app-main-color {
-  background: blueviolet;
+  background: rgb(70, 22, 115);
+  /* background: blueviolet; */
   /* background-color: rgb(106 34 215); */
 }
 

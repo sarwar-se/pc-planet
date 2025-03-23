@@ -16,11 +16,13 @@ const Layout: React.FC = () => {
 
   return (
     <AppContext.Provider value={{ products, setProducts }}>
-      <React.Fragment>
+      <div className='layout'>
         <NavigationBar />
-        <Outlet />
+        <div className='main-content'>
+          <Outlet />
+        </div>
         <Footer />
-      </React.Fragment>
+      </div>
     </AppContext.Provider>
   );
 };

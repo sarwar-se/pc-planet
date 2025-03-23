@@ -6,10 +6,11 @@ import { AppButton } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from '../../../routes/appRoutes';
 import { PRODUCT_STATUS } from '../../../constants/appConstants';
+import { ProductInfo, ProductKeyFeature } from '../../models/Product';
 
-const ProductCard: React.FC<{ product: any }> = ({ product }) => {
+const ProductCard: React.FC<{ product: ProductInfo }> = ({ product }) => {
   const { keyFeatures } = product;
-  const no_image = 'no_image.png';
+  const no_image = 'empty.jpg';
   const navigate = useNavigate();
 
   const getProductStatus = (value: string) => {
@@ -22,7 +23,7 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
   };
 
   const isButtonDisabled = (status: string) => {
-    if (status === PRODUCT_STATUS.UP_COMING || status === PRODUCT_STATUS.OUT_OF_STOCK) {
+    if (status !== PRODUCT_STATUS.IN_STOCK) {
       return true;
     }
 
@@ -46,7 +47,7 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
         <Card.Text style={{ fontSize: 13 }}>
           <div className='opacity-75'>
             <ul>
-              {keyFeatures.map((keyFeature: any, i: number) => (
+              {keyFeatures.map((keyFeature: ProductKeyFeature, i: number) => (
                 <li key={i}>
                   {keyFeature.name ? keyFeature.name + ': ' + keyFeature.value : keyFeature.value}
                 </li>
@@ -55,9 +56,9 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
           </div>
         </Card.Text>
       </Card.Body>
-      <Card.Footer className='product-footer'>
+      <Card.Footer className='product-card-footer'>
         <div className='text-center text-danger fw-bold mb-2'>
-          {product.status === 'IN_STOCK'
+          {product.status === PRODUCT_STATUS.IN_STOCK
             ? numberFormat(product.price) + '৳'
             : getProductStatus(product.status)}
         </div>

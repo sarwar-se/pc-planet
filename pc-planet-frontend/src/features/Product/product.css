@@ -18,9 +18,10 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+  object-fit: cover;
 }
 
-.product-footer {
+.product-card-footer {
   border-color: #e9eaf1;
   background-color: transparent;
 }
@@ -64,6 +65,23 @@
 
 .product-container {
   min-width: 80%;
+}
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+.not-found {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Product details */
