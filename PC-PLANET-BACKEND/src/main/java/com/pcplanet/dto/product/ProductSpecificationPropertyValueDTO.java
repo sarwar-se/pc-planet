@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductSpecificationDetailsDTO {
+public class ProductSpecificationPropertyValueDTO {
     private Integer id;
-    private String description;
+    private String value;
 }

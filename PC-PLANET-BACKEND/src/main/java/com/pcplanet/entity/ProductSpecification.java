@@ -15,8 +15,8 @@ import java.util.List;
 public class ProductSpecification extends BaseEntity {
 
     @NotBlank
-    @Column(name = "category")
-    private String category;
+    @Column(name = "type")
+    private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_pro_specification_product"))

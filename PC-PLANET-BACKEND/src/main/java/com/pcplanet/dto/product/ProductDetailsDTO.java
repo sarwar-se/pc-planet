@@ -27,7 +27,9 @@ public class ProductDetailsDTO extends ProductInfoDTO {
         productDetailsDTO.setPrice(product.getPrice());
         productDetailsDTO.setStatus(product.getStatus());
         productDetailsDTO.setWarranty(product.getWarranty());
-        productDetailsDTO.setImage(product.getImages().get(0).getFileName());
+        if (!product.getImages().isEmpty()) {
+            productDetailsDTO.setImage(product.getImages().get(0).getFileName());
+        }
 
         productDetailsDTO.setBrand(new BrandDTO(product.getBrand().getId(), product.getBrand().getName()));
         productDetailsDTO.setCategory(new CategoryDTO(product.getCategory().getId(), product.getCategory().getName()));
@@ -66,22 +68,22 @@ public class ProductDetailsDTO extends ProductInfoDTO {
                 propertyDTO.setId(specificationProperty.getId());
                 propertyDTO.setName(specificationProperty.getName());
 
-                List<ProductSpecificationDetailsDTO> detailsDTOs = new ArrayList<>();
-                specificationProperty.getSpecificationDetails().forEach(specificationDetail -> {
-                    var detailsDTO = new ProductSpecificationDetailsDTO();
-                    detailsDTO.setId(specificationDetail.getId());
-                    detailsDTO.setDescription(specificationDetail.getDescription());
+                List<ProductSpecificationPropertyValueDTO> propertyValueDTOs = new ArrayList<>();
+                specificationProperty.getSpecificationPropertyValues().forEach(specificationPropertyValue -> {
+                    var detailsDTO = new ProductSpecificationPropertyValueDTO();
+                    detailsDTO.setId(specificationPropertyValue.getId());
+                    detailsDTO.setValue(specificationPropertyValue.getValue());
 
-                    detailsDTOs.add(detailsDTO);
+                    propertyValueDTOs.add(detailsDTO);
                 });
-                propertyDTO.setDetails(detailsDTOs);
+                propertyDTO.setPropertyValues(propertyValueDTOs);
 
                 propertyDTOList.add(propertyDTO);
             });
 
 
             specificationDTO.setId(specification.getId());
-            specificationDTO.setType(specification.getCategory());
+            specificationDTO.setType(specification.getType());
             specificationDTO.setProperties(propertyDTOList);
 
             specificationDTOs.add(specificationDTO);

@@ -30,15 +30,15 @@ export interface ProductInfo {
   image: string;
 }
 
-type PropertyDetails = {
+type PropertyValue = {
   id: number;
-  description: string;
+  value: string;
 };
 
 type SpecificationProperties = {
   id: number;
   name: string;
-  details: PropertyDetails[];
+  propertyValues: PropertyValue[];
 };
 
 type ProductSpecification = {

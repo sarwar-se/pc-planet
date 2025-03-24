@@ -1,13 +1,14 @@
 import React from 'react';
 import { not_found_icon } from '../../assets';
 
-const NotFound: React.FC<{ primaryText: string; secondaryText?: string }> = ({
+const NotFound: React.FC<{ minHeight?: string; primaryText: string; secondaryText?: string }> = ({
+  minHeight,
   primaryText = 'Not Found!',
   secondaryText,
 }) => {
   return (
-    <div className='not-found'>
-      <div className='d-flex flex-column align-items-center'>
+    <div className={`not-found ${minHeight}`}>
+      <div className='d-flex flex-column align-items-center gap-2'>
         <div className='text-'>
           <img src={not_found_icon} width={60} alt='Not found' />
         </div>

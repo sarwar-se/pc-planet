@@ -37,3 +37,5 @@ INSERT INTO product_specification_property (id, name, specification_id) values (
 INSERT INTO product_specification_property (id, name, specification_id) values (31, 'Voltage', 7);
 
 INSERT INTO product_specification_property (id, name, specification_id) values (32, 'Warranty', 8);
+
+SELECT setval('product_specification_property_id_seq', 32, true);

@@ -101,6 +101,7 @@ const ProductReview = () => {
 
       <div>
         <NotFound
+          minHeight='min-height-20vh'
           primaryText='This product has no reviews yet. Be the first one to write a review.'
           secondaryText={''}
         />

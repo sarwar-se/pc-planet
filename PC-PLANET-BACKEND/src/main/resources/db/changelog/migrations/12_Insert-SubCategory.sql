@@ -21,3 +21,5 @@ INSERT INTO "sub_category" (id, name, category_id) values (15, 'Keyboard', 7);
 INSERT INTO "sub_category" (id, name, category_id) values (16, 'Mouse', 7);
 INSERT INTO "sub_category" (id, name, category_id) values (17, 'Headphone', 7);
 INSERT INTO "sub_category" (id, name, category_id) values (18, 'Pen Drive', 7);
+
+SELECT setval('sub_category_id_seq', 18, true);

@@ -122,3 +122,5 @@ INSERT INTO filter_property (id, name, filter_key_id) values (84, 'Intel', 19);
 INSERT INTO filter_property (id, name, filter_key_id) values (85, 'AMD', 19);
 INSERT INTO filter_property (id, name, filter_key_id) values (86, 'Apple', 19);
 INSERT INTO filter_property (id, name, filter_key_id) values (87, 'Snapdragon', 19);
+
+SELECT setval('filter_property_id_seq', 87, true);
