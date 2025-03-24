@@ -29,6 +29,7 @@ const ProductCardView: React.FC<{
             </div>
           ) : (
             <NotFound
+              minHeight='min-height-60vh'
               primaryText={'Sorry! No product Founds'}
               secondaryText={'Please try searching for something else'}
             />

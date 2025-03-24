@@ -81,7 +81,9 @@ const ProductDetails = () => {
                     key={image.id}
                     src={`${getImageUrl(image.fileName)}`}
                     alt={`Thumbnail ${image.id}`}
-                    className='thumbnail border p-1'
+                    className={`thumbnail border p-1 ${
+                      selectedImage === image.fileName && 'thumbnail-selected'
+                    }`}
                     onClick={() => handleImageClick(image.fileName)}
                   />
                 ))}
@@ -138,9 +140,9 @@ const ProductDetails = () => {
                                 {property.name ? property.name : ''}
                               </span>
                               <div className='d-flex flex-column'>
-                                {property.details.map((detail) => (
-                                  <span key={detail.id} className='opacity-75'>
-                                    {detail.description ? detail.description : ''}
+                                {property.propertyValues.map((propertyValue) => (
+                                  <span key={propertyValue.id} className='opacity-75'>
+                                    {propertyValue.value ? propertyValue.value : ''}
                                   </span>
                                 ))}
                               </div>
@@ -153,7 +155,7 @@ const ProductDetails = () => {
                 </div>
               </>
             ) : (
-              <NotFound primaryText='Product details not found' />
+              <NotFound minHeight='min-height-20vh' primaryText='Product details not found' />
             )}
           </section>
 
@@ -172,7 +174,7 @@ const ProductDetails = () => {
                 </div>
               </>
             ) : (
-              <NotFound primaryText='Product description not found' />
+              <NotFound minHeight='min-height-20vh' primaryText='Product description not found' />
             )}
           </section>
 

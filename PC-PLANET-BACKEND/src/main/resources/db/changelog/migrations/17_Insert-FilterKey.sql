@@ -35,3 +35,5 @@ INSERT INTO filter_key (id, name) values (17, 'SSD');
 INSERT INTO filter_key (id, name) values (18, 'Graphics');
 
 INSERT INTO filter_key (id, name) values (19, 'Processor Type');
+
+SELECT setval('filter_key_id_seq', 19, true);

@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "product_specification_details")
-public class ProductSpecificationDetails extends BaseEntity {
+@Table(name = "product_specification_property_value")
+public class ProductSpecificationPropertyValue extends BaseEntity {
 
     @NotBlank
-    @Column(name = "description")
-    private String description;
+    @Column(name = "value")
+    private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "spec_property_id", foreignKey = @ForeignKey(name = "fk_ps_details_spec_property"))
