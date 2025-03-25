@@ -8,7 +8,7 @@ import { ProductInfo } from '../models/Product';
 const ProductCardView: React.FC<{
   products: ProductInfo[];
   status: string;
-  categoryName: string | undefined;
+  categoryName?: string;
 }> = ({ products, status, categoryName }) => {
   return (
     <>

@@ -10,8 +10,8 @@ import { AppContext } from '../layouts/Layout';
 import { ProductInfo } from '../../features/models/Product';
 
 const AppSearchField: React.FC<{
-  formClassName: string;
-  resultClassName: string;
+  formClassName?: string;
+  resultClassName?: string;
 }> = ({ formClassName, resultClassName }) => {
   const [query, setQuery] = useState('');
   const [foundProducts, setFoundProducts] = useState<ProductInfo[]>([
