@@ -13,7 +13,7 @@ const SearchProduct = () => {
   return (
     <div className='container mt-2'>
       <div className='product-container'>
-        <ProductCardView products={products} status={STATUS.SUCCESS} categoryName={''} />
+        <ProductCardView products={products} status={STATUS.SUCCESS} />
       </div>
     </div>
   );
