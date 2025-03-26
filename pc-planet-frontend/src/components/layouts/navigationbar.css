@@ -24,23 +24,39 @@
   }
 }
 
-.custom-offcanvas .offcanvas {
-  width: 100%;
+.custom-offcanvas {
+  width: 280px !important;
 }
 
-@media (max-width: 400px) {
-  .custom-offcanvas .offcanvas {
-    width: 80%;
-  }
+.sidebar-nav .nav-link {
+  font-weight: 500;
 }
 
-.custom-offcanvas-nav .nav-link {
-  border-bottom: 0.5px solid #e5e0e0;
-  padding-bottom: 8px;
+.sidebar-nav .nav-link.active-main {
+  color: orange !important;
+  font-weight: 500;
 }
 
-.custom-offcanvas-nav .nav-link:last-child {
+.sidebar-nav .nav-link.active-sub {
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.nav-item-group {
+  border-bottom: 1px solid #eee;
+  padding: 2px 0;
+}
+
+.nav-item-sub {
   border-bottom: none;
+}
+
+.nav-parent {
+  cursor: pointer;
+}
+
+.nav-parent:hover .nav-link {
+  color: #0d6efd;
 }
 
 /* Search Form */
@@ -68,6 +84,7 @@
 .custom-search-btn {
   border: none;
   border-radius: 0px 6px 6px 0px;
+  background-color: orange;
 }
 /* Search Form ENDS */
 
@@ -122,22 +139,30 @@
   }
 }
 
-/* Navbar */
-.custom-nav-link {
-  font-size: small;
+/* Topbar */
+.main-menu-item {
+  font-size: 0.9rem;
   color: black;
   font-weight: bold;
+  font-family:
+    Trebuchet MS,
+    sans-serif;
 }
 
 .dropdown-toggle::after {
   display: none;
 }
 
-.custom-nav-link:hover {
-  color: orange;
+.active-color {
+  color: orange !important;
+}
+
+.main-menu-item:hover {
+  color: orange !important;
 }
 
 .first-layer-menu {
+  font-size: 0.9rem;
   border: none;
   border-radius: 0;
   z-index: 1;
@@ -146,13 +171,18 @@
 
 .first-layer-menu-item {
   display: block;
-  padding: 8px 15px;
+  padding: 4px 12px;
   color: inherit;
   cursor: pointer;
   white-space: nowrap;
 }
 
+.first-layer-menu-item::after {
+  color: orange;
+}
+
 .second-layer-menu {
+  font-size: 0.9rem;
   position: absolute;
   left: 100%;
   z-index: 1;
@@ -160,12 +190,12 @@
   border: none;
   border-radius: 0;
 }
-
+.active-background-color,
 .first-layer-menu-item:hover,
 .second-layer-menu .dropdown-item:hover {
   background-color: orange;
 }
-/* Navbar ENDS*/
+/* Topbar ENDS*/
 
 /* Search form */
 .search-result {

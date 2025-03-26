@@ -1,37 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from '../../routes/appRoutes';
-import { getProductCategories } from '../../features/Product/productApi';
+import { ProductBrand, ProductCategory, ProductSubCategory } from './NavigationBar';
 
-type ProductBrand = {
-  id: number;
-  name: string;
-};
-
-type ProductSubCategory = {
-  id: number;
-  name: string;
-  brands: ProductBrand[];
-};
-
-interface ProductCategory {
-  id: number;
-  name: string;
-  subCategories: ProductSubCategory[];
-}
-
-const TopBar: React.FC = () => {
+const TopBar: React.FC<{ categories: ProductCategory[] }> = ({ categories }) => {
   const [activeFirstLayer, setActiveFirstLayer] = useState<string>('');
   const [activeSecondLayer, setActiveSecondLayer] = useState<string>('');
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<ProductCategory[]>([
-    {
-      id: 0,
-      name: '',
-      subCategories: [],
-    },
-  ]);
+  const [activeCategory, setActiveCategory] = useState('');
 
   const hideCategoryLayer = () => {
     setActiveFirstLayer('');
@@ -57,6 +34,7 @@ const TopBar: React.FC = () => {
 
   // Handlers to open/close first layer with delay
   const handleFirstLayerMouseEnter = (item: string) => {
+    setActiveCategory(item);
     setActiveFirstLayer(item);
     clearTimeout(firstLayerTimeout);
   };
@@ -79,15 +57,6 @@ const TopBar: React.FC = () => {
     }, 200);
   };
 
-  useEffect(() => {
-    getProductCategories()
-      .then((response) => {
-        const { data } = response;
-        setCategories(data);
-      })
-      .catch();
-  }, []);
-
   return (
     <>
       <Navbar
@@ -106,7 +75,9 @@ const TopBar: React.FC = () => {
               >
                 <Dropdown.Toggle
                   as={Nav.Link}
-                  className='main-menu-item custom-nav-link'
+                  className={`main-menu-item ${
+                    activeCategory === category.name && activeSecondLayer && 'active-color'
+                  }`}
                   onClick={() => showProducts(category.name, '', '')}
                 >
                   {category.name}
@@ -119,15 +90,29 @@ const TopBar: React.FC = () => {
                         onMouseEnter={() => handleSecondLayerMouseEnter(subCat.name)}
                         onMouseLeave={handleSecondLayerMouseLeave}
                         show={activeSecondLayer === subCat.name}
+                        className={`${
+                          activeSecondLayer === subCat.name && 'active-background-color'
+                        }`}
                         drop='end'
                       >
-                        <Dropdown.Toggle
-                          as='span'
-                          className='first-layer-menu-item'
-                          onClick={() => showProducts(category.name, subCat.name, '')}
-                        >
-                          {subCat.name}
-                        </Dropdown.Toggle>
+                        {subCat.brands && subCat.brands.length > 0 ? (
+                          <Dropdown.Toggle
+                            as='span'
+                            className={`first-layer-menu-item`}
+                            onClick={() => showProducts(category.name, subCat.name, '')}
+                          >
+                            {subCat.name}
+                          </Dropdown.Toggle>
+                        ) : (
+                          <Dropdown.Item
+                            as='span'
+                            className='first-layer-menu-item'
+                            onClick={() => showProducts(category.name, subCat.name, '')}
+                          >
+                            {subCat.name}
+                          </Dropdown.Item>
+                        )}
+
                         {subCat.brands && subCat.brands.length > 0 && (
                           <Dropdown.Menu className='second-layer-menu'>
                             {subCat.brands.map((brand: ProductBrand, i: number) => (
