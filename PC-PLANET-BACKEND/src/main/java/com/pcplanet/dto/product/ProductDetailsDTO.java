@@ -1,6 +1,7 @@
 package com.pcplanet.dto.product;
 
 import com.pcplanet.dto.BrandDTO;
+import com.pcplanet.dto.ProductVariantPropertyDTO;
 import com.pcplanet.dto.category.CategoryDTO;
 import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.SubCategoryDTO;
@@ -17,6 +18,7 @@ public class ProductDetailsDTO extends ProductInfoDTO {
     private Integer warranty;
     private List<ProductSpecificationDTO> specifications;
     private List<ProductDescriptionDTO> descriptions;
+    List<ProductVariantPropertyDTO> variantProperties;
     private List<ProductImageDTO> images;
 
     public static ProductDetailsDTO ofEntity(Product product) {
@@ -30,7 +32,7 @@ public class ProductDetailsDTO extends ProductInfoDTO {
         productDetailsDTO.setStatus(product.getStatus());
         productDetailsDTO.setWarranty(product.getWarranty());
         if (!product.getImages().isEmpty()) {
-            productDetailsDTO.setImage(product.getImages().get(0).getFileName());
+            productDetailsDTO.setImage(product.getImages().get(0).getImageLocation());
         }
 
         productDetailsDTO.setBrand(new BrandDTO(product.getBrand().getId(), product.getBrand().getName()));
@@ -57,7 +59,7 @@ public class ProductDetailsDTO extends ProductInfoDTO {
                     ProductImageDTO imageDTO = new ProductImageDTO();
 
                     imageDTO.setId(productImage.getId());
-                    imageDTO.setFileName(productImage.getFileName());
+                    imageDTO.setFileName(productImage.getImageLocation());
                     return imageDTO;
                 }).toList();
         productDetailsDTO.setImages(imageDTOs);

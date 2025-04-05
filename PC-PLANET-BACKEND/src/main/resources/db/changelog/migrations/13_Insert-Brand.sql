@@ -27,5 +27,7 @@ INSERT INTO brand (id, name) values (26, 'G.Skill');
 INSERT INTO brand (id, name) values (27, 'MARSRIVA');
 INSERT INTO brand (id, name) values (28, 'DJI');
 INSERT INTO brand (id, name) values (29, 'GoPro');
+INSERT INTO brand (id, name) values (30, 'Razer');
+INSERT INTO brand (id, name) values (31, 'Logitech');
 
-SELECT setval('brand_id_seq', 29, true);
+SELECT setval('brand_id_seq', 31, true);

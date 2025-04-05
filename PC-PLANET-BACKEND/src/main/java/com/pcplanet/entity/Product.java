@@ -34,7 +34,6 @@ public class Product extends BaseEntity {
     @Column(name = "price")
     private Double price;
 
-    @NotNull
     @Column(name = "warranty")
     private Integer warranty;
 

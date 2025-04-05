@@ -1,5 +1,6 @@
 package com.pcplanet.service;
 
+import com.pcplanet.dto.ProductVariantDTO;
 import com.pcplanet.dto.category.CategoryDTO;
 import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.CategoryInfoDTO;
@@ -12,4 +13,6 @@ public interface CategoryService {
     List<CategoryInfoDTO> getCategories();
 
     CategoryDetailsDTO getCategoryDetailsByName(String categoryName);
+
+    List<ProductVariantDTO> getProductVariantsByCategoryId(int categoryId);
 }

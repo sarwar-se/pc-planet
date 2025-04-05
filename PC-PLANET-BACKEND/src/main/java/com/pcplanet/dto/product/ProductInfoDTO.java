@@ -55,7 +55,7 @@ public class ProductInfoDTO {
                 }).toList();
         productInfoDTO.setKeyFeatures(keyFeatureDTOs);
 
-        productInfoDTO.setImage(!product.getImages().isEmpty() ? product.getImages().get(0).getFileName() : null);
+        productInfoDTO.setImage(!product.getImages().isEmpty() ? product.getImages().get(0).getImageLocation() : null);
 
         return productInfoDTO;
     }
