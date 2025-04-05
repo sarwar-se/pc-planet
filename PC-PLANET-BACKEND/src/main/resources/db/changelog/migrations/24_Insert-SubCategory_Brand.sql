@@ -62,3 +62,6 @@ INSERT INTO sub_category_brand (sub_category_id, brand_id) values (14, 2);
 INSERT INTO sub_category_brand (sub_category_id, brand_id) values (14, 5);
 INSERT INTO sub_category_brand (sub_category_id, brand_id) values (14, 14);
 INSERT INTO sub_category_brand (sub_category_id, brand_id) values (14, 15);
+
+INSERT INTO sub_category_brand (sub_category_id, brand_id) values (16, 30);
+INSERT INTO sub_category_brand (sub_category_id, brand_id) values (16, 31);

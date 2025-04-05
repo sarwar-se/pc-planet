@@ -2,6 +2,8 @@ security:
   cors-domain: http://localhost:3000
 
 spring:
+  profiles:
+    active: dev
   application:
     name: PC-PLANET-BACKEND
   datasource:
@@ -42,5 +44,5 @@ spring:
 
 app:
   product-uploaded-data:
-    storage-directory: D:\Development\uploads
+    storage-directory: /var/www/html/pc-planet/uploads
 

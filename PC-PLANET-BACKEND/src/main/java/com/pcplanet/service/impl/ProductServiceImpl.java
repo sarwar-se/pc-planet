@@ -1,5 +1,7 @@
 package com.pcplanet.service.impl;
 
+import com.pcplanet.Constants;
+import com.pcplanet.dto.ProductVariantPropertyDTO;
 import com.pcplanet.dto.param.ProductFilterParams;
 import com.pcplanet.dto.product.*;
 import com.pcplanet.entity.*;
@@ -7,6 +9,7 @@ import com.pcplanet.exception.ErrorCode;
 import com.pcplanet.exception.ServiceException;
 import com.pcplanet.repository.*;
 import com.pcplanet.service.ProductService;
+import com.pcplanet.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository imageRepository;
     private final ProductKeyFeatureRepository keyFeatureRepository;
+    private final FilterPropertyRepository filterPropertyRepository;
     private final ProductDescriptionRepository descriptionRepository;
     private final ProductSpecificationRepository specificationRepository;
     private final ProductSpecificationPropertyRepository specificationPropertyRepository;
@@ -39,6 +43,7 @@ public class ProductServiceImpl implements ProductService {
                               CategoryRepository categoryRepository,
                               ProductImageRepository imageRepository,
                               ProductKeyFeatureRepository keyFeatureRepository,
+                              FilterPropertyRepository filterPropertyRepository,
                               ProductDescriptionRepository descriptionRepository,
                               ProductSpecificationRepository specificationRepository,
                               ProductSpecificationPropertyRepository specificationPropertyRepository,
@@ -51,6 +56,7 @@ public class ProductServiceImpl implements ProductService {
         this.keyFeatureRepository = keyFeatureRepository;
         this.descriptionRepository = descriptionRepository;
         this.specificationRepository = specificationRepository;
+        this.filterPropertyRepository = filterPropertyRepository;
         this.specificationPropertyRepository = specificationPropertyRepository;
         this.specificationPropertyValueRepository = specificationPropertyValueRepository;
     }
@@ -80,6 +86,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product();
 
         mapToProduct(productDetailsDTO, product);
+        mapToProductVariant(productDetailsDTO.getVariantProperties(), product);
         mapToProductKeyFeatures(productDetailsDTO.getKeyFeatures(), product);
         mapToProductSpecifications(productDetailsDTO.getSpecifications(), product);
         mapToProductDescriptions(productDetailsDTO.getDescriptions(), product);
@@ -214,6 +221,26 @@ public class ProductServiceImpl implements ProductService {
         product.setKeyFeatures(keyFeatures);
     }
 
+    private void mapToProductVariant(List<ProductVariantPropertyDTO> variantDTOs, Product product) {
+
+        List<FilterProperty> filterProperties = new ArrayList<>();
+        for (var variantDTO : variantDTOs) {
+            if (variantDTO.getId() == null) {
+                return;
+            }
+
+            FilterProperty variant = filterPropertyRepository.findById(variantDTO.getId())
+                    .orElseThrow(() -> {
+                        log.warn("Variant not found for id: {}", variantDTO.getId());
+                        return new ServiceException(ErrorCode.NOT_FOUND);
+                    });
+            variant.getProducts().add(product);
+            filterProperties.add(variant);
+
+        }
+        product.setProperties(filterProperties);
+    }
+
     private void mapToProductSpecifications(List<ProductSpecificationDTO> specificationDTOs, Product product) {
         var specifications = specificationDTOs
                 .stream()
@@ -273,12 +300,18 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(imageDTO -> {
                     var image = new ProductImage();
-                    image.setFileName(imageDTO.getFileName());
+
+                    image.setImageLocation(saveImageAndGetPath(imageDTO.getFileName()));
+                    image.setProduct(product);
 
                     return image;
                 }).toList();
 
         product.setImages(images);
+    }
+
+    private String saveImageAndGetPath(String base64Image) {
+        return ImageUtils.saveImageFromBase64String(base64Image, baseDir, Constants.PRODUCT_IMAGE_DIRECTORY);
     }
 
     private void mapToSpecificationPropertyValues(
@@ -495,7 +528,7 @@ public class ProductServiceImpl implements ProductService {
                 image.setProduct(product);
                 product.getImages().add(image);
             }
-            image.setFileName(imageDTO.getFileName());
+            image.setImageLocation(imageDTO.getFileName());
         }
     }
 }
