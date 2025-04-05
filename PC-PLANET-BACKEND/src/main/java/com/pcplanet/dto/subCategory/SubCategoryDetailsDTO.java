@@ -1,6 +1,9 @@
-package com.pcplanet.dto;
+package com.pcplanet.dto.subCategory;
 
-import com.pcplanet.entity.Category;
+import com.pcplanet.dto.BrandDTO;
+import com.pcplanet.dto.FilterKeyDTO;
+import com.pcplanet.dto.FilterPropertyDTO;
+import com.pcplanet.entity.SubCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,19 +13,19 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CategoryDTO {
+public class SubCategoryDetailsDTO {
     private Integer id;
     private String name;
     private List<BrandDTO> brands;
     private List<FilterKeyDTO> filterKeys;
 
-    public CategoryDTO(int id, String name) {
+    public SubCategoryDetailsDTO(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public static CategoryDTO ofEntity(Category category) {
-        var categoryDTO = new CategoryDTO();
+    public static SubCategoryDetailsDTO ofEntity(SubCategory category) {
+        var categoryDTO = new SubCategoryDetailsDTO();
 
         categoryDTO.setId(category.getId());
         categoryDTO.setName(category.getName());

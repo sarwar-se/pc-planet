@@ -1,12 +1,15 @@
 package com.pcplanet.service;
 
-import com.pcplanet.dto.CategoryDTO;
-import com.pcplanet.dto.CategoryInfoDTO;
+import com.pcplanet.dto.category.CategoryDTO;
+import com.pcplanet.dto.category.CategoryDetailsDTO;
+import com.pcplanet.dto.category.CategoryInfoDTO;
 
 import java.util.List;
 
 public interface CategoryService {
+    List<CategoryDTO> getAllCategory();
+
     List<CategoryInfoDTO> getCategories();
 
-    CategoryDTO getCategoryDetailsByName(String categoryName);
+    CategoryDetailsDTO getCategoryDetailsByName(String categoryName);
 }

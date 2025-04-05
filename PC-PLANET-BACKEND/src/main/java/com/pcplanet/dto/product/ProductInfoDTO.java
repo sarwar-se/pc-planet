@@ -1,7 +1,9 @@
 package com.pcplanet.dto.product;
 
 import com.pcplanet.dto.BrandDTO;
-import com.pcplanet.dto.CategoryDTO;
+import com.pcplanet.dto.category.CategoryDTO;
+import com.pcplanet.dto.category.CategoryDetailsDTO;
+import com.pcplanet.dto.category.SubCategoryDTO;
 import com.pcplanet.entity.Product;
 import com.pcplanet.enums.ProductStatus;
 import lombok.Getter;
@@ -20,6 +22,7 @@ public class ProductInfoDTO {
     private ProductStatus status;
     private BrandDTO brand;
     private CategoryDTO category;
+    private SubCategoryDTO subCategory;
     private List<ProductKeyFeatureDTO> keyFeatures;
     private String image;
 
@@ -35,6 +38,9 @@ public class ProductInfoDTO {
 
         productInfoDTO.setBrand(new BrandDTO(product.getBrand().getId(), product.getBrand().getName()));
         productInfoDTO.setCategory(new CategoryDTO(product.getCategory().getId(), product.getCategory().getName()));
+        if (product.getSubCategory() != null) {
+            productInfoDTO.setSubCategory(new SubCategoryDTO(product.getSubCategory().getId(), product.getSubCategory().getName()));
+        }
 
         List<ProductKeyFeatureDTO> keyFeatureDTOs = product.getKeyFeatures()
                 .stream()

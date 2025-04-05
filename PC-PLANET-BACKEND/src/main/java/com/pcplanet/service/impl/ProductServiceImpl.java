@@ -8,6 +8,7 @@ import com.pcplanet.exception.ServiceException;
 import com.pcplanet.repository.*;
 import com.pcplanet.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
     private final ProductSpecificationRepository specificationRepository;
     private final ProductSpecificationPropertyRepository specificationPropertyRepository;
     private final ProductSpecificationPropertyValueRepository specificationPropertyValueRepository;
+
+    @Value("${app.product-uploaded-data.storage-directory}")
+    private String baseDir;
 
     public ProductServiceImpl(BrandRepository brandRepository,
                               ProductRepository productRepository,
@@ -177,15 +181,19 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDetailsDTO.getPrice());
         product.setStatus(productDetailsDTO.getStatus());
 
-        Brand brand = new Brand();
+        var brand = new Brand();
         brand.setId(productDetailsDTO.getBrand().getId());
-        brand.setName(productDetailsDTO.getBrand().getName());
         product.setBrand(brand);
 
-        Category category = new Category();
+        var category = new Category();
         category.setId(productDetailsDTO.getCategory().getId());
-        category.setName(productDetailsDTO.getCategory().getName());
         product.setCategory(category);
+
+        if (productDetailsDTO.getSubCategory() != null) {
+            var subCategory = new SubCategory();
+            subCategory.setId(productDetailsDTO.getSubCategory().getId());
+            product.setSubCategory(subCategory);
+        }
 
         product.setWarranty(productDetailsDTO.getWarranty());
     }
@@ -194,7 +202,7 @@ public class ProductServiceImpl implements ProductService {
         var keyFeatures = keyFeatureDTOs
                 .stream()
                 .map(featureDTO -> {
-                    ProductKeyFeature keyFeature = new ProductKeyFeature();
+                    var keyFeature = new ProductKeyFeature();
 
                     keyFeature.setName(featureDTO.getName());
                     keyFeature.setValue(featureDTO.getValue());
@@ -210,7 +218,7 @@ public class ProductServiceImpl implements ProductService {
         var specifications = specificationDTOs
                 .stream()
                 .map(specificationDTO -> {
-                    ProductSpecification specification = new ProductSpecification();
+                    var specification = new ProductSpecification();
 
                     specification.setType(specificationDTO.getType());
                     specification.setProduct(product);
@@ -233,6 +241,7 @@ public class ProductServiceImpl implements ProductService {
 
                     productDescription.setName(descriptionDTO.getName());
                     productDescription.setValue(descriptionDTO.getValue());
+                    productDescription.setProduct(product);
 
                     return productDescription;
                 }).toList();

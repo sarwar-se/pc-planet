@@ -85,10 +85,7 @@ const AppSearchField: React.FC<{
           onBlur={handleBlur}
           onFocus={handleFocus}
         />
-        <Button
-          variant='outline-warning bg-warning custom-search-btn'
-          onClick={() => showProducts(query)}
-        >
+        <Button variant='outline-warning custom-search-btn' onClick={() => showProducts(query)}>
           <FaSearch size={20} color='blueviolet' />
         </Button>
       </Form>

@@ -15,7 +15,7 @@ const HomePage = () => {
           <span className='text-white'>Right content</span>
         </div>
       </div>
-      <div className='bg-white mt-4 py-2 px-5 rounded-5'>
+      <div className='bg-white mt-4 py-2 px-4 shadow-sm rounded-5'>
         <Marquee speed={90} pauseOnHover>
           <span className='text-success'>
             আজ আমাদের সকল শাখা সম্পূর্ণ রূপে খোলা রয়েছে। আপনার পছন্দের পণ্যটি বুঝে নিতে চলে আসুন
@@ -23,7 +23,7 @@ const HomePage = () => {
           </span>
         </Marquee>
       </div>
-      <div className='mt-4'>
+      <div className='my-4'>
         <FeaturedCategory />
       </div>
     </div>

@@ -67,6 +67,12 @@
   min-width: 80%;
 }
 
+@media (max-width: 1200px) {
+  .product-container {
+    width: 100%;
+  }
+}
+
 .layout {
   min-height: 100vh;
   display: flex;
