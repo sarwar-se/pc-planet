@@ -1,7 +1,9 @@
 package com.pcplanet.dto.product;
 
 import com.pcplanet.dto.BrandDTO;
-import com.pcplanet.dto.CategoryDTO;
+import com.pcplanet.dto.category.CategoryDTO;
+import com.pcplanet.dto.category.CategoryDetailsDTO;
+import com.pcplanet.dto.category.SubCategoryDTO;
 import com.pcplanet.entity.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +35,9 @@ public class ProductDetailsDTO extends ProductInfoDTO {
 
         productDetailsDTO.setBrand(new BrandDTO(product.getBrand().getId(), product.getBrand().getName()));
         productDetailsDTO.setCategory(new CategoryDTO(product.getCategory().getId(), product.getCategory().getName()));
+        if (product.getSubCategory() != null) {
+            productDetailsDTO.setSubCategory(new SubCategoryDTO(product.getSubCategory().getId(), product.getSubCategory().getName()));
+        }
 
         List<ProductKeyFeatureDTO> keyFeatureDTOs = product.getKeyFeatures()
                 .stream()

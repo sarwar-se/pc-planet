@@ -1,7 +1,8 @@
 package com.pcplanet.controller;
 
-import com.pcplanet.dto.CategoryDTO;
-import com.pcplanet.dto.CategoryInfoDTO;
+import com.pcplanet.dto.category.CategoryDTO;
+import com.pcplanet.dto.category.CategoryDetailsDTO;
+import com.pcplanet.dto.category.CategoryInfoDTO;
 import com.pcplanet.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +17,18 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @GetMapping("/get-all")
+    public List<CategoryDTO> getAllCategory() {
+        return categoryService.getAllCategory();
+    }
+
     @GetMapping("/all")
     public List<CategoryInfoDTO> getCategories() {
         return categoryService.getCategories();
     }
 
     @GetMapping("/details")
-    public CategoryDTO getCategoryDetails(@RequestParam String categoryName) {
+    public CategoryDetailsDTO getCategoryDetails(@RequestParam String categoryName) {
         return categoryService.getCategoryDetailsByName(categoryName);
     }
 }

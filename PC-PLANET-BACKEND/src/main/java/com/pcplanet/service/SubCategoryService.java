@@ -1,7 +1,12 @@
 package com.pcplanet.service;
 
-import com.pcplanet.dto.SubCategoryDTO;
+import com.pcplanet.dto.subCategory.SubCategoryDTO;
+import com.pcplanet.dto.subCategory.SubCategoryDetailsDTO;
+
+import java.util.List;
 
 public interface SubCategoryService {
-    SubCategoryDTO getSubCategoryDetailsByName(String name);
+    List<SubCategoryDTO> getSubCategoriesByCategory(int id);
+
+    SubCategoryDetailsDTO getSubCategoryDetailsByName(String name);
 }
