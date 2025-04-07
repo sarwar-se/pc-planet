@@ -1,6 +1,7 @@
 package com.pcplanet.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ public class ProductDescription extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @NotBlank
     @Column(name = "value", length = 2048)
     private String value;
 

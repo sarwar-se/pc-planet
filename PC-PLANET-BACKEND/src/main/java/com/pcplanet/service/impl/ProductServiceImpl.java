@@ -81,8 +81,6 @@ public class ProductServiceImpl implements ProductService {
     public void saveProduct(ProductDetailsDTO productDetailsDTO) {
         log.debug("Saving new product with model: {}", productDetailsDTO.getModel());
 
-        checkBrandAndCategory(productDetailsDTO);
-
         Product product = new Product();
 
         mapToProduct(productDetailsDTO, product);
@@ -157,36 +155,39 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByNameContainsIgnoreCase(name).stream().map(ProductInfoDTO::ofEntity).toList();
     }
 
-    private void checkBrandAndCategory(ProductDetailsDTO productDetailsDTO) {
-        if (productDetailsDTO.getBrand() == null) {
-            log.warn("Brand must be provided");
-            throw new ServiceException(ErrorCode.NO_BRAND_FOUND);
-        }
-
-        brandRepository.findById(productDetailsDTO.getBrand().getId())
-                .orElseThrow(() -> {
-                    log.warn("Brand not found with id: {}", productDetailsDTO.getBrand().getId());
-                    return new ServiceException(ErrorCode.NO_BRAND_FOUND);
-                });
-
-        if (productDetailsDTO.getCategory() == null) {
-            log.warn("Category must be provided");
-            throw new ServiceException(ErrorCode.NO_CATEGORY_FOUND);
-        }
-
-        categoryRepository.findById(productDetailsDTO.getCategory().getId())
-                .orElseThrow(() -> {
-                    log.warn("Category not found with id: {}", productDetailsDTO.getCategory().getId());
-                    return new ServiceException(ErrorCode.NO_CATEGORY_FOUND);
-                });
-    }
 
     private void mapToProduct(ProductDetailsDTO productDetailsDTO, Product product) {
+        if (productDetailsDTO.getName() == null || productDetailsDTO.getName().isBlank()) {
+            throw new ServiceException(ErrorCode.NO_PRODUCT_NAME_PROVIDED);
+        }
         product.setName(productDetailsDTO.getName());
+
+        if (productDetailsDTO.getCode() == null || productDetailsDTO.getCode().isBlank()) {
+            throw new ServiceException(ErrorCode.NO_PRODUCT_CODE_PROVIDED);
+        }
+        if (productDetailsDTO.getCode().length() < 6 || productDetailsDTO.getCode().length() > 12) {
+            throw new ServiceException(ErrorCode.INVALID_PRODUCT_CODE_SIZE);
+        }
         product.setCode(productDetailsDTO.getCode());
+
+        if (productDetailsDTO.getModel() == null || productDetailsDTO.getModel().isBlank()) {
+            throw new ServiceException(ErrorCode.NO_PRODUCT_MODEL_PROVIDED);
+        }
         product.setModel(productDetailsDTO.getModel());
+
+        if (productDetailsDTO.getPrice() == null) {
+            throw new ServiceException(ErrorCode.NO_PRODUCT_PRICE_PROVIDED);
+        }
         product.setPrice(productDetailsDTO.getPrice());
+        product.setWarranty(productDetailsDTO.getWarranty());
+
+        if (productDetailsDTO.getStatus() == null) {
+            log.warn("Product status must be provided");
+            throw new ServiceException(ErrorCode.NO_PRODUCT_STATUS_SELECTED);
+        }
         product.setStatus(productDetailsDTO.getStatus());
+
+        checkBrandAndCategory(productDetailsDTO);
 
         var brand = new Brand();
         brand.setId(productDetailsDTO.getBrand().getId());
@@ -201,8 +202,30 @@ public class ProductServiceImpl implements ProductService {
             subCategory.setId(productDetailsDTO.getSubCategory().getId());
             product.setSubCategory(subCategory);
         }
+    }
 
-        product.setWarranty(productDetailsDTO.getWarranty());
+    private void checkBrandAndCategory(ProductDetailsDTO productDetailsDTO) {
+        if (productDetailsDTO.getCategory() == null) {
+            log.warn("Product category must be provided");
+            throw new ServiceException(ErrorCode.NO_CATEGORY_SELECTED);
+        }
+
+        categoryRepository.findById(productDetailsDTO.getCategory().getId())
+                .orElseThrow(() -> {
+                    log.warn("Product category not found with id: {}", productDetailsDTO.getCategory().getId());
+                    return new ServiceException(ErrorCode.NO_CATEGORY_FOUND);
+                });
+
+        if (productDetailsDTO.getBrand() == null) {
+            log.warn("Product brand must be provided");
+            throw new ServiceException(ErrorCode.NO_BRAND_SELECTED);
+        }
+
+        brandRepository.findById(productDetailsDTO.getBrand().getId())
+                .orElseThrow(() -> {
+                    log.warn("Product brand not found with id: {}", productDetailsDTO.getBrand().getId());
+                    return new ServiceException(ErrorCode.NO_BRAND_FOUND);
+                });
     }
 
     private void mapToProductKeyFeatures(List<ProductKeyFeatureDTO> keyFeatureDTOs, Product product) {
