@@ -10,19 +10,19 @@ import { ProductInfo, ProductKeyFeature } from '../../models/Product';
 
 const ProductCard: React.FC<{ product: ProductInfo }> = ({ product }) => {
   const { keyFeatures } = product;
-  const no_image = 'empty.jpg';
+  const no_image = '/empty.jpg';
   const navigate = useNavigate();
 
-  const getProductStatus = (value: string) => {
+  const getProductStatus = (value: string | undefined) => {
     const status = productStatusMap().find((item) => item.value === value);
     return status ? status.label : undefined;
   };
 
-  const handleProductClick = (productId: number, productName: string) => {
+  const handleProductClick = (productId: number | null, productName: string) => {
     navigate(appRoutes.productDetails(productName), { state: { productId } });
   };
 
-  const isButtonDisabled = (status: string) => {
+  const isButtonDisabled = (status: string | undefined) => {
     if (status !== PRODUCT_STATUS.IN_STOCK) {
       return true;
     }
@@ -47,11 +47,12 @@ const ProductCard: React.FC<{ product: ProductInfo }> = ({ product }) => {
         <Card.Text style={{ fontSize: 13 }}>
           <div className='opacity-75'>
             <ul>
-              {keyFeatures.map((keyFeature: ProductKeyFeature, i: number) => (
-                <li key={i}>
-                  {keyFeature.name ? keyFeature.name + ': ' + keyFeature.value : keyFeature.value}
-                </li>
-              ))}
+              {keyFeatures &&
+                keyFeatures.map((keyFeature: ProductKeyFeature, i: number) => (
+                  <li key={i}>
+                    {keyFeature.name ? keyFeature.name + ': ' + keyFeature.value : keyFeature.value}
+                  </li>
+                ))}
             </ul>
           </div>
         </Card.Text>
@@ -59,10 +60,10 @@ const ProductCard: React.FC<{ product: ProductInfo }> = ({ product }) => {
       <Card.Footer className='product-card-footer'>
         <div className='text-center text-danger fw-bold mb-2'>
           {product.status === PRODUCT_STATUS.IN_STOCK
-            ? numberFormat(product.price) + '৳'
-            : getProductStatus(product.status)}
+            ? numberFormat(product.price ? product.price : 0) + '৳'
+            : getProductStatus(product.status ? product.status : undefined)}
         </div>
-        {!isButtonDisabled(product.status) ? (
+        {!isButtonDisabled(product.status ? product.status : undefined) ? (
           <AppButton className='add-cart-button' onClick={() => null}>
             <FaCartPlus size={20} /> Add To Cart
           </AppButton>

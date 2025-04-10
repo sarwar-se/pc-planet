@@ -2,7 +2,7 @@ import React from 'react';
 
 const AppButton: React.FC<{
   onClick: () => void;
-  className: string;
+  className?: string;
   children: React.ReactNode;
 }> = ({ onClick, className, children, ...rest }) => {
   return (

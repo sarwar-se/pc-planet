@@ -1,66 +1,83 @@
-type ProductStatus = 'IN_STOCK' | 'OUT_OF_STOCK' | 'UP_COMING' | 'PRE_ORDER';
+export type ProductStatus = 'IN_STOCK' | 'OUT_OF_STOCK' | 'UP_COMING' | 'PRE_ORDER';
 
-type ProductBrand = {
-  id: number;
-  name: string;
+export type ProductBrand = {
+  id: number | null;
+  name?: string;
 };
 
-type ProductCategory = {
-  id: number;
-  name: string;
-  brands: ProductBrand[];
+export type ProductCategory = {
+  id: number | null;
+  name?: string;
+  brands?: ProductBrand[];
+};
+
+export type ProductSubCategory = {
+  id: number | null;
+  name?: string;
 };
 
 export type ProductKeyFeature = {
-  id: number;
+  id: number | null;
   name: string;
   value: string;
 };
 
 export interface ProductInfo {
-  id: number;
+  id: number | null;
   name: string;
   code: string;
   model: string;
-  price: number;
-  status: ProductStatus;
+  price: number | null;
+  status: ProductStatus | undefined;
   brand: ProductBrand | null;
   category: ProductCategory | null;
-  keyFeatures: ProductKeyFeature[];
+  keyFeatures?: ProductKeyFeature[];
   image: string;
 }
 
-type PropertyValue = {
-  id: number;
+export type PropertyValue = {
+  id: number | null;
   value: string;
 };
 
-type SpecificationProperties = {
-  id: number;
+export type SpecificationProperty = {
+  id: number | null;
   name: string;
   propertyValues: PropertyValue[];
 };
 
-type ProductSpecification = {
-  id: number;
+export type ProductSpecification = {
+  id: number | null;
   type: string;
-  properties: SpecificationProperties[];
+  properties: SpecificationProperty[];
 };
 
-type ProductDescription = {
-  id: number;
+export type ProductDescription = {
+  id: number | null;
   name: string;
   value: string;
 };
 
-type ProductImage = {
-  id: number;
+export type ProductAttributeValue = {
+  id: number | null;
+  value?: string;
+};
+
+export type ProductAttribute = {
+  id: number | null;
+  name: string;
+  attributeValues?: ProductAttributeValue[];
+};
+
+export type ProductImage = {
+  id: number | null;
   fileName: string;
 };
 
 export interface ProductDetailsModel extends ProductInfo {
-  warranty: number;
-  specifications: ProductSpecification[];
-  descriptions: ProductDescription[];
-  images: ProductImage[];
+  warranty?: number;
+  specifications?: ProductSpecification[];
+  descriptions?: ProductDescription[];
+  attributeValues?: ProductAttributeValue[];
+  images?: ProductImage[];
 }

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import {
+  Navbar,
+  Nav,
+  Container,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'react-bootstrap';
 import { BsFillGiftFill } from 'react-icons/bs';
-import { FaBolt, FaUser, FaShoppingCart, FaSearch } from 'react-icons/fa';
+import { FaBolt, FaUser, FaShoppingCart, FaSearch, FaCaretDown } from 'react-icons/fa';
 import AppButton from '../patterns/AppButton';
 import { computer_planet } from '../../assets';
 import AppSearchField from '../patterns/AppSearchField';
@@ -91,9 +99,32 @@ const Header: React.FC<{ handleShowSidebar: () => void }> = ({ handleShowSidebar
                       <span className='cart-count'>9</span>
                     </span>
                   </Nav.Link>
+
                   <AppButton onClick={handleShowSidebar} className={'pc-builder-button'}>
                     PC Builder
                   </AppButton>
+
+                  <Dropdown>
+                    <DropdownToggle variant='danger' className='fw-bold'>
+                      Admin <FaCaretDown />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() => {
+                          navigate(appRoutes.addProduct);
+                        }}
+                      >
+                        Add Product
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={() => {
+                          navigate(appRoutes.addProductMetadata);
+                        }}
+                      >
+                        Add Product Metadata
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
                 </Nav>
               </div>
             </div>
