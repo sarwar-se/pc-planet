@@ -1,5 +1,6 @@
 package com.pcplanet.controller;
 
+import com.pcplanet.dto.ProductAttributeDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDetailsDTO;
 import com.pcplanet.service.SubCategoryService;
@@ -25,5 +26,10 @@ public class SubCategoryController {
     @GetMapping("/details")
     public SubCategoryDetailsDTO getCategoryDetails(@RequestParam String subCategoryName) {
         return subCategoryService.getSubCategoryDetailsByName(subCategoryName);
+    }
+
+    @GetMapping("/attributes")
+    public List<ProductAttributeDTO> getProductAttributesBySubCategory(@RequestParam int subCategoryId) {
+        return subCategoryService.getProductAttributesBySubCategory(subCategoryId);
     }
 }

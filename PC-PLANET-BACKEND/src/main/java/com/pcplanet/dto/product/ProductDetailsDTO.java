@@ -1,9 +1,8 @@
 package com.pcplanet.dto.product;
 
 import com.pcplanet.dto.BrandDTO;
-import com.pcplanet.dto.ProductVariantPropertyDTO;
+import com.pcplanet.dto.ProductAttributeValueDTO;
 import com.pcplanet.dto.category.CategoryDTO;
-import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.SubCategoryDTO;
 import com.pcplanet.entity.Product;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class ProductDetailsDTO extends ProductInfoDTO {
     private Integer warranty;
     private List<ProductSpecificationDTO> specifications;
     private List<ProductDescriptionDTO> descriptions;
-    List<ProductVariantPropertyDTO> variantProperties;
+    private List<ProductAttributeValueDTO> attributeValues;
     private List<ProductImageDTO> images;
 
     public static ProductDetailsDTO ofEntity(Product product) {
@@ -41,10 +40,10 @@ public class ProductDetailsDTO extends ProductInfoDTO {
             productDetailsDTO.setSubCategory(new SubCategoryDTO(product.getSubCategory().getId(), product.getSubCategory().getName()));
         }
 
-        List<ProductKeyFeatureDTO> keyFeatureDTOs = product.getKeyFeatures()
+        var keyFeatureDTOs = product.getKeyFeatures()
                 .stream()
                 .map(productKeyFeature -> {
-                    ProductKeyFeatureDTO keyFeatureDTO = new ProductKeyFeatureDTO();
+                    var keyFeatureDTO = new ProductKeyFeatureDTO();
 
                     keyFeatureDTO.setId(productKeyFeature.getId());
                     keyFeatureDTO.setName(productKeyFeature.getName());
@@ -53,10 +52,10 @@ public class ProductDetailsDTO extends ProductInfoDTO {
                     return keyFeatureDTO;
                 }).toList();
 
-        List<ProductImageDTO> imageDTOs = product.getImages()
+        var imageDTOs = product.getImages()
                 .stream()
                 .map(productImage -> {
-                    ProductImageDTO imageDTO = new ProductImageDTO();
+                    var imageDTO = new ProductImageDTO();
 
                     imageDTO.setId(productImage.getId());
                     imageDTO.setFileName(productImage.getImageLocation());
@@ -64,18 +63,18 @@ public class ProductDetailsDTO extends ProductInfoDTO {
                 }).toList();
         productDetailsDTO.setImages(imageDTOs);
 
-        List<ProductSpecificationDTO> specificationDTOs = new ArrayList<>();
+        var specificationDTOs = new ArrayList<ProductSpecificationDTO>();
 
         product.getSpecifications().forEach(specification -> {
-            ProductSpecificationDTO specificationDTO = new ProductSpecificationDTO();
+            var specificationDTO = new ProductSpecificationDTO();
 
-            List<ProductSpecificationPropertyDTO> propertyDTOList = new ArrayList<>();
+            var propertyDTOList = new ArrayList<ProductSpecificationPropertyDTO>();
             specification.getSpecificationProperties().forEach(specificationProperty -> {
                 var propertyDTO = new ProductSpecificationPropertyDTO();
                 propertyDTO.setId(specificationProperty.getId());
                 propertyDTO.setName(specificationProperty.getName());
 
-                List<ProductSpecificationPropertyValueDTO> propertyValueDTOs = new ArrayList<>();
+                var propertyValueDTOs = new ArrayList<ProductSpecificationPropertyValueDTO>();
                 specificationProperty.getSpecificationPropertyValues().forEach(specificationPropertyValue -> {
                     var detailsDTO = new ProductSpecificationPropertyValueDTO();
                     detailsDTO.setId(specificationPropertyValue.getId());
@@ -88,7 +87,6 @@ public class ProductDetailsDTO extends ProductInfoDTO {
                 propertyDTOList.add(propertyDTO);
             });
 
-
             specificationDTO.setId(specification.getId());
             specificationDTO.setType(specification.getType());
             specificationDTO.setProperties(propertyDTOList);
@@ -99,7 +97,7 @@ public class ProductDetailsDTO extends ProductInfoDTO {
         productDetailsDTO.setKeyFeatures(keyFeatureDTOs);
         productDetailsDTO.setSpecifications(specificationDTOs);
 
-        List<ProductDescriptionDTO> descriptionDTOs = product.getDescriptions()
+        var descriptionDTOs = product.getDescriptions()
                 .stream()
                 .map(productDescription -> {
                     var productDescDTO = new ProductDescriptionDTO();

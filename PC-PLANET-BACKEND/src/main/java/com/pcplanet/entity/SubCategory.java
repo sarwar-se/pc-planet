@@ -31,9 +31,9 @@ public class SubCategory extends BaseEntity {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(
-            name = "sub_category_filter_key",
+            name = "sub_category_product_attribute",
             joinColumns = @JoinColumn(name = "sub_category_id"),
-            inverseJoinColumns = @JoinColumn(name = "filter_key_id")
+            inverseJoinColumns = @JoinColumn(name = "product_attribute_id")
     )
-    private List<FilterKey> filterKeys;
+    private List<ProductAttribute> attributes;
 }

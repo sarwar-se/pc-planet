@@ -2,8 +2,8 @@ package com.pcplanet.repository.Impl;
 
 import com.pcplanet.entity.Brand;
 import com.pcplanet.entity.Category;
-import com.pcplanet.entity.FilterProperty;
 import com.pcplanet.entity.Product;
+import com.pcplanet.entity.ProductAttributeValue;
 import com.pcplanet.enums.ProductStatus;
 import com.pcplanet.repository.ProductRepositoryCustom;
 import jakarta.persistence.EntityManager;
@@ -20,7 +20,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<Product> findProducts(String categoryName, String subCategoryName, String brandName, List<ProductStatus> statuses, List<String> brands, List<String> properties) {
+    public List<Product> findProducts(String categoryName, String subCategoryName, String brandName, List<ProductStatus> statuses, List<String> brands, List<String> attributeValues) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
 
@@ -28,14 +28,14 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         Join<Product, Category> category = product.join("category", JoinType.LEFT);
         Join<Product, Category> subCategory = product.join("subCategory", JoinType.LEFT);
         Join<Product, Brand> brand = product.join("brand", JoinType.LEFT);
-        Join<Product, FilterProperty> filterProperty = product.join("properties", JoinType.LEFT);
+        Join<Product, ProductAttributeValue> attributeValue = product.join("attributeValues", JoinType.LEFT);
 
         Predicate predicate = cb.conjunction();
 
         if (categoryName != null && !categoryName.isBlank()) {
             predicate = cb.and(predicate, cb.equal(category.get("name"), categoryName));
         }
-        
+
         if (subCategoryName != null && !subCategoryName.isBlank()) {
             predicate = cb.and(predicate, cb.equal(subCategory.get("name"), subCategoryName));
         }
@@ -52,8 +52,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             predicate = cb.and(predicate, product.get("brand").get("name").in(brands));
         }
 
-        if (properties != null && !properties.isEmpty()) {
-            predicate = cb.and(predicate, filterProperty.get("name").in(properties));
+        if (attributeValues != null && !attributeValues.isEmpty()) {
+            predicate = cb.and(predicate, attributeValue.get("value").in(attributeValues));
         }
 
         query.where(predicate);

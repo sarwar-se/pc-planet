@@ -1,6 +1,6 @@
 package com.pcplanet.controller;
 
-import com.pcplanet.dto.ProductVariantDTO;
+import com.pcplanet.dto.ProductAttributeDTO;
 import com.pcplanet.dto.category.CategoryDTO;
 import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.CategoryInfoDTO;
@@ -33,8 +33,8 @@ public class CategoryController {
         return categoryService.getCategoryDetailsByName(categoryName);
     }
 
-    @GetMapping("/variants")
-    public List<ProductVariantDTO> getProductVariantsByCategory(@RequestParam int categoryId) {
-        return categoryService.getProductVariantsByCategoryId(categoryId);
+    @GetMapping("/attributes")
+    public List<ProductAttributeDTO> getProductAttributesByCategory(@RequestParam int categoryId) {
+        return categoryService.getProductAttributesByCategoryId(categoryId);
     }
 }

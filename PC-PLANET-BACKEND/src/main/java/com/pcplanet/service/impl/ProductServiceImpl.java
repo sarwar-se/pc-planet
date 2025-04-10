@@ -1,7 +1,7 @@
 package com.pcplanet.service.impl;
 
 import com.pcplanet.Constants;
-import com.pcplanet.dto.ProductVariantPropertyDTO;
+import com.pcplanet.dto.ProductAttributeValueDTO;
 import com.pcplanet.dto.param.ProductFilterParams;
 import com.pcplanet.dto.product.*;
 import com.pcplanet.entity.*;
@@ -29,9 +29,9 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository imageRepository;
     private final ProductKeyFeatureRepository keyFeatureRepository;
-    private final FilterPropertyRepository filterPropertyRepository;
     private final ProductDescriptionRepository descriptionRepository;
     private final ProductSpecificationRepository specificationRepository;
+    private final ProductAttributeValueRepository attributeValueRepository;
     private final ProductSpecificationPropertyRepository specificationPropertyRepository;
     private final ProductSpecificationPropertyValueRepository specificationPropertyValueRepository;
 
@@ -43,9 +43,9 @@ public class ProductServiceImpl implements ProductService {
                               CategoryRepository categoryRepository,
                               ProductImageRepository imageRepository,
                               ProductKeyFeatureRepository keyFeatureRepository,
-                              FilterPropertyRepository filterPropertyRepository,
                               ProductDescriptionRepository descriptionRepository,
                               ProductSpecificationRepository specificationRepository,
+                              ProductAttributeValueRepository attributeValueRepository,
                               ProductSpecificationPropertyRepository specificationPropertyRepository,
                               ProductSpecificationPropertyValueRepository specificationPropertyValueRepository) {
 
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
         this.keyFeatureRepository = keyFeatureRepository;
         this.descriptionRepository = descriptionRepository;
         this.specificationRepository = specificationRepository;
-        this.filterPropertyRepository = filterPropertyRepository;
+        this.attributeValueRepository = attributeValueRepository;
         this.specificationPropertyRepository = specificationPropertyRepository;
         this.specificationPropertyValueRepository = specificationPropertyValueRepository;
     }
@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductInfoDTO> getProducts(ProductFilterParams params) {
 
         return productRepository.findProducts(params.getCategoryName(), params.getSubCategoryName(),
-                        params.getBrandName(), params.getStatuses(), params.getBrandNames(), params.getProperties())
+                        params.getBrandName(), params.getStatuses(), params.getBrandNames(), params.getAttributeValues())
                 .stream()
                 .map(ProductInfoDTO::ofEntity)
                 .toList();
@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product();
 
         mapToProduct(productDetailsDTO, product);
-        mapToProductVariant(productDetailsDTO.getVariantProperties(), product);
+        mapToProductAttributeValue(productDetailsDTO.getAttributeValues(), product);
         mapToProductKeyFeatures(productDetailsDTO.getKeyFeatures(), product);
         mapToProductSpecifications(productDetailsDTO.getSpecifications(), product);
         mapToProductDescriptions(productDetailsDTO.getDescriptions(), product);
@@ -244,24 +244,24 @@ public class ProductServiceImpl implements ProductService {
         product.setKeyFeatures(keyFeatures);
     }
 
-    private void mapToProductVariant(List<ProductVariantPropertyDTO> variantDTOs, Product product) {
+    private void mapToProductAttributeValue(List<ProductAttributeValueDTO> attributeValueDTOs, Product product) {
+        var attributeValues = new ArrayList<ProductAttributeValue>();
 
-        List<FilterProperty> filterProperties = new ArrayList<>();
-        for (var variantDTO : variantDTOs) {
-            if (variantDTO.getId() == null) {
+        for (var attributeValueDTO : attributeValueDTOs) {
+            if (attributeValueDTO.getId() == null) {
                 return;
             }
 
-            FilterProperty variant = filterPropertyRepository.findById(variantDTO.getId())
+            var attributeValue = attributeValueRepository.findById(attributeValueDTO.getId())
                     .orElseThrow(() -> {
-                        log.warn("Variant not found for id: {}", variantDTO.getId());
+                        log.warn("Attribute value not found for id: {}", attributeValueDTO.getId());
                         return new ServiceException(ErrorCode.NOT_FOUND);
                     });
-            variant.getProducts().add(product);
-            filterProperties.add(variant);
+            attributeValue.getProducts().add(product);
+            attributeValues.add(attributeValue);
 
         }
-        product.setProperties(filterProperties);
+        product.setAttributeValues(attributeValues);
     }
 
     private void mapToProductSpecifications(List<ProductSpecificationDTO> specificationDTOs, Product product) {

@@ -11,18 +11,18 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "filter_property") // todo: entity name
-public class FilterProperty extends BaseEntity {
+@Table(name = "product_attribute_value")
+public class ProductAttributeValue extends BaseEntity {
 
     @NotBlank
-    @Column(name = "name")
-    private String name;
+    @Column(name = "value")
+    private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "filter_key_id", foreignKey = @ForeignKey(name = "fk_filter_property_filter_key"))
-    private FilterKey filterKey;
+    @JoinColumn(name = "product_attribute_id", foreignKey = @ForeignKey(name = "fk_pro_attribute_pro_attribute_value"))
+    private ProductAttribute attribute;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "properties")
+    @ManyToMany(mappedBy = "attributeValues")
     private List<Product> products;
 }

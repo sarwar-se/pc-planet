@@ -11,7 +11,7 @@ import java.util.List;
 public class ProductFilterParams {
     List<ProductStatus> statuses;
     List<String> brandNames;
-    List<String> properties;
+    List<String> attributeValues;
     String categoryName;
     String subCategoryName;
     String brandName;

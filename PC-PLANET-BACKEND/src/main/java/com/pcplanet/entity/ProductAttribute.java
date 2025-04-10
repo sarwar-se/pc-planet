@@ -11,22 +11,22 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "filter_key") // todo: entity name
-public class FilterKey extends BaseEntity {
+@Table(name = "product_attribute")
+public class ProductAttribute extends BaseEntity {
 
     @NotBlank
     @Column(name = "name")
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "filterKeys")
+    @ManyToMany(mappedBy = "attributes")
     private List<Category> categories;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "filterKeys")
+    @ManyToMany(mappedBy = "attributes")
     private List<SubCategory> subCategories;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "filterKey", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<FilterProperty> filterProperties;
+    @OneToMany(mappedBy = "attribute", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<ProductAttributeValue> attributeValues;
 }
