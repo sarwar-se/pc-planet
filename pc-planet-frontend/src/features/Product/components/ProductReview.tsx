@@ -70,6 +70,7 @@ const ProductReview = () => {
                 placeholder='Enter Your Name'
                 value={formData.name}
                 onChange={handleChange}
+                required
               />
             </FormGroup>
             <FormGroup className='mt-3'>

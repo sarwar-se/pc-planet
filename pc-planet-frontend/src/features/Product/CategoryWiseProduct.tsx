@@ -9,15 +9,15 @@ import { useParams } from 'react-router-dom';
 import { productStatusMap } from '../../utils/helperFunction';
 import { ProductInfo } from '../models/Product';
 
-type FilterProperty = {
+type AttributeValue = {
   id: number;
-  name: string;
+  value: string;
 };
 
-type FilterKey = {
+type ProductAttribute = {
   id: number;
   name: string;
-  filterProperties: FilterProperty[];
+  attributeValues: AttributeValue[];
 };
 
 type ProductBrand = {
@@ -29,7 +29,7 @@ interface CategoryDetails {
   id: number;
   name: string;
   brands: ProductBrand[];
-  filterKeys: FilterKey[];
+  attributes: ProductAttribute[];
 }
 
 const Product = () => {
@@ -43,13 +43,13 @@ const Product = () => {
     id: 0,
     name: '',
     brands: [],
-    filterKeys: [],
+    attributes: [],
   });
 
   const [selectedAvailability, setSelectedAvailability] = useState<string[]>([]);
   const [selectedProductStatus, setSelectedProductStatus] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
+  const [selectedAttributeValues, setSelectedAttributeValues] = useState<string[]>([]);
 
   const getAvailabilitiesType = (): string[] => {
     return productStatusMap()
@@ -62,8 +62,14 @@ const Product = () => {
     return status ? status.value : 'UNKNOWN';
   };
 
-  const getFilterValues = (obj: ProductBrand[] | FilterProperty[]): string[] => {
-    return Array.from(new Set(obj.map((o: ProductBrand | FilterProperty) => o.name)));
+  const getbrandNames = (brands: ProductBrand[]): string[] => {
+    return Array.from(new Set(brands.map((brand: ProductBrand) => brand.name)));
+  };
+
+  const getAttributeValues = (attributeValues: AttributeValue[]): string[] => {
+    return Array.from(
+      new Set(attributeValues.map((attributeValue: AttributeValue) => attributeValue.value)),
+    );
   };
 
   const handleProductFilter = (filterType: FILTER_TYPE | string, value: string) => {
@@ -83,10 +89,10 @@ const Product = () => {
         setSelectedBrands((prev) => [...prev, value]);
       }
     } else {
-      if (selectedProperties.includes(value)) {
-        setSelectedProperties(selectedProperties.filter((item) => item !== value));
+      if (selectedAttributeValues.includes(value)) {
+        setSelectedAttributeValues(selectedAttributeValues.filter((item) => item !== value));
       } else {
-        setSelectedProperties((prev) => [...prev, value]);
+        setSelectedAttributeValues((prev) => [...prev, value]);
       }
     }
   };
@@ -97,7 +103,7 @@ const Product = () => {
     getProducts(
       selectedProductStatus,
       selectedBrands,
-      selectedProperties,
+      selectedAttributeValues,
       categoryName ? categoryName : '',
       subCategoryName ? subCategoryName : '',
       brandName ? brandName : '',
@@ -113,7 +119,7 @@ const Product = () => {
   }, [
     selectedProductStatus,
     selectedBrands,
-    selectedProperties,
+    selectedAttributeValues,
     categoryName,
     subCategoryName,
     brandName,
@@ -128,7 +134,7 @@ const Product = () => {
 
           setSelectedAvailability([]);
           setSelectedBrands([]);
-          setSelectedProperties([]);
+          setSelectedAttributeValues([]);
         })
         .catch(() => null);
     } else if (categoryName) {
@@ -139,7 +145,7 @@ const Product = () => {
 
           setSelectedAvailability([]);
           setSelectedBrands([]);
-          setSelectedProperties([]);
+          setSelectedAttributeValues([]);
         })
         .catch(() => null);
     }
@@ -162,7 +168,7 @@ const Product = () => {
               <FilterCard
                 title={'Brand'}
                 groupType={GROUP_TYPE.CHECKBOX}
-                values={getFilterValues(categoryDetails.brands)}
+                values={getbrandNames(categoryDetails.brands)}
                 selectedValues={selectedBrands}
                 filterType={FILTER_TYPE.BRAND}
                 filterHandler={handleProductFilter}
@@ -170,13 +176,13 @@ const Product = () => {
             )}
 
             {categoryDetails &&
-              categoryDetails.filterKeys &&
-              categoryDetails.filterKeys.map((filterKey: FilterKey) => (
+              categoryDetails.attributes &&
+              categoryDetails.attributes.map((attribute: ProductAttribute) => (
                 <FilterCard
-                  title={filterKey.name}
+                  title={attribute.name}
                   groupType={GROUP_TYPE.CHECKBOX}
-                  values={getFilterValues(filterKey.filterProperties)}
-                  selectedValues={selectedProperties}
+                  values={getAttributeValues(attribute.attributeValues)}
+                  selectedValues={selectedAttributeValues}
                   filterType={FILTER_TYPE.PROPERTY}
                   filterHandler={handleProductFilter}
                 />

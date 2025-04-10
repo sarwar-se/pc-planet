@@ -21,7 +21,7 @@ const AppSearchField: React.FC<{
       code: '',
       model: '',
       price: 0,
-      status: 'OUT_OF_STOCK',
+      status: undefined,
       brand: null,
       category: null,
       keyFeatures: [],
@@ -61,7 +61,7 @@ const AppSearchField: React.FC<{
     navigate(appRoutes.searchProduct(query));
   };
 
-  const handleProductClick = (productId: number, productName: string) => {
+  const handleProductClick = (productId: number | null, productName: string) => {
     clearSearchField();
     navigate(appRoutes.productDetails(productName), { state: { productId } });
   };
@@ -110,7 +110,7 @@ const AppSearchField: React.FC<{
                     <div className='d-flex flex-column gap-1'>
                       <span>{product.name}</span>
                       <span className='text-danger fw-bold'>
-                        {numberFormat(product.price)}
+                        {numberFormat(product.price ? product.price : 0)}
                         {'৳'}
                       </span>
                     </div>

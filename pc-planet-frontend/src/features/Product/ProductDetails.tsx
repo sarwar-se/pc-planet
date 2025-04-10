@@ -76,17 +76,18 @@ const ProductDetails = () => {
               </div>
 
               <div className='d-flex'>
-                {productDetails.images.map((image) => (
-                  <img
-                    key={image.id}
-                    src={`${getImageUrl(image.fileName)}`}
-                    alt={`Thumbnail ${image.id}`}
-                    className={`thumbnail border p-1 ${
-                      selectedImage === image.fileName && 'thumbnail-selected'
-                    }`}
-                    onClick={() => handleImageClick(image.fileName)}
-                  />
-                ))}
+                {productDetails.images &&
+                  productDetails.images.map((image) => (
+                    <img
+                      key={image.id}
+                      src={`${getImageUrl(image.fileName)}`}
+                      alt={`Thumbnail ${image.id}`}
+                      className={`thumbnail border p-1 ${
+                        selectedImage === image.fileName && 'thumbnail-selected'
+                      }`}
+                      onClick={() => handleImageClick(image.fileName)}
+                    />
+                  ))}
               </div>
             </div>
 
@@ -125,7 +126,7 @@ const ProductDetails = () => {
 
           {/* Specification */}
           <section className='bg-white shadow-sm p-4 rounded' ref={specificationSection}>
-            {productDetails.specifications.length > 0 ? (
+            {productDetails.specifications && productDetails.specifications.length > 0 ? (
               <>
                 <span className='fs-5 fw-bold'>Specifications</span>
                 <div className='d-flex flex-column mt-3'>
@@ -161,7 +162,7 @@ const ProductDetails = () => {
 
           {/* Descriptions */}
           <section className='bg-white shadow-sm p-4 rounded' ref={descriptionSection}>
-            {productDetails.descriptions.length > 0 ? (
+            {productDetails.descriptions && productDetails.descriptions.length > 0 ? (
               <>
                 <span className='fs-5 fw-bold'>Descriptions</span>
                 <div className='d-flex flex-column gap-3 mt-3'>

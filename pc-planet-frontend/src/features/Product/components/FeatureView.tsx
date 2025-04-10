@@ -15,11 +15,15 @@ const FeatureView: React.FC<{ productDetails: ProductDetailsModel }> = ({ produc
       <div className='d-flex flex-column flex-md-row gap-2 mt-2 product-info'>
         <span className='bg-light border rounded-pill px-2'>
           <span className='opacity-75'>Price:</span>{' '}
-          <span className='fw-bold'>{numberFormat(productDetails.price)}৳</span>
+          <span className='fw-bold'>
+            {numberFormat(productDetails.price ? productDetails.price : 0)}৳
+          </span>
         </span>
         <span className='bg-light border rounded-pill px-2'>
           <span className='opacity-75'>Status:</span>{' '}
-          <span className='fw-bold'>{getAvailabilityType(productDetails.status)}</span>
+          <span className='fw-bold'>
+            {getAvailabilityType(productDetails.status ? productDetails.status : undefined)}
+          </span>
         </span>
         <span className='bg-light border rounded-pill px-2'>
           <span className='opacity-75'>Product Code:</span>{' '}
@@ -34,11 +38,12 @@ const FeatureView: React.FC<{ productDetails: ProductDetailsModel }> = ({ produc
       <div className='d-flex flex-column mt-3'>
         <h6 className='fs-5 fw-bold'>Key features</h6>
         <ul>
-          {productDetails.keyFeatures.map((keyFeature: ProductKeyFeature) => (
-            <li key={keyFeature.id}>
-              {keyFeature.name ? keyFeature.name + ': ' + keyFeature.value : keyFeature.value}
-            </li>
-          ))}
+          {productDetails.keyFeatures &&
+            productDetails.keyFeatures.map((keyFeature: ProductKeyFeature) => (
+              <li key={keyFeature.id}>
+                {keyFeature.name ? keyFeature.name + ': ' + keyFeature.value : keyFeature.value}
+              </li>
+            ))}
         </ul>
       </div>
 

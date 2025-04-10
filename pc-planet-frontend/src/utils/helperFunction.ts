@@ -1,5 +1,3 @@
-import { UPLOAD_PATH } from '../constants/appConstants';
-
 export const convertToBanglaDigits = (number: number): string => {
   const banglaDigitsMap: { [key: string]: string } = {
     '0': '০',
@@ -49,12 +47,29 @@ export const productStatusMap = (): ProductStatus[] => {
   ];
 };
 
-export const getAvailabilityType = (value: string): string[] => {
+export const getAvailabilityType = (value: string | undefined): string[] => {
   return productStatusMap()
     .filter((type) => type.value === value)
     .map((type) => type.label);
 };
 
 export const getImageUrl = (fileName: string) => {
-  return UPLOAD_PATH + fileName;
+  return process.env.REACT_APP_PRODUCT_IMAGE_DIR + fileName;
+};
+
+type DropdownSelectItem = {
+  value: string | number;
+  label: string;
+};
+
+export const toDropdownItems = (items = [], value: number | string, label: string) => {
+  const results: DropdownSelectItem[] = [];
+  items.forEach((ele) => {
+    results.push({
+      value: ele[value],
+      label: ele[label],
+    });
+  });
+
+  return results;
 };

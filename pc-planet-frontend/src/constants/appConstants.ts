@@ -22,5 +22,3 @@ export enum STATUS {
   SUCCESS = 'success',
   ERROR = 'error',
 }
-
-export const UPLOAD_PATH = '/uploads/';
