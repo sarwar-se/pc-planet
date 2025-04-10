@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductVariantPropertyDTO {
+public class ProductAttributeValueDTO {
     private Integer id;
-    private String name;
+    private String value;
 }

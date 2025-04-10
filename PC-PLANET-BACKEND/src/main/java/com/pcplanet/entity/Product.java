@@ -72,9 +72,9 @@ public class Product extends BaseEntity {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(
-            name = "product_property",
+            name = "product_product_attribute_value",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "property_id")
+            inverseJoinColumns = @JoinColumn(name = "attribute_value_id")
     )
-    private List<FilterProperty> properties;
+    private List<ProductAttributeValue> attributeValues;
 }

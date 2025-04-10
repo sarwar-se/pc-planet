@@ -21,23 +21,23 @@ public class CategoryInfoDTO {
         categoryDTO.setId(category.getId());
         categoryDTO.setName(category.getName());
 
-        List<SubCategoryInfoDTO> subCategoryInfoDTOList = category.getSubCategories()
+        var subCategoryInfoDTOs = category.getSubCategories()
                 .stream()
                 .map(subCategory -> {
                     var subCategoryInfoDTO = new SubCategoryInfoDTO();
                     subCategoryInfoDTO.setId(subCategory.getId());
                     subCategoryInfoDTO.setName(subCategory.getName());
 
-                    List<BrandDTO> brandDTOList = subCategory.getBrands()
+                    var brandDTOs = subCategory.getBrands()
                             .stream()
                             .map(brand -> new BrandDTO(brand.getId(), brand.getName())).toList();
 
-                    subCategoryInfoDTO.setBrands(brandDTOList);
+                    subCategoryInfoDTO.setBrands(brandDTOs);
 
                     return subCategoryInfoDTO;
                 }).toList();
 
-        categoryDTO.setSubCategories(subCategoryInfoDTOList);
+        categoryDTO.setSubCategories(subCategoryInfoDTOs);
 
         return categoryDTO;
     }

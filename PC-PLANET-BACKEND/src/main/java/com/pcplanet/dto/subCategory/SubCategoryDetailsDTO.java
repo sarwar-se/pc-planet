@@ -1,8 +1,8 @@
 package com.pcplanet.dto.subCategory;
 
 import com.pcplanet.dto.BrandDTO;
-import com.pcplanet.dto.FilterKeyDTO;
-import com.pcplanet.dto.FilterPropertyDTO;
+import com.pcplanet.dto.ProductAttributeDTO;
+import com.pcplanet.dto.ProductAttributeValueDTO;
 import com.pcplanet.entity.SubCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +17,7 @@ public class SubCategoryDetailsDTO {
     private Integer id;
     private String name;
     private List<BrandDTO> brands;
-    private List<FilterKeyDTO> filterKeys;
-
-    public SubCategoryDetailsDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private List<ProductAttributeDTO> attributes;
 
     public static SubCategoryDetailsDTO ofEntity(SubCategory category) {
         var categoryDTO = new SubCategoryDetailsDTO();
@@ -30,36 +25,36 @@ public class SubCategoryDetailsDTO {
         categoryDTO.setId(category.getId());
         categoryDTO.setName(category.getName());
 
-        List<BrandDTO> brandDTOList = category.getBrands()
+        var brandDTOs = category.getBrands()
                 .stream()
                 .map(brand -> {
                     return new BrandDTO(brand.getId(), brand.getName());
                 }).toList();
 
-        categoryDTO.setBrands(brandDTOList);
+        categoryDTO.setBrands(brandDTOs);
 
-        List<FilterKeyDTO> categoryFilterKeyDTOList = category.getFilterKeys()
+        var attributeDTOs = category.getAttributes()
                 .stream()
-                .map(categoryFilterKey -> {
-                    var filterKeyDTO = new FilterKeyDTO();
+                .map(attribute -> {
+                    var attributeDTO = new ProductAttributeDTO();
 
-                    filterKeyDTO.setId(categoryFilterKey.getId());
-                    filterKeyDTO.setName(categoryFilterKey.getName());
-                    List<FilterPropertyDTO> propertyDTOList = categoryFilterKey.getFilterProperties()
+                    attributeDTO.setId(attribute.getId());
+                    attributeDTO.setName(attribute.getName());
+                    var attributeValueDTOs = attribute.getAttributeValues()
                             .stream()
-                            .map(filterProperty -> {
-                                var filterPropertyDTO = new FilterPropertyDTO();
+                            .map(attributeValue -> {
+                                var filterPropertyDTO = new ProductAttributeValueDTO();
 
-                                filterPropertyDTO.setId(filterProperty.getId());
-                                filterPropertyDTO.setName(filterProperty.getName());
+                                filterPropertyDTO.setId(attributeValue.getId());
+                                filterPropertyDTO.setValue(attributeValue.getValue());
 
                                 return filterPropertyDTO;
                             }).toList();
-                    filterKeyDTO.setFilterProperties(propertyDTOList);
+                    attributeDTO.setAttributeValues(attributeValueDTOs);
 
-                    return filterKeyDTO;
+                    return attributeDTO;
                 }).toList();
-        categoryDTO.setFilterKeys(categoryFilterKeyDTOList);
+        categoryDTO.setAttributes(attributeDTOs);
 
         return categoryDTO;
     }

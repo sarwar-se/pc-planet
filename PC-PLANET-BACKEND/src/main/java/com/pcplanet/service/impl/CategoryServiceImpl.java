@@ -1,6 +1,6 @@
 package com.pcplanet.service.impl;
 
-import com.pcplanet.dto.ProductVariantDTO;
+import com.pcplanet.dto.ProductAttributeDTO;
 import com.pcplanet.dto.category.CategoryDTO;
 import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.CategoryInfoDTO;
@@ -39,10 +39,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<ProductVariantDTO> getProductVariantsByCategoryId(int categoryId) {
+    public List<ProductAttributeDTO> getProductAttributesByCategoryId(int categoryId) {
         var result = categoryRepository.findById(categoryId);
-        var filterKey = result.map(Category::getFilterKeys)
+        var attributes = result.map(Category::getAttributes)
                 .orElse(Collections.emptyList());
-        return filterKey.stream().map(ProductVariantDTO::ofEntity).toList();
+        return attributes.stream().map(ProductAttributeDTO::ofEntity).toList();
     }
 }

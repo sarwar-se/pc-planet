@@ -42,10 +42,10 @@ public class ProductInfoDTO {
             productInfoDTO.setSubCategory(new SubCategoryDTO(product.getSubCategory().getId(), product.getSubCategory().getName()));
         }
 
-        List<ProductKeyFeatureDTO> keyFeatureDTOs = product.getKeyFeatures()
+        var keyFeatureDTOs = product.getKeyFeatures()
                 .stream()
                 .map(productKeyFeature -> {
-                    ProductKeyFeatureDTO keyFeatureDTO = new ProductKeyFeatureDTO();
+                    var keyFeatureDTO = new ProductKeyFeatureDTO();
 
                     keyFeatureDTO.setId(productKeyFeature.getId());
                     keyFeatureDTO.setName(productKeyFeature.getName());
