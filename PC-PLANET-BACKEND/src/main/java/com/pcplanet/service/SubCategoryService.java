@@ -8,7 +8,7 @@ import com.pcplanet.dto.subCategory.SubCategoryDetailsDTO;
 import java.util.List;
 
 public interface SubCategoryService {
-    List<SubCategoryDTO> getSubCategoriesByCategory(int id);
+    List<SubCategoryDTO> getSubCategoriesByCategory(int categoryId);
 
     SubCategoryDetailsDTO getSubCategoryDetailsByName(String name);
 

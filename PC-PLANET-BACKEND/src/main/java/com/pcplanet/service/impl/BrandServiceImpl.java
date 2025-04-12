@@ -56,16 +56,16 @@ public class BrandServiceImpl implements BrandService {
 
         var category = categoryRepository.findById(brandDTO.getCategoryId())
                 .orElseThrow(() -> {
-                    ServiceHelper.categoryNotFoundThrowException(brandDTO.getCategoryId());
-                    return null;
+                    log.warn("Category not found with id: {}", brandDTO.getCategoryId());
+                    return new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
                 });
 
         SubCategory subCategory = null;
         if (brandDTO.getSubCategoryId() != null) {
             subCategory = subCategoryRepository.findById(brandDTO.getSubCategoryId())
                     .orElseThrow(() -> {
-                        ServiceHelper.subCategoryNotFoundThrowException(brandDTO.getSubCategoryId());
-                        return null;
+                        log.warn("Sub-category not found with id: {}", brandDTO.getSubCategoryId());
+                        return new ServiceException(ErrorCode.SUB_CATEGORY_NOT_FOUND);
                     });
         }
 

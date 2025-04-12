@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -37,38 +38,53 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     @Transactional
-    public void insertProductAttribute(CreateProductAttributeDTO attributeDTO) {
+    public void saveProductAttribute(CreateProductAttributeDTO attributeDTO) {
         if (attributeDTO.getCategoryId() == null) {
-            ServiceHelper.categoryNullThrowException();
+            log.warn("Product category must be provided");
+            throw new ServiceException(ErrorCode.NO_CATEGORY_SELECTED);
         }
 
         var category = categoryRepository.findById(attributeDTO.getCategoryId())
                 .orElseThrow(() -> {
-                    ServiceHelper.categoryNotFoundThrowException(attributeDTO.getCategoryId());
-                    return null;
+                    log.warn("Category not found with id: {}", attributeDTO.getCategoryId());
+                    return new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
                 });
 
         SubCategory subCategory = null;
         if (attributeDTO.getSubCategoryId() != null) {
             subCategory = subCategoryRepository.findById(attributeDTO.getSubCategoryId())
                     .orElseThrow(() -> {
-                        ServiceHelper.subCategoryNotFoundThrowException(attributeDTO.getSubCategoryId());
-                        return null;
+                        log.warn("Sub-category not found with id: {}", attributeDTO.getSubCategoryId());
+                        return new ServiceException(ErrorCode.SUB_CATEGORY_NOT_FOUND);
                     });
         }
 
-        var attributeExists = productAttributeRepository.findByNameIgnoreCase(attributeDTO.getName());
-        if (attributeExists != null) {
-            log.warn("Product attribute already exists with name: {}", attributeDTO.getName());
-            throw new ServiceException(ErrorCode.PRODUCT_ATTRIBUTE_ALREADY_EXISTS);
+        ProductAttribute productAttribute;
+
+        if (attributeDTO.getId() != null) {
+            productAttribute = productAttributeRepository.findById(attributeDTO.getId()).orElseThrow(() -> {
+                log.warn("Product attribute not found with id: {}", attributeDTO.getId());
+                return new ServiceException(ErrorCode.PRODUCT_ATTRIBUTE_NOT_FOUND);
+            });
+        } else {
+            var attributeExists = productAttributeRepository.findByNameIgnoreCase(attributeDTO.getName());
+            if (attributeExists != null && attributeDTO.getId() == null) {
+                log.warn("Product attribute already exists with name: {}", attributeDTO.getName());
+                throw new ServiceException(ErrorCode.PRODUCT_ATTRIBUTE_ALREADY_EXISTS);
+            }
+
+            productAttribute = new ProductAttribute();
         }
 
-        var productAttribute = new ProductAttribute();
+        productAttribute.setId(attributeDTO.getId());
         productAttribute.setName(attributeDTO.getName());
         mapToProductAttributeValue(attributeDTO.getAttributeValues(), productAttribute);
 
-        category.getAttributes().add(productAttribute);
-        if (subCategory != null) {
+        if (!category.getAttributes().contains(productAttribute)) {
+            category.getAttributes().add(productAttribute);
+        }
+
+        if (subCategory != null && !subCategory.getAttributes().contains(productAttribute)) {
             subCategory.getAttributes().add(productAttribute);
         }
 
@@ -77,22 +93,37 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
     }
 
     private void mapToProductAttributeValue(List<ProductAttributeValueDTO> attributeValueDTOs, ProductAttribute productAttribute) {
-        var attributeValues = attributeValueDTOs
-                .stream()
-                .map(attributeValueDTO -> {
-                    var attributeValue = new ProductAttributeValue();
+        List<ProductAttributeValue> existingValues = productAttribute.getAttributeValues();
+        if (existingValues == null) {
+            existingValues = new ArrayList<>();
+            productAttribute.setAttributeValues(existingValues);
+        } else {
+            existingValues.clear();
+        }
 
-                    var existsAttributeValue = productAttributeValueRepository.findByValueIgnoreCase(attributeValueDTO.getValue().toLowerCase());
-                    if (existsAttributeValue != null) {
-                        log.warn("Product attribute value already exists with name: {}", attributeValueDTO.getValue());
-                        throw new ServiceException(ErrorCode.PRODUCT_ATTRIBUTE_VALUE_ALREADY_EXISTS);
-                    }
+        for (ProductAttributeValueDTO attributeValueDTO : attributeValueDTOs) {
+            ProductAttributeValue attributeValue;
 
-                    attributeValue.setValue(attributeValueDTO.getValue());
-                    attributeValue.setAttribute(productAttribute);
-                    return attributeValue;
-                }).toList();
+            if (attributeValueDTO.getId() != null) {
+                attributeValue = productAttributeValueRepository.findById(attributeValueDTO.getId())
+                        .orElseThrow(() -> {
+                            log.warn("Product attribute not found with id: {}", attributeValueDTO.getId());
+                            return new ServiceException(ErrorCode.PRODUCT_ATTRIBUTE_VALUE_NOT_FOUND);
+                        });
+            } else {
+                var existsAttributeValue = productAttributeValueRepository.findByValueIgnoreCase(attributeValueDTO.getValue().toLowerCase());
+                if (existsAttributeValue != null) {
+                    log.warn("Product attribute already exists with name: {}", attributeValueDTO.getValue());
+                    throw new ServiceException(ErrorCode.PRODUCT_ATTRIBUTE_VALUE_ALREADY_EXISTS);
+                }
+                attributeValue = new ProductAttributeValue();
+            }
 
-        productAttribute.setAttributeValues(attributeValues);
+            attributeValue.setId(attributeValueDTO.getId());
+            attributeValue.setValue(attributeValueDTO.getValue());
+            attributeValue.setAttribute(productAttribute);
+
+            existingValues.add(attributeValue);
+        }
     }
 }

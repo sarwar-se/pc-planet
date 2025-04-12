@@ -29,8 +29,8 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
-    public List<SubCategoryDTO> getSubCategoriesByCategory(int id) {
-        var result = subCategoryRepository.findByCategoryId(id);
+    public List<SubCategoryDTO> getSubCategoriesByCategory(int categoryId) {
+        var result = subCategoryRepository.findByCategoryId(categoryId);
         return result.stream().map(SubCategoryDTO::ofEntity).toList();
     }
 
@@ -56,8 +56,8 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
         var category = categoryRepository.findById(subCategoryDTO.getCategoryId())
                 .orElseThrow(() -> {
-                    ServiceHelper.categoryNotFoundThrowException(subCategoryDTO.getCategoryId());
-                    return null;
+                    log.warn("Category not found with id: {}", subCategoryDTO.getCategoryId());
+                    return new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
                 });
 
         var subCategoryExists = subCategoryRepository.findByNameIgnoreCase(subCategoryDTO.getName().toLowerCase());

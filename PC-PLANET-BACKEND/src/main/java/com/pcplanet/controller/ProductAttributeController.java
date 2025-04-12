@@ -18,7 +18,7 @@ public class ProductAttributeController {
     }
 
     @PostMapping("/save")
-    public void createProductAttribute(@RequestBody CreateProductAttributeDTO attributeDTO) {
-        productAttributeService.insertProductAttribute(attributeDTO);
+    public void createOrUpdateProductAttribute(@RequestBody CreateProductAttributeDTO attributeDTO) {
+        productAttributeService.saveProductAttribute(attributeDTO);
     }
 }

@@ -19,9 +19,9 @@ public class SubCategoryController {
         this.subCategoryService = subCategoryService;
     }
 
-    @GetMapping("/{category}")
-    public List<SubCategoryDTO> getSubCategories(@PathVariable int category) {
-        return subCategoryService.getSubCategoriesByCategory(category);
+    @GetMapping("/{categoryId}")
+    public List<SubCategoryDTO> getSubCategories(@PathVariable int categoryId) {
+        return subCategoryService.getSubCategoriesByCategory(categoryId);
     }
 
     @GetMapping("/details")
