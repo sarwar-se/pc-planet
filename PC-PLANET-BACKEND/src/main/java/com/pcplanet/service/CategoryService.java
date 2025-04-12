@@ -1,6 +1,6 @@
 package com.pcplanet.service;
 
-import com.pcplanet.dto.ProductAttributeDTO;
+import com.pcplanet.dto.productAttribute.ProductAttributeDTO;
 import com.pcplanet.dto.category.CategoryDTO;
 import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.CategoryInfoDTO;
@@ -15,4 +15,6 @@ public interface CategoryService {
     CategoryDetailsDTO getCategoryDetailsByName(String categoryName);
 
     List<ProductAttributeDTO> getProductAttributesByCategoryId(int categoryId);
+
+    void insertCategory(CategoryDTO categoryDTO);
 }

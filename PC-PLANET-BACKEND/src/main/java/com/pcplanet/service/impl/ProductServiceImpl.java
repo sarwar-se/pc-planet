@@ -1,7 +1,7 @@
 package com.pcplanet.service.impl;
 
 import com.pcplanet.Constants;
-import com.pcplanet.dto.ProductAttributeValueDTO;
+import com.pcplanet.dto.productAttribute.ProductAttributeValueDTO;
 import com.pcplanet.dto.param.ProductFilterParams;
 import com.pcplanet.dto.product.*;
 import com.pcplanet.entity.*;
@@ -245,6 +245,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void mapToProductAttributeValue(List<ProductAttributeValueDTO> attributeValueDTOs, Product product) {
+        if (attributeValueDTOs == null) return;
+
         var attributeValues = new ArrayList<ProductAttributeValue>();
 
         for (var attributeValueDTO : attributeValueDTOs) {

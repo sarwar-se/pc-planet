@@ -1,6 +1,6 @@
 package com.pcplanet.controller;
 
-import com.pcplanet.dto.ProductAttributeDTO;
+import com.pcplanet.dto.productAttribute.ProductAttributeDTO;
 import com.pcplanet.dto.category.CategoryDTO;
 import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.CategoryInfoDTO;
@@ -18,12 +18,12 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     public List<CategoryDTO> getAllCategory() {
         return categoryService.getAllCategory();
     }
 
-    @GetMapping("/all")
+    @GetMapping("/metadata")
     public List<CategoryInfoDTO> getCategories() {
         return categoryService.getCategories();
     }
@@ -36,5 +36,10 @@ public class CategoryController {
     @GetMapping("/attributes")
     public List<ProductAttributeDTO> getProductAttributesByCategory(@RequestParam int categoryId) {
         return categoryService.getProductAttributesByCategoryId(categoryId);
+    }
+
+    @PostMapping("/save")
+    public void createCategory(@RequestBody CategoryDTO categoryDTO) {
+        categoryService.insertCategory(categoryDTO);
     }
 }

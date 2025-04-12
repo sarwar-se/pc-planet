@@ -1,4 +1,4 @@
-package com.pcplanet.dto;
+package com.pcplanet.dto.brand;
 
 import com.pcplanet.entity.Brand;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class BrandDTO {
-    private int id;
+    private Integer id;
     private String name;
 
     public static BrandDTO ofEntity(Brand brand) {

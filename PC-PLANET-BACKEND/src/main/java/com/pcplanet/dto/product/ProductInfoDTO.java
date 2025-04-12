@@ -1,8 +1,7 @@
 package com.pcplanet.dto.product;
 
-import com.pcplanet.dto.BrandDTO;
+import com.pcplanet.dto.brand.BrandDTO;
 import com.pcplanet.dto.category.CategoryDTO;
-import com.pcplanet.dto.category.CategoryDetailsDTO;
 import com.pcplanet.dto.category.SubCategoryDTO;
 import com.pcplanet.entity.Product;
 import com.pcplanet.enums.ProductStatus;
