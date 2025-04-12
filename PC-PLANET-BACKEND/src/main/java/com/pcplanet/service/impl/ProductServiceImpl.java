@@ -213,7 +213,7 @@ public class ProductServiceImpl implements ProductService {
         categoryRepository.findById(productDetailsDTO.getCategory().getId())
                 .orElseThrow(() -> {
                     log.warn("Product category not found with id: {}", productDetailsDTO.getCategory().getId());
-                    return new ServiceException(ErrorCode.NO_CATEGORY_FOUND);
+                    return new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
                 });
 
         if (productDetailsDTO.getBrand() == null) {
@@ -224,7 +224,7 @@ public class ProductServiceImpl implements ProductService {
         brandRepository.findById(productDetailsDTO.getBrand().getId())
                 .orElseThrow(() -> {
                     log.warn("Product brand not found with id: {}", productDetailsDTO.getBrand().getId());
-                    return new ServiceException(ErrorCode.NO_BRAND_FOUND);
+                    return new ServiceException(ErrorCode.BRAND_NOT_FOUND);
                 });
     }
 
@@ -372,7 +372,7 @@ public class ProductServiceImpl implements ProductService {
                 keyFeature = keyFeatureRepository.findById(keyFeatureDTO.getId())
                         .orElseThrow(() -> {
                             log.warn("Product key feature not found with id: {}", keyFeatureDTO.getId());
-                            return new ServiceException(ErrorCode.NO_KEY_FEATURE_FOUND);
+                            return new ServiceException(ErrorCode.PRODUCT_KEY_FEATURE_NOT_FOUND);
                         });
                 keyFeature.setUpdatedAt(LocalDateTime.now());
             } else {
