@@ -79,12 +79,12 @@ public class GlobalExceptionHandler {
                 .body(errorCodeService.getMessage(key));
     }
 
-    @ExceptionHandler
-    public ResponseEntity<OperationalResult> handleAllOtherException(Exception exception) {
-        log.error("GENERIC EXCEPTION",exception);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(errorCodeService.getOperationalResult(new ServiceException(ErrorCode.INTERNAL_SERVER_ERROR)));
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<OperationalResult> handleAllOtherException(Exception exception) {
+//        log.error("GENERIC EXCEPTION",exception);
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body(errorCodeService.getOperationalResult(new ServiceException(ErrorCode.INTERNAL_SERVER_ERROR)));
+//    }
 
     @ExceptionHandler
     public ResponseEntity<String> handleRequiredParameterException(MissingServletRequestParameterException exception) {

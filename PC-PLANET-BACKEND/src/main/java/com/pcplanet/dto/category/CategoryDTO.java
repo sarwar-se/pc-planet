@@ -19,4 +19,12 @@ public class CategoryDTO {
                 .name(category.getName())
                 .build();
     }
+
+    public static Category ofDTO(CategoryDTO categoryDTO) {
+        var category = new Category();
+        category.setId(categoryDTO.getId());
+        category.setName(categoryDTO.getName());
+
+        return category;
+    }
 }

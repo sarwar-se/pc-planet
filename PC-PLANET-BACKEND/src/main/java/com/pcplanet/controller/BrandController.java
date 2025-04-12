@@ -1,11 +1,9 @@
 package com.pcplanet.controller;
 
-import com.pcplanet.dto.BrandDTO;
+import com.pcplanet.dto.brand.BrandDTO;
+import com.pcplanet.dto.brand.CreateBrandDTO;
 import com.pcplanet.service.BrandService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,10 @@ public class BrandController {
     @GetMapping("/get-brands-by-sub-category")
     public List<BrandDTO> getBrandsSubCategory(@RequestParam int subCategoryId) {
         return brandService.findBrandsBySubCategory(subCategoryId);
+    }
+
+    @PostMapping("/save")
+    public void createBrand(@RequestBody CreateBrandDTO brandDTO) {
+        brandService.insertBrand(brandDTO);
     }
 }

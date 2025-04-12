@@ -1,8 +1,8 @@
 package com.pcplanet.dto.subCategory;
 
-import com.pcplanet.dto.BrandDTO;
-import com.pcplanet.dto.ProductAttributeDTO;
-import com.pcplanet.dto.ProductAttributeValueDTO;
+import com.pcplanet.dto.brand.BrandDTO;
+import com.pcplanet.dto.productAttribute.ProductAttributeDTO;
+import com.pcplanet.dto.productAttribute.ProductAttributeValueDTO;
 import com.pcplanet.entity.SubCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
