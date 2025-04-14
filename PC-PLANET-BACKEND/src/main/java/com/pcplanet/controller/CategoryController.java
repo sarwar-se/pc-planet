@@ -39,7 +39,12 @@ public class CategoryController {
     }
 
     @PostMapping("/save")
-    public void createCategory(@RequestBody CategoryDTO categoryDTO) {
-        categoryService.insertCategory(categoryDTO);
+    public void createOrUpdateCategory(@RequestBody CategoryDTO categoryDTO) {
+        categoryService.saveCategory(categoryDTO);
+    }
+
+    @DeleteMapping("/delete/{categoryId}")
+    public void deleteProductCategory(@PathVariable int categoryId) {
+        categoryService.deleteCategoryById(categoryId);
     }
 }

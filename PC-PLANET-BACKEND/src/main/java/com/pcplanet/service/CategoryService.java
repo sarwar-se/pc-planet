@@ -16,5 +16,7 @@ public interface CategoryService {
 
     List<ProductAttributeDTO> getProductAttributesByCategoryId(int categoryId);
 
-    void insertCategory(CategoryDTO categoryDTO);
+    void saveCategory(CategoryDTO categoryDTO);
+
+    void deleteCategoryById(int id);
 }

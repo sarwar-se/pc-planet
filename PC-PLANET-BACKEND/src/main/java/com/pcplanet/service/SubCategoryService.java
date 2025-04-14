@@ -1,7 +1,7 @@
 package com.pcplanet.service;
 
 import com.pcplanet.dto.productAttribute.ProductAttributeDTO;
-import com.pcplanet.dto.subCategory.CreateSubCategoryDTO;
+import com.pcplanet.dto.subCategory.CUSubCategoryDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDetailsDTO;
 
@@ -14,5 +14,7 @@ public interface SubCategoryService {
 
     List<ProductAttributeDTO> getProductAttributesBySubCategory(int subCategoryId);
 
-    void insertSubCategory(CreateSubCategoryDTO subCategoryDTO);
+    void saveSubCategory(CUSubCategoryDTO subCategoryDTO);
+
+    void deleteSubCategoryById(int id);
 }

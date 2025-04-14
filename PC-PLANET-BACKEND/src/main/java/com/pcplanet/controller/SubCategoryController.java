@@ -1,7 +1,7 @@
 package com.pcplanet.controller;
 
 import com.pcplanet.dto.productAttribute.ProductAttributeDTO;
-import com.pcplanet.dto.subCategory.CreateSubCategoryDTO;
+import com.pcplanet.dto.subCategory.CUSubCategoryDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDetailsDTO;
 import com.pcplanet.service.SubCategoryService;
@@ -35,7 +35,12 @@ public class SubCategoryController {
     }
 
     @PostMapping("/save")
-    public void createSubCategory(@RequestBody CreateSubCategoryDTO subCategoryDTO) {
-        subCategoryService.insertSubCategory(subCategoryDTO);
+    public void createOrUpdateSubCategory(@RequestBody CUSubCategoryDTO subCategoryDTO) {
+        subCategoryService.saveSubCategory(subCategoryDTO);
+    }
+
+    @DeleteMapping("/delete/{subCatId}")
+    public void deleteProductSubCategory(@PathVariable int subCatId) {
+        subCategoryService.deleteSubCategoryById(subCatId);
     }
 }

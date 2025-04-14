@@ -1,7 +1,7 @@
 package com.pcplanet.controller;
 
 import com.pcplanet.dto.brand.BrandDTO;
-import com.pcplanet.dto.brand.CreateBrandDTO;
+import com.pcplanet.dto.brand.CUBrandDTO;
 import com.pcplanet.service.BrandService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +27,12 @@ public class BrandController {
     }
 
     @PostMapping("/save")
-    public void createBrand(@RequestBody CreateBrandDTO brandDTO) {
-        brandService.insertBrand(brandDTO);
+    public void createOrUpdateBrand(@RequestBody CUBrandDTO brandDTO) {
+        brandService.saveBrand(brandDTO);
+    }
+
+    @DeleteMapping("/delete/{brandId}")
+    public void deleteProductBrand(@PathVariable int brandId) {
+        brandService.deleteProductBrandById(brandId);
     }
 }

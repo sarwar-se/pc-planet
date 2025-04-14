@@ -22,7 +22,7 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<SubCategory> subCategories;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "category_brand",
             joinColumns = @JoinColumn(name = "category_id"),
@@ -30,7 +30,7 @@ public class Category extends BaseEntity {
     )
     private List<Brand> brands;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "category_product_attribute",
             joinColumns = @JoinColumn(name = "category_id"),

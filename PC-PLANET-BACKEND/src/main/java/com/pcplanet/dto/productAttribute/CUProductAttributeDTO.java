@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class CreateProductAttributeDTO {
+public class CUProductAttributeDTO {
     private Integer id;
     private String name;
     private List<ProductAttributeValueDTO> attributeValues;
