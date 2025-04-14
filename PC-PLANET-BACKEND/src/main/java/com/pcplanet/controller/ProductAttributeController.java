@@ -1,11 +1,8 @@
 package com.pcplanet.controller;
 
-import com.pcplanet.dto.productAttribute.CreateProductAttributeDTO;
+import com.pcplanet.dto.productAttribute.CUProductAttributeDTO;
 import com.pcplanet.service.ProductAttributeService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/product-attribute")
@@ -18,7 +15,12 @@ public class ProductAttributeController {
     }
 
     @PostMapping("/save")
-    public void createOrUpdateProductAttribute(@RequestBody CreateProductAttributeDTO attributeDTO) {
+    public void createOrUpdateProductAttribute(@RequestBody CUProductAttributeDTO attributeDTO) {
         productAttributeService.saveProductAttribute(attributeDTO);
+    }
+
+    @DeleteMapping("/delete/{attributeId}")
+    public void deleteProductAttribute(@PathVariable int attributeId) {
+        productAttributeService.deleteProductAttributeById(attributeId);
     }
 }

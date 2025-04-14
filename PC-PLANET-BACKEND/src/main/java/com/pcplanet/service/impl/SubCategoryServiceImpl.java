@@ -1,7 +1,7 @@
 package com.pcplanet.service.impl;
 
 import com.pcplanet.dto.productAttribute.ProductAttributeDTO;
-import com.pcplanet.dto.subCategory.CreateSubCategoryDTO;
+import com.pcplanet.dto.subCategory.CUSubCategoryDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDTO;
 import com.pcplanet.dto.subCategory.SubCategoryDetailsDTO;
 import com.pcplanet.entity.SubCategory;
@@ -49,7 +49,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
-    public void insertSubCategory(CreateSubCategoryDTO subCategoryDTO) {
+    public void saveSubCategory(CUSubCategoryDTO subCategoryDTO) {
         if (subCategoryDTO.getCategoryId() == null) {
             ServiceHelper.categoryNullThrowException();
         }
@@ -60,17 +60,38 @@ public class SubCategoryServiceImpl implements SubCategoryService {
                     return new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
                 });
 
-        var subCategoryExists = subCategoryRepository.findByNameIgnoreCase(subCategoryDTO.getName().toLowerCase());
-        if (subCategoryExists != null) {
-            log.warn("Sub-category already exists with name: {}", subCategoryDTO.getName());
-            throw new ServiceException(ErrorCode.SUB_CATEGORY_ALREADY_EXISTS);
+        SubCategory subCategory;
+
+        if (subCategoryDTO.getId() != null) {
+            subCategory = subCategoryRepository.findById(subCategoryDTO.getId())
+                    .orElseThrow(() -> {
+                        log.warn("Sub category not found with id: {}", subCategoryDTO.getId());
+                        return new ServiceException(ErrorCode.SUB_CATEGORY_NOT_FOUND);
+                    });
+        } else {
+            var subCategoryExists = subCategoryRepository.findByNameIgnoreCase(subCategoryDTO.getName().toLowerCase());
+            if (subCategoryExists != null) {
+                log.warn("Sub category already exists with name: {}", subCategoryDTO.getName());
+                throw new ServiceException(ErrorCode.SUB_CATEGORY_ALREADY_EXISTS);
+            }
+            subCategory = new SubCategory();
         }
 
-        var subCategory = new SubCategory();
         subCategory.setName(subCategoryDTO.getName());
         subCategory.setCategory(category);
 
         subCategoryRepository.save(subCategory);
-        log.info("Saved new sub-category");
+        log.info("Sub category saved or updated");
+    }
+
+    @Override
+    public void deleteSubCategoryById(int id) {
+        var subCategory = subCategoryRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Product sub category not found with id: {}", id);
+                    return new ServiceException(ErrorCode.SUB_CATEGORY_NOT_FOUND);
+                });
+
+        subCategoryRepository.delete(subCategory);
     }
 }

@@ -1,7 +1,9 @@
 package com.pcplanet.service;
 
-import com.pcplanet.dto.productAttribute.CreateProductAttributeDTO;
+import com.pcplanet.dto.productAttribute.CUProductAttributeDTO;
 
 public interface ProductAttributeService {
-    void saveProductAttribute(CreateProductAttributeDTO attributeDTO);
+    void saveProductAttribute(CUProductAttributeDTO attributeDTO);
+
+    void deleteProductAttributeById(int id);
 }

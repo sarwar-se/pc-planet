@@ -51,14 +51,39 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void insertCategory(CategoryDTO categoryDTO) {
-        var categoryExists = categoryRepository.findByNameIgnoreCase(categoryDTO.getName().toLowerCase());
-        if (categoryExists != null) {
-            log.warn("Category already exists with name: {}", categoryDTO.getName());
-            throw new ServiceException(ErrorCode.CATEGORY_ALREADY_EXISTS);
+    public void saveCategory(CategoryDTO categoryDTO) {
+        Category category;
+
+        if (categoryDTO.getId() != null) {
+            category = categoryRepository.findById(categoryDTO.getId())
+                    .orElseThrow(() -> {
+                        log.warn("Category not found with id: {}", categoryDTO.getId());
+                        return new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
+                    });
+        } else {
+            var categoryExists = categoryRepository.findByNameIgnoreCase(categoryDTO.getName().toLowerCase());
+            if (categoryExists != null) {
+                log.warn("Category already exists with name: {}", categoryDTO.getName());
+                throw new ServiceException(ErrorCode.CATEGORY_ALREADY_EXISTS);
+            }
+
+            category = new Category();
         }
 
-        categoryRepository.save(CategoryDTO.ofDTO(categoryDTO));
-        log.info("Saved new category");
+        category.setName(categoryDTO.getName());
+
+        categoryRepository.save(category);
+        log.info("Category saved or updated");
+    }
+
+    @Override
+    public void deleteCategoryById(int id) {
+        var subCategory = categoryRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Product category not found with id: {}", id);
+                    return new ServiceException(ErrorCode.CATEGORY_NOT_FOUND);
+                });
+
+        categoryRepository.delete(subCategory);
     }
 }

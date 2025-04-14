@@ -1,7 +1,7 @@
 package com.pcplanet.service.impl;
 
 import com.pcplanet.dto.brand.BrandDTO;
-import com.pcplanet.dto.brand.CreateBrandDTO;
+import com.pcplanet.dto.brand.CUBrandDTO;
 import com.pcplanet.entity.Brand;
 import com.pcplanet.entity.SubCategory;
 import com.pcplanet.exception.ErrorCode;
@@ -49,7 +49,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    public void insertBrand(CreateBrandDTO brandDTO) {
+    public void saveBrand(CUBrandDTO brandDTO) {
         if (brandDTO.getCategoryId() == null) {
             ServiceHelper.categoryNullThrowException();
         }
@@ -69,21 +69,60 @@ public class BrandServiceImpl implements BrandService {
                     });
         }
 
-        var brandExists = brandRepository.findByNameIgnoreCase(brandDTO.getName());
-        if (brandExists != null) {
-            log.warn("Brand already exists with name: {}", brandDTO.getName());
-            throw new ServiceException(ErrorCode.BRAND_ALREADY_EXISTS);
+        Brand brand;
+
+        if (brandDTO.getId() != null) {
+            brand = brandRepository.findById(brandDTO.getId())
+                    .orElseThrow(() -> {
+                        log.warn("Product brand not found with id: {}", brandDTO.getId());
+                        return new ServiceException(ErrorCode.BRAND_NOT_FOUND);
+                    });
+        } else {
+            var brandExists = brandRepository.findByNameIgnoreCase(brandDTO.getName());
+            if (brandExists != null) {
+                log.warn("Brand already exists with name: {}", brandDTO.getName());
+                throw new ServiceException(ErrorCode.BRAND_ALREADY_EXISTS);
+            }
+
+            brand = new Brand();
         }
 
-        var brand = new Brand();
         brand.setName(brandDTO.getName());
 
-        category.getBrands().add(brand);
-        if (subCategory != null) {
+        if (!category.getBrands().contains(brand) && subCategory == null) {
+            category.getBrands().add(brand);
+        }
+
+        if (subCategory != null && !subCategory.getBrands().contains(brand)) {
             subCategory.getBrands().add(brand);
         }
 
         brandRepository.save(brand);
-        log.info("Saved new brand");
+        log.info("Brand saved or updated");
+    }
+
+    @Override
+    @Transactional
+    public void deleteProductBrandById(int id) {
+        var brand = brandRepository.findById(id).orElseThrow(() -> {
+            log.warn("Product brand not found with id: {}", id);
+            return new ServiceException(ErrorCode.BRAND_NOT_FOUND);
+        });
+
+        // Remove the brand from all related categories
+        for (var category : brand.getCategories()) {
+            category.getBrands().remove(brand);
+        }
+        brand.getCategories().clear();
+
+        // Remove the brand from all related sub-categories
+        for (var subCategory : brand.getSubCategories()) {
+            subCategory.getBrands().remove(brand);
+        }
+        brand.getSubCategories().clear();
+
+        brandRepository.save(brand);
+
+        brandRepository.delete(brand);
     }
 }

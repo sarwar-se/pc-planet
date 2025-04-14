@@ -21,7 +21,7 @@ public class SubCategory extends BaseEntity {
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_sub_cat_category"))
     private Category category;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "sub_category_brand",
             joinColumns = @JoinColumn(name = "sub_category_id"),
@@ -29,7 +29,7 @@ public class SubCategory extends BaseEntity {
     )
     private List<Brand> brands;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "sub_category_product_attribute",
             joinColumns = @JoinColumn(name = "sub_category_id"),

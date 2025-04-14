@@ -3,7 +3,7 @@ package com.pcplanet.dto.brand;
 import lombok.Getter;
 
 @Getter
-public class CreateBrandDTO {
+public class CUBrandDTO {
     private Integer id;
     private String name;
     private Integer categoryId;
