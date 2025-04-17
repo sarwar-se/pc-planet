@@ -128,6 +128,10 @@ code {
   opacity: 100% !important;
 }
 
+.border-blueviolet {
+  border-color: blueviolet !important;
+}
+
 .form-check-input {
   border: 1px solid #9d9d9e;
   box-shadow: none !important;
@@ -139,4 +143,13 @@ code {
   justify-content: center;
   border: 2px dashed #cbd5e1;
   color: #6b7280;
+}
+
+.required-input:after {
+  content: ' *';
+  color: red;
+}
+
+.bg-blueviolet {
+  background-color: blueviolet;
 }

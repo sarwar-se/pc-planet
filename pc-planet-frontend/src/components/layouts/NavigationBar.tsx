@@ -4,7 +4,7 @@ import Header from './Header';
 import TopBar from './TopBar';
 import SideBar from './SideBar';
 import BottomBar from './BottomBar';
-import { getProductCategories } from '../../features/Product/productApi';
+import { getProductMetadata } from '../../features/Product/productApi';
 
 export type ProductBrand = {
   id: number;
@@ -37,7 +37,7 @@ const NavigationBar = () => {
   const handleCloseSidebar = () => setShowSidebar(false);
 
   useEffect(() => {
-    getProductCategories()
+    getProductMetadata()
       .then((response) => {
         const { data } = response;
         setCategories(data);

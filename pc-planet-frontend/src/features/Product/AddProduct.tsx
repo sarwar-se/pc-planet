@@ -266,7 +266,7 @@ const AddProduct = () => {
               value={selectedSubCategory}
               handleChange={subCategoryHandleChange}
               disabled={subCategories.length <= 0}
-              required={subCategories.length > 0}
+              // required={subCategories.length > 0}
             />
           </FormGroup>
 
