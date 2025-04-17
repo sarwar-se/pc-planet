@@ -10,6 +10,7 @@ import com.pcplanet.repository.BrandRepository;
 import com.pcplanet.repository.CategoryRepository;
 import com.pcplanet.repository.SubCategoryRepository;
 import com.pcplanet.service.BrandService;
+import com.pcplanet.utils.ServiceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,7 +88,9 @@ public class BrandServiceImpl implements BrandService {
             brand = new Brand();
         }
 
-        brand.setName(brandDTO.getName());
+        if (brandDTO.getName() != null && !brandDTO.getName().isEmpty()) {
+            brand.setName(brandDTO.getName());
+        }
 
         if (!category.getBrands().contains(brand) && subCategory == null) {
             category.getBrands().add(brand);
@@ -124,5 +127,11 @@ public class BrandServiceImpl implements BrandService {
         brandRepository.save(brand);
 
         brandRepository.delete(brand);
+    }
+
+    @Override
+    public List<BrandDTO> getBrands() {
+        var results = brandRepository.findAll();
+        return ServiceUtils.simpleMap(results, BrandDTO::ofEntity);
     }
 }

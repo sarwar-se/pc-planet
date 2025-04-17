@@ -10,6 +10,7 @@ import com.pcplanet.exception.ServiceException;
 import com.pcplanet.repository.CategoryRepository;
 import com.pcplanet.repository.SubCategoryRepository;
 import com.pcplanet.service.SubCategoryService;
+import com.pcplanet.utils.ServiceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -93,5 +94,11 @@ public class SubCategoryServiceImpl implements SubCategoryService {
                 });
 
         subCategoryRepository.delete(subCategory);
+    }
+
+    @Override
+    public List<SubCategoryDTO> getSubCategories() {
+        var results = subCategoryRepository.findAll();
+        return ServiceUtils.simpleMap(results, SubCategoryDTO::ofEntity);
     }
 }
