@@ -35,4 +35,9 @@ public class BrandController {
     public void deleteProductBrand(@PathVariable int brandId) {
         brandService.deleteProductBrandById(brandId);
     }
+
+    @GetMapping("/all")
+    public List<BrandDTO> getBrands() {
+        return brandService.getBrands();
+    }
 }

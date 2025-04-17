@@ -43,4 +43,9 @@ public class SubCategoryController {
     public void deleteProductSubCategory(@PathVariable int subCatId) {
         subCategoryService.deleteSubCategoryById(subCatId);
     }
+
+    @GetMapping("/all")
+    public List<SubCategoryDTO> getSubCategories() {
+        return subCategoryService.getSubCategories();
+    }
 }

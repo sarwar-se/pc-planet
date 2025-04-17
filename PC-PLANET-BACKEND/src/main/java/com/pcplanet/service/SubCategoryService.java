@@ -17,4 +17,6 @@ public interface SubCategoryService {
     void saveSubCategory(CUSubCategoryDTO subCategoryDTO);
 
     void deleteSubCategoryById(int id);
+
+    List<SubCategoryDTO> getSubCategories();
 }

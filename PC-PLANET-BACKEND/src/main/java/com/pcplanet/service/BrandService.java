@@ -13,4 +13,6 @@ public interface BrandService {
     void saveBrand(CUBrandDTO brandDTO);
 
     void deleteProductBrandById(int id);
+
+    List<BrandDTO> getBrands();
 }
