@@ -29,8 +29,8 @@ const AddSpecificationProperty: React.FC<{
         if (specIndx !== specificationIndex) return specification;
 
         const updatedProperties = specification.properties.map(
-          (property: SpecificationProperty, propIndx: number) =>
-            propIndx === propIndex ? { ...property, name: value } : property,
+          (property: SpecificationProperty, i: number) =>
+            i === propIndex ? { ...property, name: value } : property,
         );
         return { ...specification, properties: updatedProperties };
       }),

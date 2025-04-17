@@ -7,6 +7,6 @@ export const appRoutes = {
     `/${category}/${subCategory}/${brand}`,
   searchProduct: (query: string) => `/product/search/${query}`,
   productDetails: (productName: string) => `/${productName}/details`,
-  addProduct: '/add-product',
-  addProductMetadata: '/add-product-metadata',
+  addProduct: '/product/add',
+  addProductMetadata: '/product/metadata-management',
 };

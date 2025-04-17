@@ -35,13 +35,6 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: 'product/search/:query',
-        lazy: async () => {
-          const { SearchProduct } = await import('./features/Product/index.ts');
-          return { Component: SearchProduct };
-        },
-      },
-      {
         path: ':productName/details',
         lazy: async () => {
           const { ProductDetails } = await import('./features/Product/index.ts');
@@ -49,18 +42,30 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: 'add-product',
-        lazy: async () => {
-          const { AddProduct } = await import('./features/Product/index.ts');
-          return { Component: AddProduct };
-        },
-      },
-      {
-        path: 'add-product-metadata',
-        lazy: async () => {
-          const { AddProductMetaData } = await import('./features/Product/index.ts');
-          return { Component: AddProductMetaData };
-        },
+        path: 'product',
+        children: [
+          {
+            path: 'add',
+            lazy: async () => {
+              const { AddProduct } = await import('./features/Product/index.ts');
+              return { Component: AddProduct };
+            },
+          },
+          {
+            path: 'metadata-management',
+            lazy: async () => {
+              const { ProductMetadataManagement } = await import('./features/Product/index.ts');
+              return { Component: ProductMetadataManagement };
+            },
+          },
+          {
+            path: 'search/:query',
+            lazy: async () => {
+              const { SearchProduct } = await import('./features/Product/index.ts');
+              return { Component: SearchProduct };
+            },
+          },
+        ],
       },
     ],
   },

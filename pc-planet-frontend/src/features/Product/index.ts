@@ -1,7 +1,13 @@
 import AddProduct from './AddProduct';
 import SearchProduct from './SearchProduct';
 import ProductDetails from './ProductDetails';
-import AddProductMetaData from './AddProductMetaData';
 import CategoryWiseProduct from './CategoryWiseProduct';
+import ProductMetadataManagement from './ProductMetadataManagement';
 
-export { AddProduct, CategoryWiseProduct, SearchProduct, AddProductMetaData, ProductDetails };
+export {
+  AddProduct,
+  SearchProduct,
+  ProductDetails,
+  CategoryWiseProduct,
+  ProductMetadataManagement,
+};
