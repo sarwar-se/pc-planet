@@ -10,6 +10,23 @@ import { STATUS } from '../../constants/appConstants';
 import FeatureView from './components/FeatureView';
 import { ProductDetailsModel } from '../models/Product';
 
+const initialValue = {
+  id: null,
+  name: '',
+  code: '',
+  model: '',
+  price: 0,
+  status: undefined,
+  brand: null,
+  category: null,
+  keyFeatures: [],
+  image: '',
+  warranty: null,
+  specifications: [],
+  descriptions: [],
+  images: [],
+};
+
 const ProductDetails = () => {
   const { state } = useLocation();
   const productId = state?.productId;
@@ -19,22 +36,7 @@ const ProductDetails = () => {
   const descriptionSection = useRef<HTMLDivElement>(null);
   const reviewSection = useRef<HTMLDivElement>(null);
 
-  const [productDetails, setProductDetails] = useState<ProductDetailsModel>({
-    id: 0,
-    name: '',
-    code: '',
-    model: '',
-    price: 0,
-    status: 'OUT_OF_STOCK',
-    brand: null,
-    category: null,
-    keyFeatures: [],
-    image: '',
-    warranty: 0,
-    specifications: [],
-    descriptions: [],
-    images: [],
-  });
+  const [productDetails, setProductDetails] = useState<ProductDetailsModel>(initialValue);
   const [selectedImage, setSelectedImage] = useState(no_image);
 
   const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>) => {

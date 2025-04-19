@@ -7,15 +7,7 @@ import {
   saveProductSubCategory,
 } from '../../productApi';
 import EmptyBox from '../../../../components/patterns/EmptyBox';
-import {
-  FormControl,
-  FormGroup,
-  FormLabel,
-  Toast,
-  ToastBody,
-  ToastContainer,
-  ToastHeader,
-} from 'react-bootstrap';
+import { FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import { CreateProductSubCategory } from '../../../models/ProductMetadata';
 import { STATUS } from '../../../../constants/appConstants';
 import axios from 'axios';
@@ -24,6 +16,7 @@ import { toDropdownItems } from '../../../../utils/helperFunction';
 import { FaRegEdit } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import AppModal from '../../../../components/patterns/AppModal';
+import AppToastContainer from '../../../../components/patterns/AppToastContainer';
 
 const initialValue = {
   id: null,
@@ -220,33 +213,12 @@ const SubCategoryManagement = () => {
         </div>
       </AppModal>
 
-      <ToastContainer position='bottom-end' className='position-fixed m-1'>
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.ERROR}
-          delay={4000}
-          autohide
-          bg='danger'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>{'Fail!'}</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>{errorMessage}</ToastBody>
-        </Toast>
-
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.SUCCESS}
-          delay={4000}
-          autohide
-          bg='success'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>{'Success!'}</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>Product sub sucategory updated successfully</ToastBody>
-        </Toast>
-      </ToastContainer>
+      <AppToastContainer
+        status={status}
+        updateStatus={setStatus}
+        errorMessage={errorMessage}
+        successMessage={'Product sub sucategory updated successfully'}
+      />
     </div>
   );
 };

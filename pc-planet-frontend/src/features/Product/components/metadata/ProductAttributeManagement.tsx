@@ -8,14 +8,7 @@ import {
   getSubCategoryByCategory,
 } from '../../productApi';
 import EmptyBox from '../../../../components/patterns/EmptyBox';
-import {
-  FormGroup,
-  FormLabel,
-  Toast,
-  ToastBody,
-  ToastContainer,
-  ToastHeader,
-} from 'react-bootstrap';
+import { FormGroup, FormLabel } from 'react-bootstrap';
 import { CreateProductAttribute } from '../../../models/ProductMetadata';
 import AppDropdown from '../../../../components/patterns/AppDropdown';
 import { toDropdownItems } from '../../../../utils/helperFunction';
@@ -24,6 +17,8 @@ import { FaRegEdit } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import AppModal from '../../../../components/patterns/AppModal';
 import { STATUS } from '../../../../constants/appConstants';
+import AppToastContainer from '../../../../components/patterns/AppToastContainer';
+import axios from 'axios';
 
 const initialValue = {
   id: null,
@@ -43,6 +38,7 @@ const ProductAttributeManagement = () => {
   const [selectedAttribute, setSelectedAttribute] = useState<CreateProductAttribute>(initialValue);
   const [modalShow, setModalShow] = useState(false);
   const [status, setStatus] = useState(STATUS.IDLE);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleCategoryChange = (value: number | string) => {
     if (!selectedCategory) setNewAttirbute(initialValue);
@@ -72,8 +68,14 @@ const ProductAttributeManagement = () => {
           setStatus(STATUS.SUCCESS);
           fetchAttributes();
         })
-        .catch(() => {
+        .catch((error) => {
           setStatus(STATUS.ERROR);
+          if (axios.isAxiosError(error)) {
+            const message = error.response?.data?.message;
+            setErrorMessage(message);
+          } else {
+            setErrorMessage('Unexpected error');
+          }
         });
     }
   };
@@ -239,35 +241,12 @@ const ProductAttributeManagement = () => {
         </div>
       </AppModal>
 
-      <ToastContainer position='bottom-end' className='position-fixed m-1'>
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.ERROR}
-          delay={4000}
-          autohide
-          bg='danger'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>Fail!</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>Failed to delete product attribute</ToastBody>
-        </Toast>
-
-        <Toast
-          onClose={() => {
-            setStatus(STATUS.IDLE);
-          }}
-          show={status === STATUS.SUCCESS}
-          delay={4000}
-          autohide
-          bg='success'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>Success!</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>Product attribute deleted successfully</ToastBody>
-        </Toast>
-      </ToastContainer>
+      <AppToastContainer
+        status={status}
+        updateStatus={setStatus}
+        errorMessage={errorMessage}
+        successMessage={'Product attribute deleted successfully'}
+      />
     </div>
   );
 };

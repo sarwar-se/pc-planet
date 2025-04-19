@@ -153,3 +153,8 @@ code {
 .bg-blueviolet {
   background-color: blueviolet;
 }
+
+.custom-table th,
+td {
+  vertical-align: middle !important;
+}

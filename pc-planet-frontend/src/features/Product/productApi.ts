@@ -9,21 +9,21 @@ import {
 } from '../models/ProductMetadata';
 
 export const getProducts = (
-  statuses: string[],
-  brandNames: string[],
-  attributeValues: string[],
-  categoryName: string,
-  subCategoryName: string,
-  brandName: string,
+  statuses?: string[],
+  brandNames?: string[],
+  attributeValues?: string[],
+  categoryName?: string,
+  subCategoryName?: string,
+  brandName?: string,
 ) => {
   return HttpInstance.get(
     apiRoutes.getProducts(
-      statuses,
-      brandNames,
-      attributeValues,
-      categoryName,
-      subCategoryName,
-      brandName,
+      statuses ?? [],
+      brandNames ?? [],
+      attributeValues ?? [],
+      categoryName ?? '',
+      subCategoryName ?? '',
+      brandName ?? '',
     ),
   );
 };
@@ -80,6 +80,10 @@ export const saveProduct = (data: ProductDetailsModel) => {
   return HttpInstance.post(apiRoutes.saveProduct, data);
 };
 
+export const updateProduct = (data: ProductDetailsModel) => {
+  return HttpInstance.put(apiRoutes.updateProduct, data);
+};
+
 export const saveProductCategory = (data: CreateProductCategory) => {
   return HttpInstance.post(apiRoutes.saveCategory, data);
 };
@@ -110,4 +114,8 @@ export const deleteSubCategory = (id: number) => {
 
 export const deleteCategory = (id: number) => {
   return HttpInstance.delete(apiRoutes.deleteCategory(id));
+};
+
+export const deleteProduct = (id: number) => {
+  return HttpInstance.delete(apiRoutes.deleteProduct(id));
 };

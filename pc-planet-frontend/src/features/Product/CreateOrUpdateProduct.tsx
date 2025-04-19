@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Col,
-  FormControl,
-  FormGroup,
-  FormLabel,
-  Row,
-  Toast,
-  ToastBody,
-  ToastContainer,
-  ToastHeader,
-} from 'react-bootstrap';
+import { Col, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap';
 import { productStatusMap, toDropdownItems } from '../../utils/helperFunction';
 import {
   getAllCategory,
@@ -17,6 +7,7 @@ import {
   getBrandsBySubCategory,
   getSubCategoryByCategory,
   saveProduct,
+  updateProduct,
 } from './productApi';
 import AppDropdown from '../../components/patterns/AppDropdown';
 
@@ -35,18 +26,42 @@ import { AppButton } from '../../components';
 import axios from 'axios';
 import { STATUS } from '../../constants/appConstants';
 import AddProductAttribute from './components/AddProductAttribute';
+import AppToastContainer from '../../components/patterns/AppToastContainer';
 
 type DropdownItem = {
   value: string | number;
   label: string;
 };
 
-const AddProduct = () => {
+const initialValue = {
+  id: null,
+  name: '',
+  code: '',
+  model: '',
+  price: null,
+  status: undefined,
+  brand: null,
+  category: null,
+  subCategory: null,
+  keyFeatures: [],
+  image: '',
+  warranty: 0,
+  specifications: [],
+  descriptions: [],
+  attributeValues: [],
+  images: [],
+};
+
+const CreateOrUpdateProduct: React.FC<{ editProduct: ProductDetailsModel }> = ({
+  editProduct = initialValue,
+}) => {
   const [categories, setCategories] = useState<DropdownItem[]>([]);
   const [subCategories, setSubCategories] = useState<DropdownItem[]>([]);
   const [brands, setBrands] = useState<DropdownItem[]>([]);
 
-  const [selectedCategory, setSelectedCategory] = useState<string | number>('');
+  const [selectedCategory, setSelectedCategory] = useState<string | number>(
+    editProduct.category?.id ? editProduct.category.id : '',
+  );
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | number>('');
   const [selectedStatus, setSelectedStatus] = useState<string | number>('');
   const [selectedbrand, setSelectedBrand] = useState<string | number>('');
@@ -54,23 +69,7 @@ const AddProduct = () => {
   const [status, setStatus] = useState(STATUS.IDLE);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [productInfo, setProductInfo] = useState<ProductDetailsModel>({
-    id: null,
-    name: '',
-    code: '',
-    model: '',
-    price: null,
-    status: undefined,
-    brand: null,
-    category: null,
-    keyFeatures: [],
-    image: '',
-    warranty: 0,
-    specifications: [],
-    descriptions: [],
-    attributeValues: [],
-    images: [],
-  });
+  const [productInfo, setProductInfo] = useState(editProduct);
 
   const categoryHandleChange = (value: string | number) => {
     setSelectedSubCategory('');
@@ -112,28 +111,17 @@ const AddProduct = () => {
   };
 
   const handleClear = () => {
-    setProductInfo({
-      id: null,
-      name: '',
-      code: '',
-      model: '',
-      price: null,
-      status: undefined,
-      brand: null,
-      category: null,
-      keyFeatures: [],
-      image: '',
-      warranty: 0,
-      specifications: [],
-      descriptions: [],
-      attributeValues: [],
-      images: [],
-    });
+    setProductInfo(initialValue);
   };
 
   const handleSubmit = async () => {
     try {
-      await saveProduct(productInfo);
+      if (productInfo.id === null) {
+        await saveProduct(productInfo);
+      } else {
+        await updateProduct(productInfo);
+      }
+
       setStatus(STATUS.SUCCESS);
     } catch (error) {
       setStatus(STATUS.ERROR);
@@ -187,6 +175,14 @@ const AddProduct = () => {
     }
   }, [selectedCategory, selectedSubCategory]);
 
+  useEffect(() => {
+    setProductInfo(editProduct);
+    setSelectedCategory(editProduct.category?.id ? editProduct?.category?.id : '');
+    setSelectedSubCategory(editProduct.subCategory?.id ? editProduct?.subCategory?.id : '');
+    setSelectedBrand(editProduct.brand?.id ? editProduct.brand?.id : '');
+    setSelectedStatus(editProduct.status ? editProduct.status : '');
+  }, [editProduct]);
+
   return (
     <div className='container'>
       <h3 className='text-center p-3'>Add New Product</h3>
@@ -196,6 +192,7 @@ const AddProduct = () => {
             <FormLabel>Name</FormLabel>
             <FormControl
               type='text'
+              value={productInfo.name}
               onChange={(e) => handleChange('name', e.target.value)}
               isInvalid={!productInfo.name}
             />
@@ -205,6 +202,7 @@ const AddProduct = () => {
             <FormLabel>Code</FormLabel>
             <FormControl
               type='text'
+              value={productInfo.code}
               onChange={(e) => handleChange('code', e.target.value)}
               isInvalid={!productInfo.code}
             />
@@ -214,6 +212,7 @@ const AddProduct = () => {
             <FormLabel>Model</FormLabel>
             <FormControl
               type='text'
+              value={productInfo.model}
               onChange={(e) => handleChange('model', e.target.value)}
               isInvalid={!productInfo.model}
             />
@@ -223,6 +222,7 @@ const AddProduct = () => {
             <FormLabel>Price</FormLabel>
             <FormControl
               type='number'
+              value={productInfo.price ? productInfo.price : ''}
               onChange={(e) => handleChange('price', e.target.value)}
               isInvalid={!productInfo.price}
             />
@@ -230,7 +230,11 @@ const AddProduct = () => {
 
           <FormGroup as={Col} lg='4' md='6' className='pb-3'>
             <FormLabel>Warranty</FormLabel>
-            <FormControl type='number' onChange={(e) => handleChange('warranty', e.target.value)} />
+            <FormControl
+              type='number'
+              value={productInfo.warranty ? productInfo.warranty : ''}
+              onChange={(e) => handleChange('warranty', e.target.value)}
+            />
           </FormGroup>
 
           <FormGroup as={Col} lg='4' md='6' className='pb-3'>
@@ -285,18 +289,28 @@ const AddProduct = () => {
         </Row>
         <hr className='border-3' />
         <AddProductAttribute
+          editAttributeValues={productInfo.attributeValues}
           categoryId={+selectedCategory}
           subCategoryId={+selectedSubCategory}
           setProductInfo={setProductInfo}
         />
         <hr className='border-3' />
-        <AddImage setProductInfo={setProductInfo} />
+        <AddImage editImages={productInfo.images} setProductInfo={setProductInfo} />
         <hr className='border-3' />
-        <AddNewKeyFeature setProductInfo={setProductInfo} />
+        <AddNewKeyFeature
+          editKeyFeatures={productInfo.keyFeatures}
+          setProductInfo={setProductInfo}
+        />
         <hr className='border-3' />
-        <AddSpecification setProductInfo={setProductInfo} />
+        <AddSpecification
+          editSpecifications={productInfo.specifications}
+          setProductInfo={setProductInfo}
+        />
         <hr className='border-3' />
-        <AddProductDescription setProductInfo={setProductInfo} />
+        <AddProductDescription
+          editDescriptions={productInfo.descriptions}
+          setProductInfo={setProductInfo}
+        />
 
         <div className='d-flex justify-content-end gap-3 mt-3'>
           <AppButton className='bg-secondary' onClick={handleClear}>
@@ -307,35 +321,15 @@ const AddProduct = () => {
           </AppButton>
         </div>
       </div>
-      <ToastContainer position='bottom-end' className='position-fixed m-1'>
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.ERROR}
-          delay={5000}
-          autohide
-          bg='danger'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>{'Fail!'}</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>{errorMessage}</ToastBody>
-        </Toast>
 
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.SUCCESS}
-          delay={5000}
-          autohide
-          bg='success'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>{'Success!'}</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>{'Product saved successfully'}</ToastBody>
-        </Toast>
-      </ToastContainer>
+      <AppToastContainer
+        status={status}
+        updateStatus={setStatus}
+        errorMessage={errorMessage}
+        successMessage={'Product saved successfully'}
+      />
     </div>
   );
 };
 
-export default AddProduct;
+export default CreateOrUpdateProduct;

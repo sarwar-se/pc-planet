@@ -31,6 +31,7 @@ export interface ProductInfo {
   status: ProductStatus | undefined;
   brand: ProductBrand | null;
   category: ProductCategory | null;
+  subCategory?: ProductSubCategory | null;
   keyFeatures?: ProductKeyFeature[];
   image: string;
 }
@@ -75,9 +76,9 @@ export type ProductImage = {
 };
 
 export interface ProductDetailsModel extends ProductInfo {
-  warranty?: number;
+  warranty?: number | null;
   specifications?: ProductSpecification[];
   descriptions?: ProductDescription[];
   attributeValues?: ProductAttributeValue[];
-  images?: ProductImage[];
+  images: ProductImage[];
 }

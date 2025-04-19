@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { AppButton } from '../../../../components';
 import { deleteCategory, getAllCategory, saveProductCategory } from '../../productApi';
 import EmptyBox from '../../../../components/patterns/EmptyBox';
-import { FormControl, Toast, ToastBody, ToastContainer, ToastHeader } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { CreateProductCategory } from '../../../models/ProductMetadata';
 import { STATUS } from '../../../../constants/appConstants';
 import axios from 'axios';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import AppModal from '../../../../components/patterns/AppModal';
 import { FaRegEdit } from 'react-icons/fa';
+import AppToastContainer from '../../../../components/patterns/AppToastContainer';
 
 const initialValue = {
   id: null,
@@ -163,33 +164,12 @@ const CategoryManagement = () => {
         </div>
       </AppModal>
 
-      <ToastContainer position='bottom-end' className='position-fixed m-1'>
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.ERROR}
-          delay={4000}
-          autohide
-          bg='danger'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>{'Fail!'}</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>{errorMessage}</ToastBody>
-        </Toast>
-
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.SUCCESS}
-          delay={4000}
-          autohide
-          bg='success'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>{'Success!'}</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>Product category updated successfully</ToastBody>
-        </Toast>
-      </ToastContainer>
+      <AppToastContainer
+        status={status}
+        updateStatus={setStatus}
+        errorMessage={errorMessage}
+        successMessage={'Product category updated successfully'}
+      />
     </div>
   );
 };

@@ -7,8 +7,9 @@ import EmptyBox from '../../../components/patterns/EmptyBox';
 import { ProductDetailsModel, ProductKeyFeature } from '../../models/Product';
 
 const AddNewKeyFeature: React.FC<{
+  editKeyFeatures?: ProductKeyFeature[];
   setProductInfo: React.Dispatch<React.SetStateAction<ProductDetailsModel>>;
-}> = ({ setProductInfo }) => {
+}> = ({ editKeyFeatures = [], setProductInfo }) => {
   const [keyFeatures, setKeyFeatures] = useState<ProductKeyFeature[]>([]);
 
   const addNewKeyFeature = () => {
@@ -26,6 +27,13 @@ const AddNewKeyFeature: React.FC<{
   useEffect(() => {
     setProductInfo((prev: ProductDetailsModel) => ({ ...prev, keyFeatures: keyFeatures }));
   }, [keyFeatures, setProductInfo]);
+
+  useEffect(() => {
+    if (editKeyFeatures.length > 0 && keyFeatures.length === 0) {
+      setKeyFeatures(editKeyFeatures);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editKeyFeatures]);
 
   return (
     <div className='border rounded-top'>

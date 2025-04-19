@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LuImagePlus } from 'react-icons/lu';
 import { ProductDetailsModel, ProductImage } from '../../models/Product';
+import { getImageUrl } from '../../../utils/helperFunction';
 
 interface ImagePayload {
-  id: string;
+  id: number | null;
   fileName: string;
+  url: string;
 }
 
 const AddImage: React.FC<{
+  editImages?: ProductImage[];
   setProductInfo: React.Dispatch<React.SetStateAction<ProductDetailsModel>>;
-}> = ({ setProductInfo }) => {
+}> = ({ editImages = [], setProductInfo }) => {
   const [images, setImages] = useState<ImagePayload[]>([]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,19 +22,15 @@ const AddImage: React.FC<{
     const promises = Array.from(files).map(async (file) => {
       const base64 = await toBase64(file);
       return {
-        id: URL.createObjectURL(file),
+        id: null,
+        url: URL.createObjectURL(file),
         fileName: base64,
       };
     });
 
     const imageList = await Promise.all(promises);
-    setImages(imageList);
-
-    const productImages: ProductImage[] = imageList.map((image) => ({
-      id: null,
-      fileName: image.fileName,
-    }));
-    setProductInfo((prev: ProductDetailsModel) => ({ ...prev, images: productImages }));
+    setImages((prev) => [...prev, ...imageList]);
+    updateProductImages([...images, ...imageList]);
   };
 
   const toBase64 = (file: File): Promise<string> =>
@@ -42,9 +41,32 @@ const AddImage: React.FC<{
       reader.onerror = (error) => reject(error);
     });
 
-  const removeImage = (id: string) => {
-    setImages(images.filter((image) => image.id !== id));
+  const updateProductImages = (imageList: ImagePayload[]) => {
+    const productImages: ProductImage[] = imageList.map((image) => ({
+      id: image.id,
+      fileName: image.fileName,
+    }));
+    setProductInfo((prev: ProductDetailsModel) => ({ ...prev, images: productImages }));
   };
+
+  const removeImage = (url: string) => {
+    const filtered = images.filter((image) => image.url !== url);
+    setImages(filtered);
+    updateProductImages(filtered);
+  };
+
+  useEffect(() => {
+    if (editImages.length > 0 && images.length === 0) {
+      const existing: ImagePayload[] = editImages.map((img) => ({
+        id: img.id,
+        url: getImageUrl(img.fileName),
+        fileName: img.fileName,
+      }));
+      setImages(existing);
+      updateProductImages(existing);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editImages]);
 
   return (
     <div className='border rounded-top'>
@@ -60,8 +82,8 @@ const AddImage: React.FC<{
         <div className='d-flex gap-2'>
           {images.map((image) => (
             <div key={image.id} className='image-preview border rounded'>
-              <img className='rounded' src={image.id} alt='upload' />
-              <button className='remove-btn' onClick={() => removeImage(image.id)}>
+              <img className='rounded' src={image.url} alt='upload' />
+              <button className='remove-btn' onClick={() => removeImage(image.url)}>
                 Remove
               </button>
             </div>

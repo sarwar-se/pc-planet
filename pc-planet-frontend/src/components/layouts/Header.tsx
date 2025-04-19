@@ -111,6 +111,13 @@ const Header: React.FC<{ handleShowSidebar: () => void }> = ({ handleShowSidebar
                     <DropdownMenu>
                       <DropdownItem
                         onClick={() => {
+                          navigate(appRoutes.productManagement);
+                        }}
+                      >
+                        Product Management
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={() => {
                           navigate(appRoutes.addProduct);
                         }}
                       >
