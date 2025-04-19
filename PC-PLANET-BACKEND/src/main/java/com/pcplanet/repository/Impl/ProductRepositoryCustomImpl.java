@@ -56,7 +56,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             predicate = cb.and(predicate, attributeValue.get("value").in(attributeValues));
         }
 
-        query.where(predicate);
+        query.where(predicate)
+                .orderBy(cb.asc(product.get("id")));
 
         return entityManager.createQuery(query).getResultList();
     }

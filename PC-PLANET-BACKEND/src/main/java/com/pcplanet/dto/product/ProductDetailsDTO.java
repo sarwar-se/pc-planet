@@ -110,6 +110,19 @@ public class ProductDetailsDTO extends ProductInfoDTO {
                 }).toList();
         productDetailsDTO.setDescriptions(descriptionDTOs);
 
+        var attributeValueDTOs = product.getAttributeValues()
+                .stream()
+                .map(attributeValue -> {
+                    var attributeValueDTO = new ProductAttributeValueDTO();
+
+                    attributeValueDTO.setId(attributeValue.getId());
+                    attributeValueDTO.setValue(attributeValue.getValue());
+
+                    return attributeValueDTO;
+                }).toList();
+
+        productDetailsDTO.setAttributeValues(attributeValueDTOs);
+
         return productDetailsDTO;
     }
 }
