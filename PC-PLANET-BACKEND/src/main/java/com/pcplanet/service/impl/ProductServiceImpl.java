@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product();
 
         mapToProduct(productDetailsDTO, product);
-        mapToProductAttributeValue(productDetailsDTO.getAttributeValues(), product);
+        addOrUpdateProductAttributeValue(productDetailsDTO.getAttributeValues(), product);
         mapToProductKeyFeatures(productDetailsDTO.getKeyFeatures(), product);
         mapToProductSpecifications(productDetailsDTO.getSpecifications(), product);
         mapToProductDescriptions(productDetailsDTO.getDescriptions(), product);
@@ -125,9 +125,6 @@ public class ProductServiceImpl implements ProductService {
             log.warn("Product id not provided");
             throw new ServiceException(ErrorCode.NO_PRODUCT_ID_PROVIDED);
         }
-
-        checkBrandAndCategory(productDetailsDTO);
-
         log.debug("Product updating with id: {}", productDetailsDTO.getId());
 
         Product product = productRepository.findById(productDetailsDTO.getId())
@@ -139,10 +136,11 @@ public class ProductServiceImpl implements ProductService {
         mapToProduct(productDetailsDTO, product);
         product.setUpdatedAt(LocalDateTime.now());
 
-        mapToProductKeyFeatures(productDetailsDTO, product);
-        mapToProductSpecifications(productDetailsDTO, product);
-        mapToProductDescriptions(productDetailsDTO, product);
-        mapToProductImages(productDetailsDTO, product);
+        addOrUpdateProductAttributeValue(productDetailsDTO.getAttributeValues(), product);
+        updateProductKeyFeatures(productDetailsDTO.getKeyFeatures(), product);
+        updateProductSpecifications(productDetailsDTO.getSpecifications(), product);
+        updateProductDescriptions(productDetailsDTO.getDescriptions(), product);
+        updateProductImages(productDetailsDTO.getImages(), product);
 
         var result = productRepository.save(product);
         log.debug("Product updated with model: {}", productDetailsDTO.getModel());
@@ -244,28 +242,6 @@ public class ProductServiceImpl implements ProductService {
         product.setKeyFeatures(keyFeatures);
     }
 
-    private void mapToProductAttributeValue(List<ProductAttributeValueDTO> attributeValueDTOs, Product product) {
-        if (attributeValueDTOs == null) return;
-
-        var attributeValues = new ArrayList<ProductAttributeValue>();
-
-        for (var attributeValueDTO : attributeValueDTOs) {
-            if (attributeValueDTO.getId() == null) {
-                return;
-            }
-
-            var attributeValue = attributeValueRepository.findById(attributeValueDTO.getId())
-                    .orElseThrow(() -> {
-                        log.warn("Attribute value not found for id: {}", attributeValueDTO.getId());
-                        return new ServiceException(ErrorCode.NOT_FOUND);
-                    });
-            attributeValue.getProducts().add(product);
-            attributeValues.add(attributeValue);
-
-        }
-        product.setAttributeValues(attributeValues);
-    }
-
     private void mapToProductSpecifications(List<ProductSpecificationDTO> specificationDTOs, Product product) {
         var specifications = specificationDTOs
                 .stream()
@@ -335,10 +311,6 @@ public class ProductServiceImpl implements ProductService {
         product.setImages(images);
     }
 
-    private String saveImageAndGetPath(String base64Image) {
-        return ImageUtils.saveImageFromBase64String(base64Image, baseDir, Constants.PRODUCT_IMAGE_DIRECTORY);
-    }
-
     private void mapToSpecificationPropertyValues(
             List<ProductSpecificationPropertyValueDTO> specificationPropertyValueDTOs,
             ProductSpecificationProperty specificationProperty) {
@@ -355,9 +327,51 @@ public class ProductServiceImpl implements ProductService {
         specificationProperty.setSpecificationPropertyValues(specificationPropertyValues);
     }
 
-    private void mapToProductKeyFeatures(ProductDetailsDTO productDetailsDTO, Product product) {
+    private void addOrUpdateProductAttributeValue(List<ProductAttributeValueDTO> attributeValueDTOs, Product product) {
+        if (attributeValueDTOs == null || attributeValueDTOs.isEmpty()) return;
+
+        if (product.getAttributeValues() == null) {
+            product.setAttributeValues(new ArrayList<>());
+        }
+
+        /* Get attribute value IDs from the request */
+        List<Integer> requestedAttributeValueIds = attributeValueDTOs
+                .stream()
+                .map(ProductAttributeValueDTO::getId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        /* Remove attribute values from the database that are not present in request */
+        product.getAttributeValues().removeIf(attributeValue -> !requestedAttributeValueIds.contains(attributeValue.getId()));
+
+        var attributeValues = new ArrayList<ProductAttributeValue>();
+
+        for (var attributeValueDTO : attributeValueDTOs) {
+
+            if (attributeValueDTO.getId() == null) return;
+
+            var attributeValue = attributeValueRepository.findById(attributeValueDTO.getId())
+                    .orElseThrow(() -> {
+                        log.warn("Attribute value not found for id: {}", attributeValueDTO.getId());
+                        return new ServiceException(ErrorCode.PRODUCT_KEY_FEATURE_NOT_FOUND);
+                    });
+            attributeValue.setUpdatedAt(LocalDateTime.now());
+
+            attributeValue.getProducts().add(product);
+            attributeValues.add(attributeValue);
+        }
+        product.setAttributeValues(attributeValues);
+    }
+
+    private void updateProductKeyFeatures(List<ProductKeyFeatureDTO> keyFeatureDTOs, Product product) {
+        if (keyFeatureDTOs == null || keyFeatureDTOs.isEmpty()) return;
+
+        if (product.getKeyFeatures() == null) {
+            product.setKeyFeatures(new ArrayList<>());
+        }
+
         /* Get keyFeature IDs from the request */
-        List<Integer> requestedKeyFeatureIds = productDetailsDTO.getKeyFeatures()
+        List<Integer> requestedKeyFeatureIds = keyFeatureDTOs
                 .stream()
                 .map(ProductKeyFeatureDTO::getId)
                 .filter(Objects::nonNull)
@@ -366,7 +380,7 @@ public class ProductServiceImpl implements ProductService {
         /* Remove keyFeatures from the database that are not present in request */
         product.getKeyFeatures().removeIf(keyFeature -> !requestedKeyFeatureIds.contains(keyFeature.getId()));
 
-        for (ProductKeyFeatureDTO keyFeatureDTO : productDetailsDTO.getKeyFeatures()) {
+        for (var keyFeatureDTO : keyFeatureDTOs) {
             ProductKeyFeature keyFeature;
             if (keyFeatureDTO.getId() != null) {
                 keyFeature = keyFeatureRepository.findById(keyFeatureDTO.getId())
@@ -385,9 +399,15 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private void mapToProductSpecifications(ProductDetailsDTO productDetailsDTO, Product product) {
+    private void updateProductSpecifications(List<ProductSpecificationDTO> productSpecificationDTOs, Product product) {
+        if (productSpecificationDTOs == null || productSpecificationDTOs.isEmpty()) return;
+
+        if (product.getSpecifications() == null) {
+            product.setSpecifications(new ArrayList<>());
+        }
+
         /* Get specification IDs from the request */
-        List<Integer> requestedSpecificationIds = productDetailsDTO.getSpecifications()
+        List<Integer> requestedSpecificationIds = productSpecificationDTOs
                 .stream()
                 .map(ProductSpecificationDTO::getId)
                 .filter(Objects::nonNull)
@@ -396,7 +416,7 @@ public class ProductServiceImpl implements ProductService {
         /* Remove specifications from the database that are not present in request */
         product.getSpecifications().removeIf(spec -> !requestedSpecificationIds.contains(spec.getId()));
 
-        for (ProductSpecificationDTO specificationDTO : productDetailsDTO.getSpecifications()) {
+        for (var specificationDTO : productSpecificationDTOs) {
             ProductSpecification specification;
             if (specificationDTO.getId() != null) {
                 specification = specificationRepository.findById(specificationDTO.getId())
@@ -412,43 +432,15 @@ public class ProductServiceImpl implements ProductService {
             }
             specification.setType(specificationDTO.getType());
 
-            mapToProductSpecificationProperties(specificationDTO, specification);
+            updateSpecificationProperties(specificationDTO.getProperties(), specification);
         }
     }
 
-    private void mapToProductDescriptions(ProductDetailsDTO productDetailsDTO, Product product) {
-        /* Get description IDs from the request */
-        List<Integer> requestDescriptionIds = productDetailsDTO.getDescriptions()
-                .stream()
-                .map(ProductDescriptionDTO::getId)
-                .filter(Objects::nonNull)
-                .toList();
+    private void updateSpecificationProperties(List<ProductSpecificationPropertyDTO> specificationPropertyDTOs, ProductSpecification specification) {
+        if (specificationPropertyDTOs == null || specificationPropertyDTOs.isEmpty()) return;
 
-        /* Remove descriptions from the database that are not present in request */
-        product.getDescriptions().removeIf(desc -> !requestDescriptionIds.contains(desc.getId()));
-
-        for (ProductDescriptionDTO descriptionDTO : productDetailsDTO.getDescriptions()) {
-            ProductDescription description;
-            if (descriptionDTO.getId() != null) {
-                description = descriptionRepository.findById(descriptionDTO.getId())
-                        .orElseThrow(() -> {
-                            log.warn("Product description not found with id: {}", descriptionDTO.getId());
-                            return new ServiceException(ErrorCode.NOT_FOUND);
-                        });
-                description.setUpdatedAt(LocalDateTime.now());
-            } else {
-                description = new ProductDescription();
-                description.setProduct(product);
-                product.getDescriptions().add(description);
-            }
-            description.setName(descriptionDTO.getName());
-            description.setValue(descriptionDTO.getValue());
-        }
-    }
-
-    private void mapToProductSpecificationProperties(ProductSpecificationDTO specificationDTO, ProductSpecification specification) {
         /* Get specification property IDs from the request */
-        List<Integer> requestedSpecificationPropertyIds = specificationDTO.getProperties()
+        List<Integer> requestedSpecificationPropertyIds = specificationPropertyDTOs
                 .stream()
                 .map(ProductSpecificationPropertyDTO::getId)
                 .filter(Objects::nonNull)
@@ -463,7 +455,7 @@ public class ProductServiceImpl implements ProductService {
                 properties != null && properties.getId() != null && requestedSpecificationPropertyIds.contains(properties.getId())
         );
 
-        for (ProductSpecificationPropertyDTO specificationPropertyDTO : specificationDTO.getProperties()) {
+        for (var specificationPropertyDTO : specificationPropertyDTOs) {
             ProductSpecificationProperty specificationProperty;
             if (specificationPropertyDTO.getId() != null) {
                 specificationProperty = specificationPropertyRepository.findById(specificationPropertyDTO.getId())
@@ -483,34 +475,36 @@ public class ProductServiceImpl implements ProductService {
             }
             specificationProperty.setName(specificationPropertyDTO.getName());
 
-            mapToSpecificationPropertyValues(specificationPropertyDTO, specificationProperty);
+            updateSpecificationPropertyValues(specificationPropertyDTO.getPropertyValues(), specificationProperty);
         }
     }
 
-    private void mapToSpecificationPropertyValues(ProductSpecificationPropertyDTO specificationPropertyDTO, ProductSpecificationProperty specificationProperty) {
+    private void updateSpecificationPropertyValues(List<ProductSpecificationPropertyValueDTO> specificationPropertyValueDTOs, ProductSpecificationProperty specificationProperty) {
+        if (specificationPropertyValueDTOs == null || specificationPropertyValueDTOs.isEmpty()) return;
+
         /* Get specification property value IDs from the request */
-        List<Integer> requestedSpecificationPropertyValueIds = specificationPropertyDTO.getPropertyValues()
+        List<Integer> requestedSpecificationPropertyValueIds = specificationPropertyValueDTOs
                 .stream()
                 .map(ProductSpecificationPropertyValueDTO::getId)
                 .filter(Objects::nonNull)
                 .toList();
 
-        if (specificationPropertyDTO.getPropertyValues() == null) {
-            specificationPropertyDTO.setPropertyValues(new ArrayList<>());
+        if (specificationProperty.getSpecificationPropertyValues() == null) {
+            specificationProperty.setSpecificationPropertyValues(new ArrayList<>());
         }
 
-        /* Remove specification details from the database that are not present in request */
-        specificationPropertyDTO.getPropertyValues().removeIf(detail ->
-                detail != null && detail.getId() != null && !requestedSpecificationPropertyValueIds.contains(detail.getId())
+        /* Remove specification property value from the database that are not present in request */
+        specificationProperty.getSpecificationPropertyValues().removeIf(propertyValue ->
+                propertyValue != null && propertyValue.getId() != null && !requestedSpecificationPropertyValueIds.contains(propertyValue.getId())
         );
 
-        for (ProductSpecificationPropertyValueDTO specificationPropertyValueDTO : specificationPropertyDTO.getPropertyValues()) {
+        for (var specificationPropertyValueDTO : specificationPropertyValueDTOs) {
 
             ProductSpecificationPropertyValue specificationPropertyValue;
             if (specificationPropertyValueDTO.getId() != null) {
                 specificationPropertyValue = specificationPropertyValueRepository.findById(specificationPropertyValueDTO.getId())
                         .orElseThrow(() -> {
-                            log.warn("Product specification detail not found with id: {}", specificationPropertyValueDTO.getId());
+                            log.warn("Product specification property value not found with id: {}", specificationPropertyValueDTO.getId());
                             return new ServiceException(ErrorCode.NOT_FOUND);
                         });
                 specificationPropertyValue.setUpdatedAt(LocalDateTime.now());
@@ -528,18 +522,60 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private void mapToProductImages(ProductDetailsDTO productDetailsDTO, Product product) {
+    private void updateProductDescriptions(List<ProductDescriptionDTO> productDescriptionDTOs, Product product) {
+        if (productDescriptionDTOs == null || productDescriptionDTOs.isEmpty()) return;
+
+        if (product.getDescriptions() == null) {
+            product.setDescriptions(new ArrayList<>());
+        }
+
+        /* Get description IDs from the request */
+        List<Integer> requestedDescriptionIds = productDescriptionDTOs
+                .stream()
+                .map(ProductDescriptionDTO::getId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        /* Remove descriptions from the database that are not present in request */
+        product.getDescriptions().removeIf(description -> !requestedDescriptionIds.contains(description.getId()));
+
+        for (var descriptionDTO : productDescriptionDTOs) {
+            ProductDescription description;
+            if (descriptionDTO.getId() != null) {
+                description = descriptionRepository.findById(descriptionDTO.getId())
+                        .orElseThrow(() -> {
+                            log.warn("Product description not found with id: {}", descriptionDTO.getId());
+                            return new ServiceException(ErrorCode.NOT_FOUND);
+                        });
+                description.setUpdatedAt(LocalDateTime.now());
+            } else {
+                description = new ProductDescription();
+                description.setProduct(product);
+                product.getDescriptions().add(description);
+            }
+            description.setName(descriptionDTO.getName());
+            description.setValue(descriptionDTO.getValue());
+        }
+    }
+
+    private void updateProductImages(List<ProductImageDTO> imageDTOs, Product product) {
+        if (imageDTOs == null || imageDTOs.isEmpty()) return;
+
+        if (product.getImages() == null) {
+            product.setImages(new ArrayList<>());
+        }
+
         /* Get images IDs from the request */
-        List<Integer> requestImageIds = productDetailsDTO.getImages()
+        List<Integer> requestedImageIds = imageDTOs
                 .stream()
                 .map(ProductImageDTO::getId)
                 .filter(Objects::nonNull)
                 .toList();
 
         /* Remove images from the database that are not present in request */
-        product.getImages().removeIf(desc -> !requestImageIds.contains(desc.getId()));
+        product.getImages().removeIf(image -> !requestedImageIds.contains(image.getId()));
 
-        for (ProductImageDTO imageDTO : productDetailsDTO.getImages()) {
+        for (var imageDTO : imageDTOs) {
             ProductImage image;
             if (imageDTO.getId() != null) {
                 image = imageRepository.findById(imageDTO.getId())
@@ -550,10 +586,15 @@ public class ProductServiceImpl implements ProductService {
                 image.setUpdatedAt(LocalDateTime.now());
             } else {
                 image = new ProductImage();
+
                 image.setProduct(product);
                 product.getImages().add(image);
+                image.setImageLocation(saveImageAndGetPath(imageDTO.getFileName()));
             }
-            image.setImageLocation(imageDTO.getFileName());
         }
+    }
+
+    private String saveImageAndGetPath(String base64Image) {
+        return ImageUtils.saveImageFromBase64String(base64Image, baseDir, Constants.PRODUCT_IMAGE_DIRECTORY);
     }
 }
