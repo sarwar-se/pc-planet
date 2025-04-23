@@ -8,5 +8,7 @@ export const appRoutes = {
   searchProduct: (query: string) => `/product/search/${query}`,
   productDetails: (productName: string) => `/${productName}/details`,
   addProduct: '/product/add',
+  editProduct: (id: number) => `/product/${id}`,
+  productManagement: '/product/management',
   addProductMetadata: '/product/metadata-management',
 };

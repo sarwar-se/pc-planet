@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { appRoutes } from '../../../routes/appRoutes';
 import { PRODUCT_STATUS } from '../../../constants/appConstants';
 import { ProductInfo, ProductKeyFeature } from '../../models/Product';
+import no_image from '../../../assets/images/empty.jpg';
 
 const ProductCard: React.FC<{ product: ProductInfo }> = ({ product }) => {
   const { keyFeatures } = product;
-  const no_image = '/empty.jpg';
   const navigate = useNavigate();
 
   const getProductStatus = (value: string | undefined) => {
@@ -36,7 +36,7 @@ const ProductCard: React.FC<{ product: ProductInfo }> = ({ product }) => {
         <Card.Img
           className='p-2'
           variant='top'
-          src={getImageUrl(`${product.image ? product.image : no_image}`)}
+          src={product.image ? getImageUrl(product.image) : `${no_image}`}
           onClick={() => {
             handleProductClick(product.id, product.name);
           }}

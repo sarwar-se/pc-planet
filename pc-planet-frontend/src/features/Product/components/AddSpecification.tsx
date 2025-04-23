@@ -8,9 +8,10 @@ import EmptyBox from '../../../components/patterns/EmptyBox';
 import { ProductDetailsModel, ProductSpecification } from '../../models/Product';
 
 const AddSpecification: React.FC<{
+  editSpecifications?: ProductSpecification[];
   setProductInfo: React.Dispatch<React.SetStateAction<ProductDetailsModel>>;
-}> = ({ setProductInfo }) => {
-  const [specifications, setSpecifications] = useState<ProductSpecification[]>([]);
+}> = ({ editSpecifications = [], setProductInfo }) => {
+  const [specifications, setSpecifications] = useState<ProductSpecification[]>(editSpecifications);
 
   const addSpecification = () => {
     setSpecifications((prev) => [...prev, { id: null, type: '', properties: [] }]);
@@ -29,6 +30,13 @@ const AddSpecification: React.FC<{
   useEffect(() => {
     setProductInfo((prev: ProductDetailsModel) => ({ ...prev, specifications: specifications }));
   }, [specifications, setProductInfo]);
+
+  useEffect(() => {
+    if (editSpecifications.length > 0 && specifications.length === 0) {
+      setSpecifications(editSpecifications);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editSpecifications]);
 
   return (
     <div className='border rounded-top'>

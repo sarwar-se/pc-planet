@@ -19,6 +19,7 @@
   border: none;
   cursor: pointer;
   object-fit: cover;
+  min-height: 235px;
 }
 
 .product-card-footer {

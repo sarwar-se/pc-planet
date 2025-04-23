@@ -27,6 +27,7 @@ export const apiRoutes = {
   getProductAttributeBySubCategoryId: (subCategoryId: number) =>
     `/api/product-sub-category/attributes?subCategoryId=${subCategoryId}`,
   saveProduct: '/api/product/save',
+  updateProduct: '/api/product/update',
   saveCategory: '/api/product-category/save',
   saveSubCategory: '/api/product-sub-category/save',
   saveOrUpdateBrand: '/api/product-brand/save',
@@ -35,4 +36,5 @@ export const apiRoutes = {
   deleteBrand: (id: number) => `/api/product-brand/delete/${id}`,
   deleteSubCategory: (id: number) => `/api/product-sub-category/delete/${id}`,
   deleteCategory: (id: number) => `/api/product-category/delete/${id}`,
+  deleteProduct: (id: number) => `/api/product/all/${id}/delete`,
 };

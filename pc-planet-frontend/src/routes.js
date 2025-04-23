@@ -52,6 +52,13 @@ export const router = createBrowserRouter([
             },
           },
           {
+            path: ':productId',
+            lazy: async () => {
+              const { UpdateProduct } = await import('./features/Product/index.ts');
+              return { Component: UpdateProduct };
+            },
+          },
+          {
             path: 'metadata-management',
             lazy: async () => {
               const { ProductMetadataManagement } = await import('./features/Product/index.ts');
@@ -63,6 +70,13 @@ export const router = createBrowserRouter([
             lazy: async () => {
               const { SearchProduct } = await import('./features/Product/index.ts');
               return { Component: SearchProduct };
+            },
+          },
+          {
+            path: 'management',
+            lazy: async () => {
+              const { ProductManagement } = await import('./features/Product/index.ts');
+              return { Component: ProductManagement };
             },
           },
         ],

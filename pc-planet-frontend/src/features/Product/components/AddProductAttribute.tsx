@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getProductAttributeByCategoryId, getProductAttributeBySubCategoryId } from '../productApi';
 import ProductAttribute from './ProductAttribute';
 import EmptyBox from '../../../components/patterns/EmptyBox';
-import { ProductDetailsModel } from '../../models/Product';
+import { ProductAttributeValue, ProductDetailsModel } from '../../models/Product';
 
 type AttributeValue = {
   id: number;
@@ -18,8 +18,9 @@ export interface AttributePayload {
 const AddProductAttribute: React.FC<{
   categoryId: number;
   subCategoryId: number;
+  editAttributeValues?: ProductAttributeValue[];
   setProductInfo: React.Dispatch<React.SetStateAction<ProductDetailsModel>>;
-}> = ({ categoryId, subCategoryId, setProductInfo }) => {
+}> = ({ categoryId, subCategoryId, editAttributeValues = [], setProductInfo }) => {
   const [selectedAttributes, setSelectedAttributes] = useState<Record<number, number>>({});
 
   const [attributes, setAttributes] = useState<AttributePayload[]>([]);
@@ -54,6 +55,31 @@ const AddProductAttribute: React.FC<{
     }));
     setProductInfo((prev: ProductDetailsModel) => ({ ...prev, attributeValues: attributes }));
   }, [selectedAttributes, setProductInfo]);
+
+  useEffect(() => {
+    if (!editAttributeValues?.length) return;
+
+    const newMap: Record<number, number> = {};
+
+    editAttributeValues.forEach((pav) => {
+      if (pav.id == null) return;
+
+      const selectedAttribute = attributes.find(
+        (attribute) => attribute.attributeValues?.some((av) => av.id === pav.id),
+      );
+      if (selectedAttribute) newMap[selectedAttribute.id] = pav.id;
+    });
+
+    // do a shallow‑compare
+    const same =
+      Object.keys(newMap).length === Object.keys(selectedAttributes).length &&
+      Object.entries(newMap).every(([k, v]) => selectedAttributes[+k] === v);
+
+    if (!same) {
+      setSelectedAttributes(newMap);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editAttributeValues, attributes]);
 
   return (
     <div className='border rounded-top'>

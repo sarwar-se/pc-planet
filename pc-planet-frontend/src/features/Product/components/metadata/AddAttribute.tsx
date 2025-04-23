@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { GoPlus } from 'react-icons/go';
 import { STATUS } from '../../../../constants/appConstants';
 import axios from 'axios';
-import { FormControl, Toast, ToastBody, ToastContainer, ToastHeader } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { CreateProductAttribute } from '../../../models/ProductMetadata';
 import { saveOrUpdateProductAttribute } from '../../productApi';
 import { AppButton } from '../../../../components';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import AppToastContainer from '../../../../components/patterns/AppToastContainer';
 
 const AddAttribute: React.FC<{
   selectedCategory: number;
@@ -141,33 +142,12 @@ const AddAttribute: React.FC<{
         </div>
       </div>
 
-      <ToastContainer position='bottom-end' className='position-fixed m-1'>
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.ERROR}
-          delay={4000}
-          autohide
-          bg='danger'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>Fail!</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>{errorMessage}</ToastBody>
-        </Toast>
-
-        <Toast
-          onClose={() => setStatus(STATUS.IDLE)}
-          show={status === STATUS.SUCCESS}
-          delay={4000}
-          autohide
-          bg='success'
-        >
-          <ToastHeader>
-            <strong className='me-auto'>Success!</strong>
-          </ToastHeader>
-          <ToastBody className='text-white'>Product attribute updated successfully</ToastBody>
-        </Toast>
-      </ToastContainer>
+      <AppToastContainer
+        status={status}
+        updateStatus={setStatus}
+        errorMessage={errorMessage}
+        successMessage={'Product attribute updated successfully'}
+      />
     </div>
   );
 };
