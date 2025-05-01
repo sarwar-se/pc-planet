@@ -1,11 +1,15 @@
 security:
-  cors-domain: http://localhost:3000
-
+  cors-domains: http://localhost:3000
+  encryption-password: a2f49d7c3b8e#f125Dec9837ab4e17&a5d60f3b9481a76cb
+  token:
+    lifetime-in-hour: 24
+    refresh-in-hour: 72
+    lifetime-in-minute: 1
+    refresh-in-minute: 3
+    http-status-on-expiration: 480
 spring:
-  profiles:
-    active: dev
-  application:
-    name: PC-PLANET-BACKEND
+  profiles.active: dev
+  application.name: PC-PLANET-BACKEND
   datasource:
     driverClassName: org.postgresql.Driver
     username: postgres
@@ -25,6 +29,10 @@ spring:
         default_schema: public
         session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 10
         auto_quote_keyword: true
+  security:
+    user:
+      name: admin
+      password: admin
 
   # ---------------------------------------------------
   # Init & Seeding via Spring
@@ -45,4 +53,3 @@ spring:
 app:
   product-uploaded-data:
     storage-directory: /var/www/html/pc-planet/uploads
-
