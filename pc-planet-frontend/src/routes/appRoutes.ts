@@ -11,4 +11,6 @@ export const appRoutes = {
   editProduct: (id: number) => `/product/${id}`,
   productManagement: '/product/management',
   addProductMetadata: '/product/metadata-management',
+  userRgistration: '/user/registration',
+  userLogin: '/user/login',
 };

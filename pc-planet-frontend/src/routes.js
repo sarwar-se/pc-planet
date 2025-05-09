@@ -81,6 +81,25 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: 'user',
+        children: [
+          {
+            path: 'registration',
+            lazy: async () => {
+              const { UserRegistration } = await import('./features/user/index.ts');
+              return { Component: UserRegistration };
+            },
+          },
+          {
+            path: 'login',
+            lazy: async () => {
+              const { Login } = await import('./features/user/index.ts');
+              return { Component: Login };
+            },
+          },
+        ],
+      },
     ],
   },
   {

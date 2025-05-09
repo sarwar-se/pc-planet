@@ -83,9 +83,23 @@ const Header: React.FC<{ handleShowSidebar: () => void }> = ({ handleShowSidebar
                     <div className='d-flex flex-column'>
                       <div className='text-white pointer'>Account</div>
                       <div className='d-flex flex-row gap-1'>
-                        <span className='login-register'>Register</span>
+                        <span
+                          className='login-register'
+                          onClick={() => {
+                            navigate(appRoutes.userRgistration);
+                          }}
+                        >
+                          Register
+                        </span>
                         <span className='small-text'>/</span>
-                        <span className='login-register'>Login</span>
+                        <span
+                          className='login-register'
+                          onClick={() => {
+                            navigate(appRoutes.userLogin);
+                          }}
+                        >
+                          Login
+                        </span>
                       </div>
                     </div>
                   </Nav>
