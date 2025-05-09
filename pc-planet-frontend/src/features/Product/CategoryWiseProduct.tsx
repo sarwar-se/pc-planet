@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './product.css';
 import { getCategoryDetailsByName, getProducts, getSubCategoryDetailsByName } from './productApi';
 import ProductCardView from './ProductCardView';
@@ -177,15 +177,17 @@ const Product = () => {
 
             {categoryDetails &&
               categoryDetails.attributes &&
-              categoryDetails.attributes.map((attribute: ProductAttribute) => (
-                <FilterCard
-                  title={attribute.name}
-                  groupType={GROUP_TYPE.CHECKBOX}
-                  values={getAttributeValues(attribute.attributeValues)}
-                  selectedValues={selectedAttributeValues}
-                  filterType={FILTER_TYPE.PROPERTY}
-                  filterHandler={handleProductFilter}
-                />
+              categoryDetails.attributes.map((attribute: ProductAttribute, i) => (
+                <Fragment key={i}>
+                  <FilterCard
+                    title={attribute.name}
+                    groupType={GROUP_TYPE.CHECKBOX}
+                    values={getAttributeValues(attribute.attributeValues)}
+                    selectedValues={selectedAttributeValues}
+                    filterType={FILTER_TYPE.PROPERTY}
+                    filterHandler={handleProductFilter}
+                  />
+                </Fragment>
               ))}
           </div>
         </div>
