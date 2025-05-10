@@ -13,8 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
@@ -48,8 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                                 new AntPathRequestMatcher("/auth/register"),
                                 new AntPathRequestMatcher("/auth/login"),
-                                new AntPathRequestMatcher("/api/**"),
-                                new AntPathRequestMatcher("/uploads/**")
+                                new AntPathRequestMatcher("/api/**")
                         )
                         .permitAll()
                         .anyRequest()
@@ -71,16 +68,4 @@ public class SecurityConfig {
             return cors;
         });
     }
-
-    // Image file location permission For Windows machine.
-//    @Bean
-//    public WebMvcConfigurer resourceConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//                registry.addResourceHandler("/uploads/**")
-//                        .addResourceLocations("file:///D:/Development/uploads/");
-//            }
-//        };
-//    }
 }

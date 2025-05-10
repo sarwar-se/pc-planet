@@ -9,12 +9,12 @@ import java.util.Collection;
 public class AppAuthentication implements Authentication {
     private final UserDTO userDetails;
 
+    private boolean isAuthenticated;
+
     public AppAuthentication(UserDTO userDetails, boolean isAuthenticated) {
         this.userDetails = userDetails;
         this.isAuthenticated = isAuthenticated;
     }
-
-    private boolean isAuthenticated;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
