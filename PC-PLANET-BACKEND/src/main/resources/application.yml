@@ -1,3 +1,4 @@
+server.port: 8089
 security:
   cors-domains: http://localhost:3000
   encryption-password: a2f49d7c3b8e#f125Dec9837ab4e17&a5d60f3b9481a76cb

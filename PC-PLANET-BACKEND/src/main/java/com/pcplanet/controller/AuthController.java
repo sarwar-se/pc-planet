@@ -40,6 +40,7 @@ public class AuthController {
     @GetMapping("/refresh")
     public ResponseEntity<TokenDetails> refreshToken(HttpServletRequest request) {
         var token = AuthFilter.getAuthTokenFromHeader(request);
+
         try {
             return ResponseEntity.ok(loginService.refreshToken(token));
         } catch (Exception e) {

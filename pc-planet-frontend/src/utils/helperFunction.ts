@@ -54,8 +54,7 @@ export const getAvailabilityType = (value: string | undefined): string[] => {
 };
 
 export const getImageUrl = (fileName: string) => {
-  // return process.env.REACT_APP_PRODUCT_IMAGE_DIR + fileName;
-  return process.env.REACT_APP_PRODUCT_IMAGE_DIR  + fileName.replace(/^\/+/, '');
+  return process.env.REACT_APP_PRODUCT_IMAGE_DIR + fileName;
 };
 
 type DropdownSelectItem = {

@@ -7,6 +7,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,9 +30,10 @@ public class User extends BaseEntity {
     @Column(name = "email", length = 32, nullable = false)
     private String email;
 
-    @NotNull
+    @NotBlank
     @Column(name = "phone", length = 11, nullable = false)
-    private Integer phone;
+    @Pattern(regexp = "^01[0-9]{9}", message = "Phone number must start with 01 and be 11 digits")
+    private String phone;
 
     @NotBlank
     @Column(name = "password", nullable = false)
