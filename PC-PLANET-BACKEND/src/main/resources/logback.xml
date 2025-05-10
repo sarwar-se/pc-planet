@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property name="LOG_HOME" value="D:\Development\logs\pc-planet"/>
+    <!--    <property name="LOG_HOME" value="logs"/>-->
     <property name="LOG_FILENAME" value="web_log"/>
     <property name="LOG_FILE_EXT" value="txt"/>
     <property name="LOG_AGE_DAYS" value="10"/>
@@ -19,6 +20,7 @@
     </appender>
     <appender name="FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}\${LOG_FILENAME}.${LOG_FILE_EXT}</file>
+        <!--    <file>${LOG_HOME}/${LOG_FILENAME}.${LOG_FILE_EXT}</file>-->
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>

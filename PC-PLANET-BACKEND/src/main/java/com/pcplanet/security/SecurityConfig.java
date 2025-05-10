@@ -23,8 +23,8 @@ public class SecurityConfig {
     private List<String> corsDomains;
     private static String LOGIN_ENDPOINT = "/login";
     private static String REFRESH_TOKEN_ENDPOINT = "/refresh";
-    private UserService userService;
-    private TokenService tokenService;
+    private final UserService userService;
+    private final TokenService tokenService;
 
     public SecurityConfig(UserService userService, TokenService tokenService) {
         this.userService = userService;
@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                                 new AntPathRequestMatcher("/auth/register"),
                                 new AntPathRequestMatcher("/auth/login"),
+                                new AntPathRequestMatcher("/auth/refresh"),
                                 new AntPathRequestMatcher("/api/**")
                         )
                         .permitAll()
